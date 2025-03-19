@@ -1,14 +1,15 @@
-import React from "react";                                           //Import React Libary
-import { FaCarTunnel } from "react-icons/fa6";                       //Import FaCarTunnel Icon from react-icons/fa6    
-const Navbar = () => {                                               //Create a functional component called Navbar
+import React from "react"; //Import React Libary
+import { FaCarTunnel } from "react-icons/fa6"; //Import FaCarTunnel Icon from react-icons/fa6
+const Navbar = () => {
+  //Create a functional component called Navbar
   return (
-    <header className="w-full bg-secondary text-white py-4">   
+    <header className="w-full bg-secondary text-white py-4">
       <nav className="flex justify-between items-center">
         {/* Logo Sextion */}
         <div className="flex items-center gap-2">
-          <FaCarTunnel size={50}  />
+          <FaCarTunnel size={50} />
           <a href="/" className="font-bold text-2xl">
-          NovaRide
+            NovaRide
           </a>
         </div>
         <div className="flex items-center gap-8 font-medium text-xl">
@@ -72,9 +73,8 @@ const Navbar = () => {                                               //Create a 
 
 export default Navbar;
 
-
-//Note 
-//<header className=" fixed w-full z-10 bg-secondary text-white py-4">   
+//Note
+//<header className=" fixed w-full z-10 bg-secondary text-white py-4">
 //fixed->Keeps the navbar fixed at the top of the screen
 //Makes the <div> stretch across the entire width of its parent.
 //z-10 -> ensure that its above other elements
