@@ -2,7 +2,7 @@ import React from "react";                                           //Import Re
 import { FaCarTunnel } from "react-icons/fa6";                       //Import FaCarTunnel Icon from react-icons/fa6    
 const Navbar = () => {                                               //Create a functional component called Navbar
   return (
-    <header className=" fixed w-full z-10 bg-secondary text-white py-4">   
+    <header className="w-full bg-secondary text-white py-4">   
       <nav className="flex justify-between items-center">
         {/* Logo Sextion */}
         <div className="flex items-center gap-2">
@@ -37,13 +37,13 @@ const Navbar = () => {                                               //Create a 
             Our Cars
           </a>
           <a
-            href="/"
+            href="/blogs"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Blogs
           </a>
           <a
-            href="/"
+            href="/payment"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Payment
