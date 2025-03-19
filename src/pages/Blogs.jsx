@@ -5,7 +5,7 @@ function Blogs() {
   return (
     <>
       <Navbar />
-      <h1>hello awny</h1>
+      <h1>hello awn</h1>
     </>
   );
 }
