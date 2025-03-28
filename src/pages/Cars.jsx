@@ -6,7 +6,7 @@ const Cars = () => {
   return (
     <>
     <Navbar/>
-    <div>Cars</div>
+    <div>Mohamedhussein</div>
     <Footer/>
     </>
     
