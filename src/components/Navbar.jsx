@@ -32,7 +32,7 @@ const Navbar = () => {
             Contact Us
           </a>
           <a
-            href="/"
+            href="/Cars"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Our Cars

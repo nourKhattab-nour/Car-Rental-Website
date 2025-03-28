@@ -7,6 +7,7 @@ import Payment from "./pages/Payment.jsx";
 import Blogs from "./pages/Blogs.jsx";
 import HomePage from "./pages/HomePage.jsx"
 import AboutUs from "./pages/AboutUs.jsx"
+import Cars from "./pages/Cars.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="blogs" element={<Blogs />} />
         <Route path="HomePage" element={<HomePage />} />
         <Route path="AboutUs" element={<AboutUs />} />
+        <Route path="Cars" element={<Cars />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
