@@ -58,7 +58,7 @@ const Navbar = () => {
             Payment
           </a>
           <a
-            href="/"
+            href="/booking"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Booking
