@@ -1,26 +1,26 @@
 import React from "react"; //Import React Libary
-import { FaCarTunnel } from "react-icons/fa6"; //Import FaCarTunnel Icon from react-icons/fa6
+import { IoSpeedometer } from "react-icons/io5";
 const Navbar = () => {
   //Create a functional component called Navbar
   return (
     <header className="w-full bg-secondary text-white py-4">
       <nav className="flex justify-between items-center">
         {/* Logo Sextion */}
-        <div className="flex items-center gap-2">
-          <FaCarTunnel size={50} />
+        <div className="flex items-center gap-2 ml-6">
+          <IoSpeedometer size={50} />
           <a href="/" className="font-bold text-2xl">
             NovaRide
           </a>
         </div>
-        <div className="flex items-center gap-8 font-medium text-xl">
+        <div className="flex items-center gap-8 font-medium text-xl pr-4">
           <a
-            href="/"
+            href="/HomePage"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Home
           </a>
           <a
-            href="/"
+            href="/AboutUs"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             About Us
@@ -55,14 +55,8 @@ const Navbar = () => {
           >
             Booking
           </a>
-          <a
-            href="/"
-            className="hover:text-primary transition duration-200 ease-linear"
-          >
-            Login
-          </a>
 
-          <button className=" hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear">
+          <button className=" hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear mr-4">
             Log In
           </button>
         </div>

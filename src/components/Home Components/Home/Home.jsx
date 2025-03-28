@@ -1,7 +1,7 @@
 import React from "react";
-import carPng from "../../assets/Images/car.png";
+import carPng from '../../../assets/Images/car.png';
 
-function Hero() {
+function Home() {
   return (
     <div className="bg-secondary text-white duration-300 pt-16">
       <div className="container min-h-[620px] flex items-center">
@@ -39,4 +39,4 @@ function Hero() {
   );
 }
 
-export default Hero;
+export default Home;

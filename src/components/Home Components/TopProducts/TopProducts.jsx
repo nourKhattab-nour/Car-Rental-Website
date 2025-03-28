@@ -1,0 +1,82 @@
+import React from 'react';
+import I1 from '@/assets/Images/car1.png';
+import I2 from '@/assets/Images/car2.png';
+import I3 from '@/assets/Images/car3.png';
+import { FaStar } from "react-icons/fa6";
+
+const ProductsData = [
+  {
+    id: 1,
+    img: I1,
+    title: "Luxury SUV",
+    description:
+      "Experience the comfort and power of our top-tier luxury SUVs.",
+  },
+  {
+    id: 2,
+    img: I2,
+    title: "Sports Sedan",
+    description:
+      "Enjoy the perfect blend of speed and elegance with our high-performance sports sedans.",
+  },
+  {
+    id: 3,
+    img: I3,
+    title: "Convertible Coupe",
+    description:
+      "Drive in style and freedom with our sleek and powerful convertible coupes.",
+  },
+];
+
+const TopProducts = () => {
+  const handleOrderPopup = () => {
+    alert('Order popup triggered!');
+  };
+  return (
+    <div className='container'>
+      {/* Header section */}
+      <div className='text-left mb-24 '>
+        <p className='text-sm text-primary'>Top Rated for You</p>
+        <h1 className='text-3xl font-bold'> Best Cars</h1>
+        <p className='text-xs text-black-400'>
+          Discover the top-selling cars that combine style, performance, and reliability. Whether you're looking for luxury, efficiency, or power, these models offer the best in class. Explore a range of vehicles to find the perfect fit for your needs.
+        </p>
+      </div>
+      {/* Body section */}
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  md:gap-5 place-items-center gap-20'>
+        {/* Add content for the body section here */}
+            {ProductsData.map((data) => (
+                        <div className='rounded-2xl bg-white dark:bg-white-800
+                        hover:bg-black/80 dark:hover:bg-secondary
+                        hover:text-white relative shadow-xl
+                        duration-300 group max-w-[300px]'
+                        >
+                        {/* Image section  */}
+                        <div className='h-[100px]'>
+                            <img src={data.img} alt=''
+                            className='max-w-[140px] block mx-auto transform -translate-y-20 group-hover:scale-105 duration-00 drop-shadow-md'
+                            ></img>
+                        </div >
+                        {/* Details section  */}
+
+                        <div className='p-4  text-center '>
+                          {/* star rating */}
+                          <div className='w-full flex items-center justify-center gap-1 '>
+                          <FaStar className='text-yellow-500'></FaStar>
+                          <FaStar className='text-yellow-500'></FaStar>
+                          <FaStar className='text-yellow-500'></FaStar>
+                          <FaStar className='text-yellow-500'></FaStar>
+                       </div>
+                       <h1 className='text-xl  font-bold'> {data.title}</h1>
+                       <p  className='text-black-500 group-hover:text-white duration-300 text-sm  line-clamp-2'>{data.description}</p>
+                        <button className='bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-bhue group hover:text:white'onClick={handleOrderPopup}> Book Now</button>
+                        </div>
+                        </div>
+        ))}
+
+      </div>
+    </div>
+  );
+};
+
+export default TopProducts;
