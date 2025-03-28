@@ -1,23 +1,13 @@
+"use client"
+
 import { useState } from "react"
-import { Link } from "react-router-dom"
-import {
-  Car,
-  Clock,
-  MapPin,
-  Calendar,
-  User,
-  Phone,
-  Mail,
-  Menu,
-  X,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react"
+import { Car, Clock, MapPin, Calendar, User, Phone, Mail, Check, ChevronLeft, ChevronRight } from "lucide-react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 // Import individual methods from Yup instead of the whole library
-import * as Yup from "yup"
-import I1 from '../assets/Images/Car.png';
+import { object, string, date, ref } from "yup"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+
 function Booking() {
   const [activeTab, setActiveTab] = useState("economy")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -99,24 +89,24 @@ function Booking() {
         category: "SUV",
         passengers: 5,
         price: 110,
-        image: I1,
+        image: "https://via.placeholder.com/400x300",
       },
     ],
   }
 
   // Validation schema using Yup with individual imports
-  const validationSchema = Yup.object({
-    pickupLocation: Yup.string().required("Pickup location is required"),
-    dropoffLocation: Yup.string().required("Drop-off location is required"),
-    pickupDate: Yup.date()
+  const validationSchema = object().shape({
+    pickupLocation: string().required("Pickup location is required"),
+    dropoffLocation: string().required("Drop-off location is required"),
+    pickupDate: date()
       .required("Pickup date is required")
       .min(new Date(new Date().setHours(0, 0, 0, 0)), "Pickup date cannot be in the past"),
-    returnDate: Yup.date()
+    returnDate: date()
       .required("Return date is required")
-      .min(Yup.ref("pickupDate"), "Return date must be after pickup date"),
-    fullName: Yup.string().required("Full name is required").min(3, "Name must be at least 3 characters"),
-    email: Yup.string().email("Invalid email address").required("Email is required"),
-    phone: Yup.string()
+      .min(ref("pickupDate"), "Return date must be after pickup date"),
+    fullName: string().required("Full name is required").min(3, "Name must be at least 3 characters"),
+    email: string().email("Invalid email address").required("Email is required"),
+    phone: string()
       .required("Phone number is required")
       .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, "Phone number is not valid"),
   })
@@ -378,94 +368,7 @@ function Booking() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <header className="bg-black text-white border-b border-zinc-800">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2">
-              <Car className="h-8 w-8" />
-              <span className="text-xl font-bold">NovaRide</span>
-            </Link>
-
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="hover:text-blue-400 transition-colors duration-200">
-                Home
-              </Link>
-              <Link to="/about-us" className="hover:text-blue-400 transition-colors duration-200">
-                About Us
-              </Link>
-              <Link to="/contact-us" className="hover:text-blue-400 transition-colors duration-200">
-                Contact Us
-              </Link>
-              <Link to="/our-cars" className="hover:text-blue-400 transition-colors duration-200">
-                Our Cars
-              </Link>
-              <Link to="/blogs" className="hover:text-blue-400 transition-colors duration-200">
-                Blogs
-              </Link>
-              <Link to="/payment" className="hover:text-blue-400 transition-colors duration-200">
-                Payment
-              </Link>
-              <Link to="/booking" className="text-blue-400 font-medium">
-                Booking
-              </Link>
-            </nav>
-
-            <div className="hidden md:flex items-center space-x-4">
-              <Link to="/login">
-                <button className="bg-transparent text-white hover:text-blue-400 transition-colors duration-200">
-                  Login
-                </button>
-              </Link>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
-                Log In
-              </button>
-            </div>
-
-            <button className="bg-transparent text-white md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="flex flex-col space-y-4 px-4 py-6 border-t border-zinc-800">
-              <Link to="/" className="hover:text-blue-400 transition-colors duration-200">
-                Home
-              </Link>
-              <Link to="/about-us" className="hover:text-blue-400 transition-colors duration-200">
-                About Us
-              </Link>
-              <Link to="/contact-us" className="hover:text-blue-400 transition-colors duration-200">
-                Contact Us
-              </Link>
-              <Link to="/our-cars" className="hover:text-blue-400 transition-colors duration-200">
-                Our Cars
-              </Link>
-              <Link to="/blogs" className="hover:text-blue-400 transition-colors duration-200">
-                Blogs
-              </Link>
-              <Link to="/payment" className="hover:text-blue-400 transition-colors duration-200">
-                Payment
-              </Link>
-              <Link to="/booking" className="text-blue-400 font-medium">
-                Booking
-              </Link>
-
-              <div className="flex space-x-4 pt-4">
-                <Link to="/login" className="flex-1">
-                  <button className="w-full bg-transparent border border-zinc-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
-                    Login
-                  </button>
-                </Link>
-                <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
-                  Log In
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </header>
+      <Navbar />
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 text-center">
@@ -738,6 +641,8 @@ function Booking() {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   )
 }
