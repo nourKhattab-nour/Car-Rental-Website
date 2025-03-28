@@ -31,6 +31,14 @@ const Navbar = () => {
           >
             Contact Us
           </a>
+
+          <a
+            href="/QA"
+            className="hover:text-primary transition duration-200 ease-linear"
+          >
+            Q&A
+          </a>
+
           <a
             href="/Cars"
             className="hover:text-primary transition duration-200 ease-linear"
