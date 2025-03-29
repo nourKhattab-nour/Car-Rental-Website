@@ -1,11 +1,11 @@
-import React from "react"; //Import React Libary
+import React from "react"; //Import React Library
 import { IoSpeedometer } from "react-icons/io5";
 const Navbar = () => {
   //Create a functional component called Navbar
   return (
     <header className="w-full bg-secondary text-white py-4">
       <nav className="flex justify-between items-center">
-        {/* Logo Sextion */}
+        {/* Logo Section */}
         <div className="flex items-center gap-2 ml-6">
           <IoSpeedometer size={50} />
           <a href="/" className="font-bold text-2xl">
