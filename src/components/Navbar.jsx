@@ -1,4 +1,4 @@
-import React from "react"; // Import React Library
+import React from "react"; //Import React Library
 import { IoSpeedometer } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
