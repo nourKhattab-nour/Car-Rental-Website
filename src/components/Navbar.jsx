@@ -1,11 +1,20 @@
-import React from "react"; //Import React Libary
+import React from "react"; // Import React Library
 import { IoSpeedometer } from "react-icons/io5";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+
 const Navbar = () => {
-  //Create a functional component called Navbar
+  const navigate = useNavigate(); // Hook to navigate between pages
+
+  // Function to handle login button click
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  // Create a functional component called Navbar
   return (
     <header className="w-full bg-secondary text-white py-4">
       <nav className="flex justify-between items-center">
-        {/* Logo Sextion */}
+        {/* Logo Section */}
         <div className="flex items-center gap-2 ml-6">
           <IoSpeedometer size={50} />
           <a href="/" className="font-bold text-2xl">
@@ -31,14 +40,12 @@ const Navbar = () => {
           >
             Contact Us
           </a>
-
           <a
             href="/QA"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Q&A
           </a>
-
           <a
             href="/Cars"
             className="hover:text-primary transition duration-200 ease-linear"
@@ -63,8 +70,10 @@ const Navbar = () => {
           >
             Booking
           </a>
-
-          <button className=" hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear mr-4">
+          <button
+            onClick={handleLoginClick} // Add onClick event to navigate to login
+            className="hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear mr-4"
+          >
             Log In
           </button>
         </div>
@@ -74,32 +83,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-//Note
-//<header className=" fixed w-full z-10 bg-secondary text-white py-4">
-//fixed->Keeps the navbar fixed at the top of the screen
-//Makes the <div> stretch across the entire width of its parent.
-//z-10 -> ensure that its above other elements
-//bg-secondary: Applies a dark background color (from Tailwind configuration).
-//text-white: Sets text color to white.
-//py-4: Adds vertical padding.
-
-//--------------------------------------------------------------------------------------------------------
-//<nav className="flex justify-between items-center"></nav>
-//flex: Uses Flexbox for layout.
-//justify-between: Aligns children to the left and right edges of the parent.
-//items-center: Aligns items vertically.
-//--------------------------------------------------------------------------------------------------------
-//href="/" className="font-bold text-2xl">NovaRide</a>
-//Makes "NovaRide" a clickable link with bold and large text.
-//hover:text-primary: Changes text color on hover.
-//transition duration-200 ease-linear: Smooth color change over 200ms.
-//transition: It allows smooth changes when properties like color, opacity, background, and position change,Without transition, the background color changes immediately on hover.
-//--------------------------------------------------------------------------------------------------------
-//ease-linear
-//This controls the speed curve of the transition.
-//Types:
-//ease-linear	Constant speed from start to finish.
-//ease-in	Starts slow, then speeds up.
-//ease-out	Starts fast, then slows down.
-//ease-in-out	Starts slow, speeds up in the middle, then slows down again.
