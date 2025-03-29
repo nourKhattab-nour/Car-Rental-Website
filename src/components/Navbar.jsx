@@ -31,19 +31,11 @@ const Navbar = () => {
           >
             Contact Us
           </a>
-
-          <a
-            href="/QA"
-            className="hover:text-primary transition duration-200 ease-linear"
-          >
-            Q&A
-          </a>
-
           <a
             href="/Cars"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            Our Cars
+            Cars
           </a>
           <a
             href="/blogs"
@@ -58,10 +50,10 @@ const Navbar = () => {
             Payment
           </a>
           <a
-            href="/"
+            href="/QA"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            Booking
+            QA
           </a>
 
           <button className=" hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear mr-4">
