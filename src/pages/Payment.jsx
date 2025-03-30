@@ -96,14 +96,18 @@ export default function Payment() {
     const getBookingDetails = () => {
       try {
         // Get data from localStorage
-        const storedBooking = localStorage.getItem("bookingDetails");
+        const storedBooking = localStorage.getItem("carRentalBooking");
+        console.log("Raw booking data from localStorage:", storedBooking);
 
         if (storedBooking) {
           const bookingData = JSON.parse(storedBooking);
+          console.log("Parsed booking data:", bookingData);
 
           // Convert string dates back to Date objects
-          bookingData.pickupDate = new Date(bookingData.pickupDate);
-          bookingData.returnDate = new Date(bookingData.returnDate);
+          if (bookingData.pickupDate)
+            bookingData.pickupDate = new Date(bookingData.pickupDate);
+          if (bookingData.returnDate)
+            bookingData.returnDate = new Date(bookingData.returnDate);
 
           return bookingData;
         }
@@ -129,6 +133,14 @@ export default function Payment() {
     };
 
     setBookingDetails(getBookingDetails());
+  }, []);
+
+  // Clear localStorage when running in development mode
+  useEffect(() => {
+    // Uncomment this if you want to clear localStorage during development
+    // if (process.env.NODE_ENV === "development") {
+    //   localStorage.removeItem("bookingDetails");
+    // }
   }, []);
 
   const formatCardNumber = (value) => {
@@ -207,7 +219,7 @@ export default function Payment() {
 
   if (!bookingDetails) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-black">
         <Navbar />
         <div className="container mx-auto px-4 py-16 text-center">
           <div className="animate-pulse">
@@ -221,13 +233,13 @@ export default function Payment() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
 
       {/* Payment Success Modal */}
       {showPaymentSuccess && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl">
+          <div className="bg-black rounded-lg p-8 max-w-md w-full shadow-xl border border-gray-700">
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
                 <svg
@@ -244,14 +256,14 @@ export default function Payment() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <h3 className="text-lg font-medium text-white mb-2">
                 Payment Successful!
               </h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-gray-400 mb-4">
                 Your payment of ${bookingDetails.totalPrice.toFixed(2)} has been
                 processed successfully.
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-400">
                 You will be redirected to the confirmation page shortly...
               </p>
             </div>
@@ -261,19 +273,19 @@ export default function Payment() {
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-white">
             Complete Your Payment
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-300">
             Please review your booking details and complete payment
           </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm mb-6">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">
+            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden shadow-sm mb-6">
+              <div className="p-6 border-b border-gray-700">
+                <h2 className="text-xl font-semibold text-white">
                   Booking Summary
                 </h2>
               </div>
@@ -287,10 +299,10 @@ export default function Payment() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-white">
                       {bookingDetails.carName}
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-300">
                       {bookingDetails.carCategory}
                     </p>
                   </div>
@@ -298,30 +310,30 @@ export default function Payment() {
 
                 <div className="grid gap-4 sm:grid-cols-2 mb-6">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">
+                    <p className="text-sm text-gray-300 mb-1">
                       Pickup Location
                     </p>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-white">
                       {getLocationName(bookingDetails.pickupLocation)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">
+                    <p className="text-sm text-gray-300 mb-1">
                       Drop-off Location
                     </p>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-white">
                       {getLocationName(bookingDetails.dropoffLocation)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Pickup Date</p>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-sm text-gray-300 mb-1">Pickup Date</p>
+                    <p className="font-medium text-white">
                       {formatDate(bookingDetails.pickupDate)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Return Date</p>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-sm text-gray-300 mb-1">Return Date</p>
+                    <p className="font-medium text-white">
                       {formatDate(bookingDetails.returnDate)}
                     </p>
                   </div>
@@ -329,21 +341,21 @@ export default function Payment() {
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">
+            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden shadow-sm">
+              <div className="p-6 border-b border-gray-700">
+                <h2 className="text-xl font-semibold text-white">
                   Payment Method
                 </h2>
               </div>
               <div className="p-6">
-                <div className="flex border-b border-gray-200 mb-6">
+                <div className="flex border-b border-gray-700 mb-6">
                   <button
                     type="button"
                     onClick={() => setPaymentMethod("credit-card")}
                     className={`py-2 px-4 font-medium ${
                       paymentMethod === "credit-card"
-                        ? "border-b-2 border-blue-600 text-blue-600"
-                        : "text-gray-500 hover:text-gray-700"
+                        ? "border-b-2 border-blue-400 text-blue-400"
+                        : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
                     Credit Card
@@ -353,8 +365,8 @@ export default function Payment() {
                     onClick={() => setPaymentMethod("paypal")}
                     className={`py-2 px-4 font-medium ${
                       paymentMethod === "paypal"
-                        ? "border-b-2 border-blue-600 text-blue-600"
-                        : "text-gray-500 hover:text-gray-700"
+                        ? "border-b-2 border-blue-400 text-blue-400"
+                        : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
                     PayPal
@@ -364,8 +376,8 @@ export default function Payment() {
                     onClick={() => setPaymentMethod("apple-pay")}
                     className={`py-2 px-4 font-medium ${
                       paymentMethod === "apple-pay"
-                        ? "border-b-2 border-blue-600 text-blue-600"
-                        : "text-gray-500 hover:text-gray-700"
+                        ? "border-b-2 border-blue-400 text-blue-400"
+                        : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
                     Apple Pay
@@ -410,13 +422,13 @@ export default function Payment() {
                     return (
                       <Form>
                         {paymentMethod === "credit-card" && errorCount > 0 && (
-                          <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-md">
-                            <p className="text-sm text-red-600 font-medium">
+                          <div className="mb-6 p-3 bg-red-900 border border-red-700 rounded-md">
+                            <p className="text-sm text-white font-medium">
                               Please correct the following {errorCount}{" "}
                               {errorCount === 1 ? "error" : "errors"} to
                               proceed:
                             </p>
-                            <ul className="mt-1 text-xs text-red-600 list-disc list-inside">
+                            <ul className="mt-1 text-xs text-red-200 list-disc list-inside">
                               {Object.entries(errors).map(([field, message]) =>
                                 touched[field] && field !== "terms" ? (
                                   <li key={field}>{message}</li>
@@ -430,7 +442,7 @@ export default function Payment() {
                             <div>
                               <label
                                 htmlFor="cardholderName"
-                                className="block text-sm font-medium text-gray-700 mb-1"
+                                className="block text-sm font-medium text-gray-300 mb-1"
                               >
                                 Cardholder Name
                               </label>
@@ -443,20 +455,20 @@ export default function Payment() {
                                   errors.cardholderName &&
                                   touched.cardholderName
                                     ? "border-red-500"
-                                    : "border-gray-300"
-                                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    : "border-gray-600"
+                                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
                               />
                               <ErrorMessage
                                 name="cardholderName"
                                 component="div"
-                                className="text-red-500 text-xs mt-1"
+                                className="text-red-400 text-xs mt-1"
                               />
                             </div>
 
                             <div>
                               <label
                                 htmlFor="cardNumber"
-                                className="block text-sm font-medium text-gray-700 mb-1"
+                                className="block text-sm font-medium text-gray-300 mb-1"
                               >
                                 Card Number
                               </label>
@@ -470,8 +482,8 @@ export default function Payment() {
                                   className={`w-full px-3 py-2 border ${
                                     errors.cardNumber && touched.cardNumber
                                       ? "border-red-500"
-                                      : "border-gray-300"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10`}
+                                      : "border-gray-600"
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 pr-10 bg-gray-800 text-white`}
                                   onChange={(e) => {
                                     const formatted = formatCardNumber(
                                       e.target.value
@@ -506,7 +518,7 @@ export default function Payment() {
                               <ErrorMessage
                                 name="cardNumber"
                                 component="div"
-                                className="text-red-500 text-xs mt-1"
+                                className="text-red-400 text-xs mt-1"
                               />
                             </div>
 
@@ -514,7 +526,7 @@ export default function Payment() {
                               <div>
                                 <label
                                   htmlFor="expiryMonth"
-                                  className="block text-sm font-medium text-gray-700 mb-1"
+                                  className="block text-sm font-medium text-gray-300 mb-1"
                                 >
                                   Expiry Month
                                 </label>
@@ -525,8 +537,8 @@ export default function Payment() {
                                   className={`w-full px-3 py-2 border ${
                                     errors.expiryMonth && touched.expiryMonth
                                       ? "border-red-500"
-                                      : "border-gray-300"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                      : "border-gray-600"
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
                                 >
                                   <option value="">Month</option>
                                   {Array.from({ length: 12 }, (_, i) => (
@@ -543,14 +555,14 @@ export default function Payment() {
                                 <ErrorMessage
                                   name="expiryMonth"
                                   component="div"
-                                  className="text-red-500 text-xs mt-1"
+                                  className="text-red-400 text-xs mt-1"
                                 />
                               </div>
 
                               <div>
                                 <label
                                   htmlFor="expiryYear"
-                                  className="block text-sm font-medium text-gray-700 mb-1"
+                                  className="block text-sm font-medium text-gray-300 mb-1"
                                 >
                                   Expiry Year
                                 </label>
@@ -561,8 +573,8 @@ export default function Payment() {
                                   className={`w-full px-3 py-2 border ${
                                     errors.expiryYear && touched.expiryYear
                                       ? "border-red-500"
-                                      : "border-gray-300"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                      : "border-gray-600"
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
                                 >
                                   <option value="">Year</option>
                                   {Array.from({ length: 10 }, (_, i) => (
@@ -577,14 +589,14 @@ export default function Payment() {
                                 <ErrorMessage
                                   name="expiryYear"
                                   component="div"
-                                  className="text-red-500 text-xs mt-1"
+                                  className="text-red-400 text-xs mt-1"
                                 />
                               </div>
 
                               <div>
                                 <label
                                   htmlFor="cvc"
-                                  className="block text-sm font-medium text-gray-700 mb-1"
+                                  className="block text-sm font-medium text-gray-300 mb-1"
                                 >
                                   CVC
                                 </label>
@@ -597,26 +609,26 @@ export default function Payment() {
                                   className={`w-full px-3 py-2 border ${
                                     errors.cvc && touched.cvc
                                       ? "border-red-500"
-                                      : "border-gray-300"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                      : "border-gray-600"
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
                                 />
                                 <ErrorMessage
                                   name="cvc"
                                   component="div"
-                                  className="text-red-500 text-xs mt-1"
+                                  className="text-red-400 text-xs mt-1"
                                 />
                               </div>
                             </div>
 
                             <div className="space-y-4 mt-6">
-                              <h3 className="font-medium text-gray-700">
+                              <h3 className="font-medium text-gray-300">
                                 Billing Information
                               </h3>
 
                               <div>
                                 <label
                                   htmlFor="billingAddress"
-                                  className="block text-sm font-medium text-gray-700 mb-1"
+                                  className="block text-sm font-medium text-gray-300 mb-1"
                                 >
                                   Billing Address
                                 </label>
@@ -629,13 +641,13 @@ export default function Payment() {
                                     errors.billingAddress &&
                                     touched.billingAddress
                                       ? "border-red-500"
-                                      : "border-gray-300"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                      : "border-gray-600"
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
                                 />
                                 <ErrorMessage
                                   name="billingAddress"
                                   component="div"
-                                  className="text-red-500 text-xs mt-1"
+                                  className="text-red-400 text-xs mt-1"
                                 />
                               </div>
 
@@ -643,7 +655,7 @@ export default function Payment() {
                                 <div>
                                   <label
                                     htmlFor="city"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                    className="block text-sm font-medium text-gray-300 mb-1"
                                   >
                                     City
                                   </label>
@@ -655,20 +667,20 @@ export default function Payment() {
                                     className={`w-full px-3 py-2 border ${
                                       errors.city && touched.city
                                         ? "border-red-500"
-                                        : "border-gray-300"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                        : "border-gray-600"
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
                                   />
                                   <ErrorMessage
                                     name="city"
                                     component="div"
-                                    className="text-red-500 text-xs mt-1"
+                                    className="text-red-400 text-xs mt-1"
                                   />
                                 </div>
 
                                 <div>
                                   <label
                                     htmlFor="zipCode"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                    className="block text-sm font-medium text-gray-300 mb-1"
                                   >
                                     ZIP Code
                                   </label>
@@ -680,13 +692,13 @@ export default function Payment() {
                                     className={`w-full px-3 py-2 border ${
                                       errors.zipCode && touched.zipCode
                                         ? "border-red-500"
-                                        : "border-gray-300"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                        : "border-gray-600"
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
                                   />
                                   <ErrorMessage
                                     name="zipCode"
                                     component="div"
-                                    className="text-red-500 text-xs mt-1"
+                                    className="text-red-400 text-xs mt-1"
                                   />
                                 </div>
                               </div>
@@ -697,11 +709,11 @@ export default function Payment() {
                                 type="checkbox"
                                 id="saveCard"
                                 name="saveCard"
-                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-600 rounded"
                               />
                               <label
                                 htmlFor="saveCard"
-                                className="ml-2 block text-sm text-gray-700"
+                                className="ml-2 block text-sm text-gray-300"
                               >
                                 Save card for future bookings
                               </label>
@@ -716,7 +728,7 @@ export default function Payment() {
                               alt="PayPal"
                               className="mb-4"
                             />
-                            <p className="text-sm text-gray-600 mb-4">
+                            <p className="text-sm text-gray-400 mb-4">
                               You will be redirected to PayPal to complete your
                               payment
                             </p>
@@ -736,12 +748,12 @@ export default function Payment() {
                               alt="Apple Pay"
                               className="mb-4"
                             />
-                            <p className="text-sm text-gray-600 mb-4">
+                            <p className="text-sm text-gray-400 mb-4">
                               Complete your payment using Apple Pay
                             </p>
                             <button
                               type="button"
-                              className="bg-black hover:bg-gray-800 text-white font-medium py-2 px-6 rounded-md w-full max-w-xs"
+                              className="bg-black hover:bg-gray-800 text-white font-medium py-2 px-6 rounded-md w-full max-w-xs border border-white"
                             >
                               Pay with Apple Pay
                             </button>
@@ -754,7 +766,7 @@ export default function Payment() {
                             type="checkbox"
                             id="terms"
                             name="terms"
-                            className={`h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded ${
+                            className={`h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-600 rounded ${
                               errors.terms && touched.terms
                                 ? "border-red-500"
                                 : ""
@@ -762,19 +774,19 @@ export default function Payment() {
                           />
                           <label
                             htmlFor="terms"
-                            className="ml-2 block text-sm text-gray-700"
+                            className="ml-2 block text-sm text-gray-300"
                           >
                             I agree to the{" "}
                             <a
                               href="#"
-                              className="text-blue-600 hover:underline"
+                              className="text-blue-400 hover:underline"
                             >
                               Terms and Conditions
                             </a>{" "}
                             and{" "}
                             <a
                               href="#"
-                              className="text-blue-600 hover:underline"
+                              className="text-blue-400 hover:underline"
                             >
                               Privacy Policy
                             </a>
@@ -783,14 +795,14 @@ export default function Payment() {
                         <ErrorMessage
                           name="terms"
                           component="div"
-                          className="text-red-500 text-xs mt-1"
+                          className="text-red-400 text-xs mt-1"
                         />
 
                         <div className="mt-6 flex flex-col sm:flex-row gap-4">
                           <button
                             type="button"
                             onClick={handleBackToBooking}
-                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                            className="px-4 py-2 border border-gray-600 rounded-md text-white bg-gray-800 hover:bg-gray-700"
                           >
                             Back to Booking
                           </button>
@@ -799,8 +811,8 @@ export default function Payment() {
                             disabled={isProcessing || isSubmitting}
                             className={`flex-1 py-2 px-4 rounded-md font-medium text-white ${
                               isProcessing || isSubmitting
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-blue-600 hover:bg-blue-700"
+                                ? "bg-gray-600 cursor-not-allowed"
+                                : "bg-blue-400 hover:bg-blue-500"
                             }`}
                           >
                             {isProcessing || isSubmitting
@@ -809,7 +821,7 @@ export default function Payment() {
                           </button>
                         </div>
 
-                        <div className="mt-4 flex items-center justify-center text-xs text-gray-500">
+                        <div className="mt-4 flex items-center justify-center text-xs text-gray-400">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -845,46 +857,45 @@ export default function Payment() {
           {/* Order Summary */}
           <div>
             <div className="sticky top-10">
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-                <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-lg font-bold text-gray-900">
+              <div className="bg-black border border-gray-700 rounded-lg overflow-hidden shadow-sm">
+                <div className="p-6 border-b border-gray-700">
+                  <h2 className="text-lg font-bold text-white">
                     Price Details
                   </h2>
                 </div>
                 <div className="p-6 space-y-4">
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">
-                        Base rate ({bookingDetails.days} days)
+                      <span className="text-gray-300">
+                        Base rate ({bookingDetails.rentalDetails.days} days)
                       </span>
-                      <span className="text-gray-900">
-                        ${bookingDetails.basePrice?.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Insurance</span>
-                      <span className="text-gray-900">
-                        ${bookingDetails.insurance?.toFixed(2)}
+                      <span className="text-white">
+                        ${bookingDetails.rentalDetails.totalPrice?.toFixed(2)}
                       </span>
                     </div>
+
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Taxes & fees</span>
-                      <span className="text-gray-900">
+                      <span className="text-gray-300">Taxes & fees</span>
+                      <span className="text-white">
                         ${bookingDetails.taxes?.toFixed(2)}
                       </span>
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4">
+                  <div className="border-t border-gray-700 pt-4">
                     <div className="flex justify-between font-medium">
-                      <span className="text-gray-900">Total</span>
-                      <span className="text-gray-900">
-                        ${bookingDetails.totalPrice?.toFixed(2)}
+                      <span className="text-white">Total</span>
+                      <span className="text-white">
+                        $
+                        {(
+                          bookingDetails.rentalDetails.totalPrice +
+                          bookingDetails.taxes
+                        )?.toFixed(2)}
                       </span>
                     </div>
                   </div>
 
-                  <div className="rounded-lg bg-blue-50 p-4">
+                  <div className="rounded-lg bg-gray-800 p-4">
                     <div className="flex items-start gap-3">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -896,23 +907,23 @@ export default function Payment() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className="mt-0.5 text-blue-500"
+                        className="mt-0.5 text-blue-400"
                       >
                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                       </svg>
                       <div className="space-y-1">
-                        <h4 className="font-medium text-gray-900">
+                        <h4 className="font-medium text-white">
                           Free Cancellation
                         </h4>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-gray-300">
                           Cancel for free up to 24 hours before pickup
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gray-400">
                     <p>
                       By completing this booking, you agree to the car rental
                       terms and conditions, privacy policy, and to receive

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -405,14 +403,14 @@ export default function Blogs() {
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
   return (
-    <div>
+    <div className="bg-black text-white">
       <Navbar />
 
       {/* Blog Post Modal */}
       {selectedPost && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
           <div className="min-h-screen px-4 flex items-center justify-center">
-            <div className="bg-white w-full max-w-4xl rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-black w-full max-w-4xl rounded-lg shadow-xl max-h-[90vh] overflow-y-auto border border-gray-800">
               <div className="relative">
                 <img
                   src={selectedPost.image || "/placeholder.svg"}
@@ -421,10 +419,10 @@ export default function Blogs() {
                 />
                 <button
                   onClick={() => setSelectedPost(null)}
-                  className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100"
+                  className="absolute top-4 right-4 bg-black rounded-full p-2 shadow-md hover:bg-gray-900"
                 >
                   <svg
-                    className="h-6 w-6 text-gray-600"
+                    className="h-6 w-6 text-gray-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -444,14 +442,14 @@ export default function Blogs() {
                   {selectedPost.categories.map((cat) => (
                     <span
                       key={cat}
-                      className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full capitalize"
+                      className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded-full capitalize"
                     >
                       {cat}
                     </span>
                   ))}
                 </div>
 
-                <div className="flex items-center text-sm text-gray-500 mb-2">
+                <div className="flex items-center text-sm text-gray-400 mb-2">
                   <span>{selectedPost.date}</span>
                   <span className="mx-2">•</span>
                   <span>{selectedPost.readTime}</span>
@@ -461,18 +459,18 @@ export default function Blogs() {
                   <h1 className="text-2xl md:text-3xl font-bold mb-2">
                     {selectedPost.title}
                   </h1>
-                  <p className="text-gray-500">By {selectedPost.author}</p>
+                  <p className="text-gray-400">By {selectedPost.author}</p>
                 </div>
 
                 <div
-                  className="prose prose-lg max-w-none"
+                  className="prose prose-lg max-w-none prose-invert"
                   dangerouslySetInnerHTML={{ __html: selectedPost.content }}
                 />
 
-                <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="mt-8 pt-6 border-t border-gray-800">
                   <button
                     onClick={() => setSelectedPost(null)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md"
+                    className="bg-blue-400 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded-md"
                   >
                     Back to Blogs
                   </button>
@@ -489,7 +487,7 @@ export default function Blogs() {
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             Car Rental Blog
           </h1>
-          <p className="text-xl text-gray-500 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
             Tips, guides, and insights to enhance your car rental and travel
             experiences
           </p>
@@ -503,7 +501,7 @@ export default function Blogs() {
               {featuredPosts.map((post) => (
                 <div
                   key={post.id}
-                  className="bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 transition-transform hover:-translate-y-1 hover:shadow-lg"
+                  className="bg-gray-900 rounded-lg overflow-hidden shadow-md border border-gray-800 transition-transform hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div className="relative h-60">
                     <img
@@ -512,26 +510,26 @@ export default function Blogs() {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="bg-blue-400 text-white text-xs font-bold px-3 py-1 rounded-full">
                         Featured
                       </span>
                     </div>
                   </div>
                   <div className="p-6">
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <div className="flex items-center text-sm text-gray-400 mb-2">
                       <span>{post.date}</span>
                       <span className="mx-2">•</span>
                       <span>{post.readTime}</span>
                     </div>
                     <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                    <p className="text-gray-400 mb-4">{post.excerpt}</p>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-gray-400">
                         By {post.author}
                       </span>
                       <button
                         onClick={() => setSelectedPost(post)}
-                        className="text-blue-600 font-medium hover:text-blue-800"
+                        className="text-blue-400 font-medium hover:text-blue-300"
                       >
                         Read More
                       </button>
@@ -551,7 +549,7 @@ export default function Blogs() {
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full md:w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="pl-10 pr-4 py-2 border border-gray-700 bg-gray-900 rounded-md w-full md:w-80 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-white"
             />
             <svg
               className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
@@ -575,8 +573,8 @@ export default function Blogs() {
                 onClick={() => setActiveCategory(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium capitalize ${
                   activeCategory === category
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-blue-400 text-white"
+                    : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                 }`}
               >
                 {category}
@@ -591,7 +589,7 @@ export default function Blogs() {
             {currentPosts.map((post) => (
               <div
                 key={post.id}
-                className="bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 transition-transform hover:-translate-y-1 hover:shadow-lg"
+                className="bg-gray-900 rounded-lg overflow-hidden shadow-md border border-gray-800 transition-transform hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="relative h-48">
                   <img
@@ -605,7 +603,7 @@ export default function Blogs() {
                     {post.categories.map((cat) => (
                       <span
                         key={cat}
-                        className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full capitalize"
+                        className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded-full capitalize"
                         onClick={() => setActiveCategory(cat)}
                         style={{ cursor: "pointer" }}
                       >
@@ -613,22 +611,22 @@ export default function Blogs() {
                       </span>
                     ))}
                   </div>
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
+                  <div className="flex items-center text-sm text-gray-400 mb-2">
                     <span>{post.date}</span>
                     <span className="mx-2">•</span>
                     <span>{post.readTime}</span>
                   </div>
                   <h3 className="text-lg font-bold mb-2">{post.title}</h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3">
+                  <p className="text-gray-400 mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-gray-400">
                       By {post.author}
                     </span>
                     <button
                       onClick={() => setSelectedPost(post)}
-                      className="text-blue-600 font-medium hover:text-blue-800"
+                      className="text-blue-400 font-medium hover:text-blue-300"
                     >
                       Read More
                     </button>
@@ -640,7 +638,7 @@ export default function Blogs() {
         ) : (
           <div className="text-center py-12">
             <svg
-              className="mx-auto h-12 w-12 text-gray-400"
+              className="mx-auto h-12 w-12 text-gray-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -652,10 +650,10 @@ export default function Blogs() {
                 d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <h3 className="mt-2 text-lg font-medium text-gray-900">
+            <h3 className="mt-2 text-lg font-medium text-white">
               No articles found
             </h3>
-            <p className="mt-1 text-gray-500">
+            <p className="mt-1 text-gray-400">
               Try adjusting your search or filter to find what you're looking
               for.
             </p>
@@ -664,7 +662,7 @@ export default function Blogs() {
                 setActiveCategory("all");
                 setSearchQuery("");
               }}
-              className="mt-4 text-blue-600 font-medium hover:text-blue-800"
+              className="mt-4 text-blue-400 font-medium hover:text-blue-300"
             >
               Clear all filters
             </button>
@@ -680,8 +678,8 @@ export default function Blogs() {
                 disabled={currentPage === 1}
                 className={`mx-1 px-3 py-1 rounded-md ${
                   currentPage === 1
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "text-gray-700 hover:bg-gray-100"
+                    ? "text-gray-500 cursor-not-allowed"
+                    : "text-gray-300 hover:bg-gray-800"
                 }`}
               >
                 Previous
@@ -702,8 +700,8 @@ export default function Blogs() {
                       onClick={() => paginate(pageNumber)}
                       className={`mx-1 px-3 py-1 rounded-md ${
                         currentPage === pageNumber
-                          ? "bg-blue-600 text-white"
-                          : "text-gray-700 hover:bg-gray-100"
+                          ? "bg-blue-400 text-white"
+                          : "text-gray-300 hover:bg-gray-800"
                       }`}
                     >
                       {pageNumber}
@@ -715,7 +713,7 @@ export default function Blogs() {
                     currentPage < totalPages - 2)
                 ) {
                   return (
-                    <span key={pageNumber} className="mx-1">
+                    <span key={pageNumber} className="mx-1 text-gray-400">
                       ...
                     </span>
                   );
@@ -728,8 +726,8 @@ export default function Blogs() {
                 disabled={currentPage === totalPages}
                 className={`mx-1 px-3 py-1 rounded-md ${
                   currentPage === totalPages
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "text-gray-700 hover:bg-gray-100"
+                    ? "text-gray-500 cursor-not-allowed"
+                    : "text-gray-300 hover:bg-gray-800"
                 }`}
               >
                 Next
@@ -739,12 +737,12 @@ export default function Blogs() {
         )}
 
         {/* Newsletter Signup */}
-        <div className="mt-16 bg-blue-50 rounded-lg p-8 max-w-3xl mx-auto">
+        <div className="mt-16 bg-gray-900 rounded-lg p-8 max-w-3xl mx-auto border border-gray-800">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold mb-2">
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-400">
               Get the latest articles, tips, and travel insights delivered
               straight to your inbox.
             </p>
@@ -753,12 +751,12 @@ export default function Blogs() {
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-grow px-4 py-2 border border-gray-700 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-white"
               required
             />
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md"
+              className="bg-blue-400 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded-md"
             >
               Subscribe
             </button>

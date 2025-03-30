@@ -417,6 +417,7 @@ function Booking() {
         values.pickupDate,
         values.returnDate
       ),
+      taxes: 50,
     };
 
     localStorage.setItem("carRentalBooking", JSON.stringify(bookingData));
