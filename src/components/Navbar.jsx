@@ -35,7 +35,7 @@ const Navbar = () => {
             About Us
           </a>
           <a
-            href="/"
+            href="/Contactus"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Contact Us
