@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   Car,
@@ -103,7 +105,6 @@ function Booking() {
     ],
   };
 
-  // Validation schema using Yup with individual imports
   const validationSchema = object().shape({
     pickupLocation: string().required("Pickup location is required"),
     dropoffLocation: string().required("Drop-off location is required"),
