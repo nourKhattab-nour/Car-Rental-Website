@@ -1,22 +1,31 @@
-"use client"
-
-import { useState } from "react"
-import { Car, Clock, MapPin, Calendar, User, Phone, Mail, Check, ChevronLeft, ChevronRight } from "lucide-react"
-import { Formik, Form, Field, ErrorMessage } from "formik"
+import { useState } from "react";
+import {
+  Car,
+  Clock,
+  MapPin,
+  Calendar,
+  User,
+  Phone,
+  Mail,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 // Import individual methods from Yup instead of the whole library
-import { object, string, date, ref } from "yup"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+import { object, string, date, ref } from "yup";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function Booking() {
-  const [activeTab, setActiveTab] = useState("economy")
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [selectedCar, setSelectedCar] = useState(null)
+  const [activeTab, setActiveTab] = useState("economy");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedCar, setSelectedCar] = useState(null);
 
   // Date picker states
-  const [showPickupCalendar, setShowPickupCalendar] = useState(false)
-  const [showReturnCalendar, setShowReturnCalendar] = useState(false)
-  const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [showPickupCalendar, setShowPickupCalendar] = useState(false);
+  const [showReturnCalendar, setShowReturnCalendar] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   // Car data for each category
   const cars = {
@@ -92,7 +101,7 @@ function Booking() {
         image: "https://via.placeholder.com/400x300",
       },
     ],
-  }
+  };
 
   // Validation schema using Yup with individual imports
   const validationSchema = object().shape({
@@ -100,124 +109,163 @@ function Booking() {
     dropoffLocation: string().required("Drop-off location is required"),
     pickupDate: date()
       .required("Pickup date is required")
-      .min(new Date(new Date().setHours(0, 0, 0, 0)), "Pickup date cannot be in the past"),
+      .min(
+        new Date(new Date().setHours(0, 0, 0, 0)),
+        "Pickup date cannot be in the past"
+      ),
     returnDate: date()
       .required("Return date is required")
       .min(ref("pickupDate"), "Return date must be after pickup date"),
-    fullName: string().required("Full name is required").min(3, "Name must be at least 3 characters"),
-    email: string().email("Invalid email address").required("Email is required"),
+    fullName: string()
+      .required("Full name is required")
+      .min(3, "Name must be at least 3 characters"),
+    email: string()
+      .email("Invalid email address")
+      .required("Email is required"),
     phone: string()
       .required("Phone number is required")
-      .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, "Phone number is not valid"),
-  })
+      .matches(
+        /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+        "Phone number is not valid"
+      ),
+  });
 
   const handleSelectCar = (carId) => {
-    setSelectedCar(carId)
-  }
+    setSelectedCar(carId);
+  };
 
   // Date picker functions
   const formatDate = (date) => {
-    if (!date) return ""
+    if (!date) return "";
     return date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
-    })
-  }
+    });
+  };
 
   const getDaysInMonth = (year, month) => {
-    return new Date(year, month + 1, 0).getDate()
-  }
+    return new Date(year, month + 1, 0).getDate();
+  };
 
   const getFirstDayOfMonth = (year, month) => {
-    return new Date(year, month, 1).getDay()
-  }
+    return new Date(year, month, 1).getDay();
+  };
 
   const handlePrevMonth = () => {
     setCurrentMonth((prev) => {
-      const prevMonth = new Date(prev)
-      prevMonth.setMonth(prev.getMonth() - 1)
-      return prevMonth
-    })
-  }
+      const prevMonth = new Date(prev);
+      prevMonth.setMonth(prev.getMonth() - 1);
+      return prevMonth;
+    });
+  };
 
   const handleNextMonth = () => {
     setCurrentMonth((prev) => {
-      const nextMonth = new Date(prev)
-      nextMonth.setMonth(prev.getMonth() + 1)
-      return nextMonth
-    })
-  }
+      const nextMonth = new Date(prev);
+      nextMonth.setMonth(prev.getMonth() + 1);
+      return nextMonth;
+    });
+  };
 
   const handleDateSelect = (day, formikProps, field) => {
-    const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+    const selectedDate = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      day
+    );
 
     if (field === "pickupDate") {
-      formikProps.setFieldValue("pickupDate", selectedDate)
-      setShowPickupCalendar(false)
+      formikProps.setFieldValue("pickupDate", selectedDate);
+      setShowPickupCalendar(false);
 
       // If return date is before pickup date, reset it
-      if (formikProps.values.returnDate && selectedDate > formikProps.values.returnDate) {
-        formikProps.setFieldValue("returnDate", null)
+      if (
+        formikProps.values.returnDate &&
+        selectedDate > formikProps.values.returnDate
+      ) {
+        formikProps.setFieldValue("returnDate", null);
       }
     } else {
-      formikProps.setFieldValue("returnDate", selectedDate)
-      setShowReturnCalendar(false)
+      formikProps.setFieldValue("returnDate", selectedDate);
+      setShowReturnCalendar(false);
     }
-  }
+  };
 
   const isDateSelectable = (day, formikProps, field) => {
-    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+    const date = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      day
+    );
 
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     // Can't select dates in the past
-    if (date < today) return false
+    if (date < today) return false;
 
     // For return date, can't select before pickup date
-    if (field === "returnDate" && formikProps.values.pickupDate && date < formikProps.values.pickupDate) return false
+    if (
+      field === "returnDate" &&
+      formikProps.values.pickupDate &&
+      date < formikProps.values.pickupDate
+    )
+      return false;
 
-    return true
-  }
+    return true;
+  };
 
   const renderCalendar = (formikProps, field) => {
-    const year = currentMonth.getFullYear()
-    const month = currentMonth.getMonth()
-    const daysInMonth = getDaysInMonth(year, month)
-    const firstDay = getFirstDayOfMonth(year, month)
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    const daysInMonth = getDaysInMonth(year, month);
+    const firstDay = getFirstDayOfMonth(year, month);
 
-    const monthName = currentMonth.toLocaleString("default", { month: "long" })
+    const monthName = currentMonth.toLocaleString("default", { month: "long" });
 
-    const days = []
+    const days = [];
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-8 w-8"></div>)
+      days.push(<div key={`empty-${i}`} className="h-8 w-8"></div>);
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month, day)
+      const date = new Date(year, month, day);
       const isSelected =
         field === "pickupDate"
-          ? formikProps.values.pickupDate && date.toDateString() === formikProps.values.pickupDate.toDateString()
-          : formikProps.values.returnDate && date.toDateString() === formikProps.values.returnDate.toDateString()
+          ? formikProps.values.pickupDate &&
+            date.toDateString() === formikProps.values.pickupDate.toDateString()
+          : formikProps.values.returnDate &&
+            date.toDateString() ===
+              formikProps.values.returnDate.toDateString();
 
-      const isToday = new Date().toDateString() === date.toDateString()
-      const selectable = isDateSelectable(day, formikProps, field)
+      const isToday = new Date().toDateString() === date.toDateString();
+      const selectable = isDateSelectable(day, formikProps, field);
 
       days.push(
         <button
           type="button" // Important to prevent form submission
           key={day}
-          onClick={() => selectable && handleDateSelect(day, formikProps, field)}
+          onClick={() =>
+            selectable && handleDateSelect(day, formikProps, field)
+          }
           disabled={!selectable}
           className={`h-8 w-8 rounded-full flex items-center justify-center text-sm
             ${isSelected ? "bg-blue-500 text-white" : ""}
-            ${isToday && !isSelected ? "border border-blue-400 text-blue-400" : ""}
-            ${!selectable ? "text-gray-600 cursor-not-allowed" : "hover:bg-zinc-700"}`}
+            ${
+              isToday && !isSelected
+                ? "border border-blue-400 text-blue-400"
+                : ""
+            }
+            ${
+              !selectable
+                ? "text-gray-600 cursor-not-allowed"
+                : "hover:bg-zinc-700"
+            }`}
         >
           {day}
-        </button>,
-      )
+        </button>
+      );
     }
 
     return (
@@ -243,23 +291,30 @@ function Booking() {
         </div>
         <div className="grid grid-cols-7 gap-1 mb-1">
           {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
-            <div key={day} className="h-8 w-8 flex items-center justify-center text-xs text-gray-400">
+            <div
+              key={day}
+              className="h-8 w-8 flex items-center justify-center text-xs text-gray-400"
+            >
               {day}
             </div>
           ))}
         </div>
         <div className="grid grid-cols-7 gap-1">{days}</div>
       </div>
-    )
-  }
+    );
+  };
 
   const renderCarCard = (car) => {
-    const isSelected = selectedCar === car.id
+    const isSelected = selectedCar === car.id;
 
     return (
       <div
         key={car.id}
-        className={`bg-zinc-900 border ${isSelected ? "border-blue-500" : "border-zinc-800"} rounded-lg overflow-hidden transition-all duration-200 ${isSelected ? "ring-2 ring-blue-500" : ""}`}
+        className={`bg-zinc-900 border ${
+          isSelected ? "border-blue-500" : "border-zinc-800"
+        } rounded-lg overflow-hidden transition-all duration-200 ${
+          isSelected ? "ring-2 ring-blue-500" : ""
+        }`}
       >
         <div className="p-0">
           <div className="grid grid-cols-1 md:grid-cols-3">
@@ -284,11 +339,15 @@ function Booking() {
                 </div>
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 text-blue-400" />
-                  <span className="text-sm text-gray-300">{car.passengers} Passengers</span>
+                  <span className="text-sm text-gray-300">
+                    {car.passengers} Passengers
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-blue-400" />
-                  <span className="text-sm text-gray-300">Unlimited mileage</span>
+                  <span className="text-sm text-gray-300">
+                    Unlimited mileage
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-blue-400" />
@@ -316,55 +375,64 @@ function Booking() {
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   // Calculate rental duration and total price
   const calculateRentalDetails = (pickupDate, returnDate) => {
-    if (!pickupDate || !returnDate || !selectedCar) return null
+    if (!pickupDate || !returnDate || !selectedCar) return null;
 
-    const oneDay = 24 * 60 * 60 * 1000 // hours*minutes*seconds*milliseconds
-    const diffDays = Math.round(Math.abs((returnDate - pickupDate) / oneDay)) || 1
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    const diffDays =
+      Math.round(Math.abs((returnDate - pickupDate) / oneDay)) || 1;
 
     const selectedCarObj = Object.values(cars)
       .flat()
-      .find((car) => car.id === selectedCar)
+      .find((car) => car.id === selectedCar);
 
-    if (!selectedCarObj) return null
+    if (!selectedCarObj) return null;
 
-    const dailyRate = selectedCarObj.price
-    const totalPrice = dailyRate * diffDays
+    const dailyRate = selectedCarObj.price;
+    const totalPrice = dailyRate * diffDays;
 
     return {
       days: diffDays,
       dailyRate,
       totalPrice,
-    }
-  }
+    };
+  };
 
   const handleSubmit = (values, { setSubmitting }) => {
     // Get the selected car details
     const selectedCarObj = Object.values(cars)
       .flat()
-      .find((car) => car.id === selectedCar)
+      .find((car) => car.id === selectedCar);
 
     // Combine form values with selected car
     const bookingData = {
       ...values,
       car: selectedCarObj,
-      rentalDetails: calculateRentalDetails(values.pickupDate, values.returnDate),
-    }
+      rentalDetails: calculateRentalDetails(
+        values.pickupDate,
+        values.returnDate
+      ),
+    };
+
+    localStorage.setItem("carRentalBooking", JSON.stringify(bookingData));
+
+    // Redirect to the payment page
+    window.location.href = "/payment";
 
     // Here you would typically send this data to your backend
-    console.log("Booking submitted:", bookingData)
+    console.log("Booking submitted:", bookingData);
 
     // Simulate API call
     setTimeout(() => {
-      alert("Booking successful! Redirecting to payment...")
-      setSubmitting(false)
+      alert("Booking successful! Redirecting to payment...");
+      setSubmitting(false);
       // Here you would redirect to payment page
-    }, 1000)
-  }
+    }, 1000);
+  };
 
   return (
     <div className="min-h-screen bg-white text-white">
@@ -373,7 +441,9 @@ function Booking() {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-2">Book Your Ride</h1>
-          <p className="text-gray-400">Select your preferred vehicle and booking details</p>
+          <p className="text-gray-400">
+            Select your preferred vehicle and booking details
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -382,35 +452,53 @@ function Booking() {
               <div className="grid grid-cols-4 mb-6 border-b border-zinc-800">
                 <button
                   type="button"
-                  className={`py-2 px-4 text-sm font-medium ${activeTab === "economy" ? "text-blue-400 border-b-2 border-blue-400" : "text-gray-400"}`}
+                  className={`py-2 px-4 text-sm font-medium ${
+                    activeTab === "economy"
+                      ? "text-blue-400 border-b-2 border-blue-400"
+                      : "text-gray-400"
+                  }`}
                   onClick={() => setActiveTab("economy")}
                 >
                   Economy
                 </button>
                 <button
                   type="button"
-                  className={`py-2 px-4 text-sm font-medium ${activeTab === "business" ? "text-blue-400 border-b-2 border-blue-400" : "text-gray-400"}`}
+                  className={`py-2 px-4 text-sm font-medium ${
+                    activeTab === "business"
+                      ? "text-blue-400 border-b-2 border-blue-400"
+                      : "text-gray-400"
+                  }`}
                   onClick={() => setActiveTab("business")}
                 >
                   Business
                 </button>
                 <button
                   type="button"
-                  className={`py-2 px-4 text-sm font-medium ${activeTab === "luxury" ? "text-blue-400 border-b-2 border-blue-400" : "text-gray-400"}`}
+                  className={`py-2 px-4 text-sm font-medium ${
+                    activeTab === "luxury"
+                      ? "text-blue-400 border-b-2 border-blue-400"
+                      : "text-gray-400"
+                  }`}
                   onClick={() => setActiveTab("luxury")}
                 >
                   Luxury
                 </button>
                 <button
                   type="button"
-                  className={`py-2 px-4 text-sm font-medium ${activeTab === "suv" ? "text-blue-400 border-b-2 border-blue-400" : "text-gray-400"}`}
+                  className={`py-2 px-4 text-sm font-medium ${
+                    activeTab === "suv"
+                      ? "text-blue-400 border-b-2 border-blue-400"
+                      : "text-gray-400"
+                  }`}
                   onClick={() => setActiveTab("suv")}
                 >
                   SUV
                 </button>
               </div>
 
-              <div className="space-y-6">{cars[activeTab].map((car) => renderCarCard(car))}</div>
+              <div className="space-y-6">
+                {cars[activeTab].map((car) => renderCarCard(car))}
+              </div>
             </div>
           </div>
 
@@ -431,31 +519,39 @@ function Booking() {
               {(formikProps) => {
                 const rentalDetails = calculateRentalDetails(
                   formikProps.values.pickupDate,
-                  formikProps.values.returnDate,
-                )
+                  formikProps.values.returnDate
+                );
 
                 return (
                   <Form className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden">
                     <div className="p-6 border-b border-zinc-800">
-                      <h2 className="text-xl font-semibold mb-1">Booking Details</h2>
-                      <p className="text-gray-400 text-sm">Fill in your rental information</p>
+                      <h2 className="text-xl font-semibold mb-1">
+                        Booking Details
+                      </h2>
+                      <p className="text-gray-400 text-sm">
+                        Fill in your rental information
+                      </p>
                     </div>
 
                     <div className="p-6 space-y-4">
                       {selectedCar && (
                         <div className="mb-4 p-3 bg-zinc-800 rounded-md">
-                          <p className="text-sm text-gray-300 mb-1">Selected Vehicle:</p>
+                          <p className="text-sm text-gray-300 mb-1">
+                            Selected Vehicle:
+                          </p>
                           <div className="flex justify-between items-center">
                             <p className="font-medium">
                               {Object.values(cars)
                                 .flat()
-                                .find((car) => car.id === selectedCar)?.name || "Unknown Car"}
+                                .find((car) => car.id === selectedCar)?.name ||
+                                "Unknown Car"}
                             </p>
                             <p className="text-blue-400 font-medium">
                               $
                               {Object.values(cars)
                                 .flat()
-                                .find((car) => car.id === selectedCar)?.price || 0}
+                                .find((car) => car.id === selectedCar)?.price ||
+                                0}
                               /day
                             </p>
                           </div>
@@ -463,7 +559,10 @@ function Booking() {
                       )}
 
                       <div className="space-y-2">
-                        <label htmlFor="pickupLocation" className="block text-sm font-medium">
+                        <label
+                          htmlFor="pickupLocation"
+                          className="block text-sm font-medium"
+                        >
                           Pickup Location
                         </label>
                         <Field
@@ -475,17 +574,26 @@ function Booking() {
                           <option value="" disabled>
                             Select location
                           </option>
-                          <option value="cairo-airport">Cairo International Airport</option>
+                          <option value="cairo-airport">
+                            Cairo International Airport
+                          </option>
                           <option value="cairo-downtown">Cairo Downtown</option>
                           <option value="alexandria">Alexandria</option>
                           <option value="sharm">Sharm El Sheikh</option>
                           <option value="hurghada">Hurghada</option>
                         </Field>
-                        <ErrorMessage name="pickupLocation" component="div" className="text-red-500 text-xs mt-1" />
+                        <ErrorMessage
+                          name="pickupLocation"
+                          component="div"
+                          className="text-red-500 text-xs mt-1"
+                        />
                       </div>
 
                       <div className="space-y-2">
-                        <label htmlFor="dropoffLocation" className="block text-sm font-medium">
+                        <label
+                          htmlFor="dropoffLocation"
+                          className="block text-sm font-medium"
+                        >
                           Drop-off Location
                         </label>
                         <Field
@@ -497,25 +605,34 @@ function Booking() {
                           <option value="" disabled>
                             Select location
                           </option>
-                          <option value="cairo-airport">Cairo International Airport</option>
+                          <option value="cairo-airport">
+                            Cairo International Airport
+                          </option>
                           <option value="cairo-downtown">Cairo Downtown</option>
                           <option value="alexandria">Alexandria</option>
                           <option value="sharm">Sharm El Sheikh</option>
                           <option value="hurghada">Hurghada</option>
                         </Field>
-                        <ErrorMessage name="dropoffLocation" component="div" className="text-red-500 text-xs mt-1" />
+                        <ErrorMessage
+                          name="dropoffLocation"
+                          component="div"
+                          className="text-red-500 text-xs mt-1"
+                        />
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2 relative">
-                          <label htmlFor="pickupDate" className="block text-sm font-medium">
+                          <label
+                            htmlFor="pickupDate"
+                            className="block text-sm font-medium"
+                          >
                             Pickup Date
                           </label>
                           <div
                             className="flex h-10 w-full rounded-md border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm cursor-pointer hover:border-zinc-600 transition-colors duration-200"
                             onClick={() => {
-                              setShowPickupCalendar(!showPickupCalendar)
-                              setShowReturnCalendar(false)
+                              setShowPickupCalendar(!showPickupCalendar);
+                              setShowReturnCalendar(false);
                             }}
                           >
                             <Calendar className="mr-2 h-4 w-4 opacity-50" />
@@ -525,18 +642,26 @@ function Booking() {
                                 : "Select date"}
                             </span>
                           </div>
-                          {showPickupCalendar && renderCalendar(formikProps, "pickupDate")}
-                          <ErrorMessage name="pickupDate" component="div" className="text-red-500 text-xs mt-1" />
+                          {showPickupCalendar &&
+                            renderCalendar(formikProps, "pickupDate")}
+                          <ErrorMessage
+                            name="pickupDate"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
                         </div>
                         <div className="space-y-2 relative">
-                          <label htmlFor="returnDate" className="block text-sm font-medium">
+                          <label
+                            htmlFor="returnDate"
+                            className="block text-sm font-medium"
+                          >
                             Return Date
                           </label>
                           <div
                             className="flex h-10 w-full rounded-md border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm cursor-pointer hover:border-zinc-600 transition-colors duration-200"
                             onClick={() => {
-                              setShowReturnCalendar(!showReturnCalendar)
-                              setShowPickupCalendar(false)
+                              setShowReturnCalendar(!showReturnCalendar);
+                              setShowPickupCalendar(false);
                             }}
                           >
                             <Calendar className="mr-2 h-4 w-4 opacity-50" />
@@ -546,8 +671,13 @@ function Booking() {
                                 : "Select date"}
                             </span>
                           </div>
-                          {showReturnCalendar && renderCalendar(formikProps, "returnDate")}
-                          <ErrorMessage name="returnDate" component="div" className="text-red-500 text-xs mt-1" />
+                          {showReturnCalendar &&
+                            renderCalendar(formikProps, "returnDate")}
+                          <ErrorMessage
+                            name="returnDate"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
                         </div>
                       </div>
 
@@ -556,12 +686,17 @@ function Booking() {
                           <div className="flex justify-between items-center mb-1">
                             <p className="text-sm text-gray-300">Duration:</p>
                             <p className="font-medium">
-                              {rentalDetails.days} day{rentalDetails.days !== 1 ? "s" : ""}
+                              {rentalDetails.days} day
+                              {rentalDetails.days !== 1 ? "s" : ""}
                             </p>
                           </div>
                           <div className="flex justify-between items-center">
-                            <p className="text-sm text-gray-300">Total Price:</p>
-                            <p className="text-blue-400 font-medium">${rentalDetails.totalPrice}</p>
+                            <p className="text-sm text-gray-300">
+                              Total Price:
+                            </p>
+                            <p className="text-blue-400 font-medium">
+                              ${rentalDetails.totalPrice}
+                            </p>
                           </div>
                         </div>
                       )}
@@ -569,7 +704,10 @@ function Booking() {
                       <div className="h-px bg-zinc-800 my-4"></div>
 
                       <div className="space-y-2">
-                        <label htmlFor="fullName" className="block text-sm font-medium">
+                        <label
+                          htmlFor="fullName"
+                          className="block text-sm font-medium"
+                        >
                           Full Name
                         </label>
                         <div className="flex">
@@ -581,11 +719,18 @@ function Booking() {
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
-                        <ErrorMessage name="fullName" component="div" className="text-red-500 text-xs mt-1" />
+                        <ErrorMessage
+                          name="fullName"
+                          component="div"
+                          className="text-red-500 text-xs mt-1"
+                        />
                       </div>
 
                       <div className="space-y-2">
-                        <label htmlFor="email" className="block text-sm font-medium">
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium"
+                        >
                           Email
                         </label>
                         <div className="flex">
@@ -598,11 +743,18 @@ function Booking() {
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
-                        <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="text-red-500 text-xs mt-1"
+                        />
                       </div>
 
                       <div className="space-y-2">
-                        <label htmlFor="phone" className="block text-sm font-medium">
+                        <label
+                          htmlFor="phone"
+                          className="block text-sm font-medium"
+                        >
                           Phone Number
                         </label>
                         <div className="flex">
@@ -614,7 +766,11 @@ function Booking() {
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
-                        <ErrorMessage name="phone" component="div" className="text-red-500 text-xs mt-1" />
+                        <ErrorMessage
+                          name="phone"
+                          component="div"
+                          className="text-red-500 text-xs mt-1"
+                        />
                       </div>
                     </div>
 
@@ -628,14 +784,18 @@ function Booking() {
                         } text-white`}
                         disabled={!selectedCar || formikProps.isSubmitting}
                       >
-                        {formikProps.isSubmitting ? "Processing..." : "Continue to Payment"}
+                        {formikProps.isSubmitting
+                          ? "Processing..."
+                          : "Continue to Payment"}
                       </button>
                       {!selectedCar && (
-                        <p className="text-center text-sm text-gray-400 mt-2">Please select a vehicle first</p>
+                        <p className="text-center text-sm text-gray-400 mt-2">
+                          Please select a vehicle first
+                        </p>
                       )}
                     </div>
                   </Form>
-                )
+                );
               }}
             </Formik>
           </div>
@@ -644,8 +804,7 @@ function Booking() {
 
       <Footer />
     </div>
-  )
+  );
 }
 
-export default Booking
-
+export default Booking;
