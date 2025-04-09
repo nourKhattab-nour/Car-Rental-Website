@@ -49,8 +49,8 @@ const ProductsData = [
 
 const Product = () => {
   return (
-    <div className='mt-14 mb-12'>
-      <div className='container'>
+    <div className='mt-14 mb-12 '>
+      <div className='container '>
         {/* Header section */}
         <div className='text-center mb-10 max-w-[600px] mx-auto'>
           <p className='text-sm text-primary'>Top selling Cars for You</p>
@@ -60,7 +60,7 @@ const Product = () => {
           </p>
         </div>
         {/* Body section */}
-        <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center gap-5'>
+        <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center gap-1 '>
           {/* Card section */}
           {ProductsData.map((data) => (
             <div 
@@ -71,7 +71,7 @@ const Product = () => {
               <img
                 src={data.img}
                 alt={data.title}
-                className='h-[200px] w-[2000px] object-cover rounded-md'
+                className='h-[120px] w-[2000px] object-cover rounded-md'
               />
                 <div>
                 <h3 className='font-semibold '> {data.title}</h3>
@@ -79,6 +79,13 @@ const Product = () => {
                 <div className='flex items-center gap-1 '>
                     <FaStar className='text-yellow-400'></FaStar>
                     <span>{data.rating}</span>
+                    <button
+                className="bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-12 group-hover:bg-bhue group hover:text:white"
+                onClick={() => (window.location.href = "/booking")}
+              >
+                {" "}
+                Book Now
+              </button>
                 </div>
                 </div>
             </div>

@@ -9,7 +9,8 @@ import Footer from "../components/Footer"; // Import Footer component
 
 const HomePage = () => {
   return (
-    <>
+
+    <div className="bg-secondary text-white">
     <Navbar/>
     <Home/>
     <Products/>
@@ -17,7 +18,8 @@ const HomePage = () => {
     <TopProducts/>
     <Feedback/>
     <Footer/>
-    </>
+
+    </div>
    
   )
 }

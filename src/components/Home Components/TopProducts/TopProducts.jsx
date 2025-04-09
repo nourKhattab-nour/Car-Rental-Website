@@ -33,7 +33,7 @@ const TopProducts = () => {
     alert("Order popup triggered!");
   };
   return (
-    <div className="container">
+    <div className="container ">
       {/* Header section */}
       <div className="text-left mb-24 ">
         <p className="text-sm text-primary">Top Rated for You</p>
@@ -50,8 +50,8 @@ const TopProducts = () => {
         {/* Add content for the body section here */}
         {ProductsData.map((data) => (
           <div
-            className="rounded-2xl bg-white dark:bg-white-800
-                        hover:bg-black/80 dark:hover:bg-secondary
+            className="rounded-2xl bg-black/80 dark:bg-white-800
+                        hover:bg-blue-500  dark:hover:bg-blue-500
                         hover:text-white relative shadow-xl
                         duration-300 group max-w-[300px]"
           >

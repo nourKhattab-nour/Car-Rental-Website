@@ -21,7 +21,7 @@ const AboutUs = () => {
               {/* Logo and company name */}
               <div className="flex flex-col items-center md:w-1/3">
                 <div className="w-48 h-48 relative mb-4">
-                  <div className="w-48 h-48 rounded-lg flex items-center justify-center bg-[#111111] border border-zinc-700">
+                  <div className="w-48 h-48 rounded-lg flex items-center justify-center bg-white border border-zinc-700">
                     <IoSpeedometer size={48} className="text-[#4d9fff]" />
                   </div>
                 </div>
