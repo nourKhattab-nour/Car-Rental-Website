@@ -10,7 +10,6 @@ export default function Payment() {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
 
-  // Validation schema using Yup
   const paymentSchema = Yup.object().shape({
     cardholderName: Yup.string().when("paymentMethod", {
       is: "credit-card",
@@ -90,12 +89,9 @@ export default function Payment() {
     ),
   });
 
-  // Simulate fetching booking details from previous step
   useEffect(() => {
-    // Simple function to get booking data from localStorage
     const getBookingDetails = () => {
       try {
-        // Get data from localStorage
         const storedBooking = localStorage.getItem("carRentalBooking");
         console.log("Raw booking data from localStorage:", storedBooking);
 
@@ -103,19 +99,35 @@ export default function Payment() {
           const bookingData = JSON.parse(storedBooking);
           console.log("Parsed booking data:", bookingData);
 
-          // Convert string dates back to Date objects
           if (bookingData.pickupDate)
             bookingData.pickupDate = new Date(bookingData.pickupDate);
           if (bookingData.returnDate)
             bookingData.returnDate = new Date(bookingData.returnDate);
 
-          return bookingData;
+          return {
+            carName: bookingData.car?.name || "No car selected",
+            carCategory:
+              bookingData.car?.category || "Please return to booking",
+            carImage: bookingData.car?.image || "/placeholder.svg",
+            pickupLocation: bookingData.pickupLocation || "not-selected",
+            dropoffLocation: bookingData.dropoffLocation || "not-selected",
+            pickupDate: bookingData.pickupDate,
+            returnDate: bookingData.returnDate,
+            rentalDetails: bookingData.rentalDetails || {
+              days: 0,
+              dailyRate: 0,
+              totalPrice: 0,
+            },
+            taxes: bookingData.taxes || 0,
+            totalPrice:
+              (bookingData.rentalDetails?.totalPrice || 0) +
+              (bookingData.taxes || 0),
+          };
         }
       } catch (error) {
         console.error("Error loading booking details:", error);
       }
 
-      // Return default data if no booking found
       return {
         carName: "No car selected",
         carCategory: "Please return to booking",
@@ -124,9 +136,11 @@ export default function Payment() {
         dropoffLocation: "not-selected",
         pickupDate: new Date(),
         returnDate: new Date(new Date().setDate(new Date().getDate() + 3)),
-        days: 3,
-        basePrice: 0,
-        insurance: 0,
+        rentalDetails: {
+          days: 3,
+          dailyRate: 0,
+          totalPrice: 0,
+        },
         taxes: 0,
         totalPrice: 0,
       };
@@ -135,30 +149,19 @@ export default function Payment() {
     setBookingDetails(getBookingDetails());
   }, []);
 
-  // Clear localStorage when running in development mode
-  useEffect(() => {
-    // Uncomment this if you want to clear localStorage during development
-    // if (process.env.NODE_ENV === "development") {
-    //   localStorage.removeItem("bookingDetails");
-    // }
-  }, []);
+  useEffect(() => {}, []);
 
   const formatCardNumber = (value) => {
-    // Remove non-digit characters
     const digits = value.replace(/\\D/g, "");
 
-    // Add space after every 4 digits
     const formatted = digits.replace(/(\\d{4})(?=\\d)/g, "$1 ");
 
-    // Limit to 19 characters (16 digits + 3 spaces)
     return formatted.slice(0, 19);
   };
 
-  // Update the handleSubmitPayment function to include validation feedback
   const handleSubmitPayment = (values, { setSubmitting, setErrors }) => {
     setIsProcessing(true);
 
-    // Validate expiry date
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
@@ -179,13 +182,11 @@ export default function Payment() {
       return;
     }
 
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
       setShowPaymentSuccess(true);
       setSubmitting(false);
 
-      // Redirect after showing the success message
       setTimeout(() => {
         window.location.href = "/confirmation";
       }, 3000);
@@ -213,13 +214,12 @@ export default function Payment() {
   };
 
   const handleBackToBooking = () => {
-    // Simply redirect back to booking page
     window.location.href = "/booking";
   };
 
   if (!bookingDetails) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-secondary">
         <Navbar />
         <div className="container mx-auto px-4 py-16 text-center">
           <div className="animate-pulse">
@@ -233,13 +233,13 @@ export default function Payment() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-secondary text-white">
       <Navbar />
 
-      {/* Payment Success Modal */}
+      {/* Payment Successful */}
       {showPaymentSuccess && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-black rounded-lg p-8 max-w-md w-full shadow-xl border border-gray-700">
+        <div className="fixed inset-0 bg-secondary bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[#111111] rounded-lg p-8 max-w-md w-full shadow-xl border border-gray-700">
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
                 <svg
@@ -283,7 +283,7 @@ export default function Payment() {
 
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden shadow-sm mb-6">
+            <div className="bg-[#111111] border border-gray-700 rounded-lg overflow-hidden shadow-sm mb-6">
               <div className="p-6 border-b border-gray-700">
                 <h2 className="text-xl font-semibold text-white">
                   Booking Summary
@@ -341,7 +341,7 @@ export default function Payment() {
               </div>
             </div>
 
-            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden shadow-sm">
+            <div className="bg-[#111111] border border-gray-700 rounded-lg overflow-hidden shadow-sm">
               <div className="p-6 border-b border-gray-700">
                 <h2 className="text-xl font-semibold text-white">
                   Payment Method
@@ -354,7 +354,7 @@ export default function Payment() {
                     onClick={() => setPaymentMethod("credit-card")}
                     className={`py-2 px-4 font-medium ${
                       paymentMethod === "credit-card"
-                        ? "border-b-2 border-blue-400 text-blue-400"
+                        ? "border-b-2 border-[#4d9fff] text-[#4d9fff]"
                         : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
@@ -365,7 +365,7 @@ export default function Payment() {
                     onClick={() => setPaymentMethod("paypal")}
                     className={`py-2 px-4 font-medium ${
                       paymentMethod === "paypal"
-                        ? "border-b-2 border-blue-400 text-blue-400"
+                        ? "border-b-2 border-[#4d9fff] text-[#4d9fff]"
                         : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
@@ -376,7 +376,7 @@ export default function Payment() {
                     onClick={() => setPaymentMethod("apple-pay")}
                     className={`py-2 px-4 font-medium ${
                       paymentMethod === "apple-pay"
-                        ? "border-b-2 border-blue-400 text-blue-400"
+                        ? "border-b-2 border-[#4d9fff] text-[#4d9fff]"
                         : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
@@ -411,7 +411,6 @@ export default function Payment() {
                     setFieldValue,
                     isSubmitting,
                   }) => {
-                    // Count validation errors for credit card form
                     const errorCount =
                       paymentMethod === "credit-card"
                         ? Object.keys(errors).filter(
@@ -456,7 +455,7 @@ export default function Payment() {
                                   touched.cardholderName
                                     ? "border-red-500"
                                     : "border-gray-600"
-                                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
+                                } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] bg-gray-800 text-white`}
                               />
                               <ErrorMessage
                                 name="cardholderName"
@@ -483,7 +482,7 @@ export default function Payment() {
                                     errors.cardNumber && touched.cardNumber
                                       ? "border-red-500"
                                       : "border-gray-600"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 pr-10 bg-gray-800 text-white`}
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] pr-10 bg-gray-800 text-white`}
                                   onChange={(e) => {
                                     const formatted = formatCardNumber(
                                       e.target.value
@@ -538,7 +537,7 @@ export default function Payment() {
                                     errors.expiryMonth && touched.expiryMonth
                                       ? "border-red-500"
                                       : "border-gray-600"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] bg-gray-800 text-white`}
                                 >
                                   <option value="">Month</option>
                                   {Array.from({ length: 12 }, (_, i) => (
@@ -574,7 +573,7 @@ export default function Payment() {
                                     errors.expiryYear && touched.expiryYear
                                       ? "border-red-500"
                                       : "border-gray-600"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] bg-gray-800 text-white`}
                                 >
                                   <option value="">Year</option>
                                   {Array.from({ length: 10 }, (_, i) => (
@@ -610,7 +609,7 @@ export default function Payment() {
                                     errors.cvc && touched.cvc
                                       ? "border-red-500"
                                       : "border-gray-600"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] bg-gray-800 text-white`}
                                 />
                                 <ErrorMessage
                                   name="cvc"
@@ -642,7 +641,7 @@ export default function Payment() {
                                     touched.billingAddress
                                       ? "border-red-500"
                                       : "border-gray-600"
-                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
+                                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] bg-gray-800 text-white`}
                                 />
                                 <ErrorMessage
                                   name="billingAddress"
@@ -668,7 +667,7 @@ export default function Payment() {
                                       errors.city && touched.city
                                         ? "border-red-500"
                                         : "border-gray-600"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] bg-gray-800 text-white`}
                                   />
                                   <ErrorMessage
                                     name="city"
@@ -693,7 +692,7 @@ export default function Payment() {
                                       errors.zipCode && touched.zipCode
                                         ? "border-red-500"
                                         : "border-gray-600"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-800 text-white`}
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-[#4d9fff] bg-gray-800 text-white`}
                                   />
                                   <ErrorMessage
                                     name="zipCode"
@@ -709,7 +708,7 @@ export default function Payment() {
                                 type="checkbox"
                                 id="saveCard"
                                 name="saveCard"
-                                className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-600 rounded"
+                                className="h-4 w-4 text-[#4d9fff] focus:ring-[#4d9fff] border-gray-600 rounded"
                               />
                               <label
                                 htmlFor="saveCard"
@@ -753,7 +752,7 @@ export default function Payment() {
                             </p>
                             <button
                               type="button"
-                              className="bg-black hover:bg-gray-800 text-white font-medium py-2 px-6 rounded-md w-full max-w-xs border border-white"
+                              className="bg-secondary hover:bg-gray-800 text-white font-medium py-2 px-6 rounded-md w-full max-w-xs border border-white"
                             >
                               Pay with Apple Pay
                             </button>
@@ -766,7 +765,7 @@ export default function Payment() {
                             type="checkbox"
                             id="terms"
                             name="terms"
-                            className={`h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-600 rounded ${
+                            className={`h-4 w-4 text-[#4d9fff] focus:ring-[#4d9fff] border-gray-600 rounded ${
                               errors.terms && touched.terms
                                 ? "border-red-500"
                                 : ""
@@ -779,14 +778,14 @@ export default function Payment() {
                             I agree to the{" "}
                             <a
                               href="#"
-                              className="text-blue-400 hover:underline"
+                              className="text-[#4d9fff] hover:underline"
                             >
                               Terms and Conditions
                             </a>{" "}
                             and{" "}
                             <a
                               href="#"
-                              className="text-blue-400 hover:underline"
+                              className="text-[#4d9fff] hover:underline"
                             >
                               Privacy Policy
                             </a>
@@ -812,12 +811,12 @@ export default function Payment() {
                             className={`flex-1 py-2 px-4 rounded-md font-medium text-white ${
                               isProcessing || isSubmitting
                                 ? "bg-gray-600 cursor-not-allowed"
-                                : "bg-blue-400 hover:bg-blue-500"
+                                : "bg-[#4d9fff] hover:bg-[#3a8aee]"
                             }`}
                           >
                             {isProcessing || isSubmitting
                               ? "Processing..."
-                              : `Pay $${bookingDetails.totalPrice?.toFixed(2)}`}
+                              : `Pay $${bookingDetails.totalPrice.toFixed(2)}`}
                           </button>
                         </div>
 
@@ -857,7 +856,7 @@ export default function Payment() {
           {/* Order Summary */}
           <div>
             <div className="sticky top-10">
-              <div className="bg-black border border-gray-700 rounded-lg overflow-hidden shadow-sm">
+              <div className="bg-[#111111] border border-gray-700 rounded-lg overflow-hidden shadow-sm">
                 <div className="p-6 border-b border-gray-700">
                   <h2 className="text-lg font-bold text-white">
                     Price Details
@@ -870,14 +869,14 @@ export default function Payment() {
                         Base rate ({bookingDetails.rentalDetails.days} days)
                       </span>
                       <span className="text-white">
-                        ${bookingDetails.rentalDetails.totalPrice?.toFixed(2)}
+                        ${bookingDetails.rentalDetails.totalPrice.toFixed(2)}
                       </span>
                     </div>
 
                     <div className="flex justify-between">
                       <span className="text-gray-300">Taxes & fees</span>
                       <span className="text-white">
-                        ${bookingDetails.taxes?.toFixed(2)}
+                        ${bookingDetails.taxes.toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -886,11 +885,7 @@ export default function Payment() {
                     <div className="flex justify-between font-medium">
                       <span className="text-white">Total</span>
                       <span className="text-white">
-                        $
-                        {(
-                          bookingDetails.rentalDetails.totalPrice +
-                          bookingDetails.taxes
-                        )?.toFixed(2)}
+                        ${bookingDetails.totalPrice.toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -907,7 +902,7 @@ export default function Payment() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className="mt-0.5 text-blue-400"
+                        className="mt-0.5 text-[#4d9fff]"
                       >
                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                         <polyline points="22 4 12 14.01 9 11.01"></polyline>

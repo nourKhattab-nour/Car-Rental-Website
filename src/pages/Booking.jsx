@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   Car,
@@ -14,7 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// Import individual methods from Yup instead of the whole library
+
 import { object, string, date, ref } from "yup";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -24,12 +22,10 @@ function Booking() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
 
-  // Date picker states
   const [showPickupCalendar, setShowPickupCalendar] = useState(false);
   const [showReturnCalendar, setShowReturnCalendar] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  // Car data for each category
   const cars = {
     economy: [
       {
@@ -135,7 +131,6 @@ function Booking() {
     setSelectedCar(carId);
   };
 
-  // Date picker functions
   const formatDate = (date) => {
     if (!date) return "";
     return date.toLocaleDateString("en-US", {
@@ -180,7 +175,6 @@ function Booking() {
       formikProps.setFieldValue("pickupDate", selectedDate);
       setShowPickupCalendar(false);
 
-      // If return date is before pickup date, reset it
       if (
         formikProps.values.returnDate &&
         selectedDate > formikProps.values.returnDate
@@ -203,10 +197,8 @@ function Booking() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Can't select dates in the past
     if (date < today) return false;
 
-    // For return date, can't select before pickup date
     if (
       field === "returnDate" &&
       formikProps.values.pickupDate &&
@@ -245,7 +237,7 @@ function Booking() {
 
       days.push(
         <button
-          type="button" // Important to prevent form submission
+          type="button"
           key={day}
           onClick={() =>
             selectable && handleDateSelect(day, formikProps, field)
@@ -311,7 +303,7 @@ function Booking() {
     return (
       <div
         key={car.id}
-        className={`bg-zinc-900 border ${
+        className={`bg-[#111111] border ${
           isSelected ? "border-blue-500" : "border-zinc-800"
         } rounded-lg overflow-hidden transition-all duration-200 ${
           isSelected ? "ring-2 ring-blue-500" : ""
@@ -379,11 +371,10 @@ function Booking() {
     );
   };
 
-  // Calculate rental duration and total price
   const calculateRentalDetails = (pickupDate, returnDate) => {
     if (!pickupDate || !returnDate || !selectedCar) return null;
 
-    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    const oneDay = 24 * 60 * 60 * 1000;
     const diffDays =
       Math.round(Math.abs((returnDate - pickupDate) / oneDay)) || 1;
 
@@ -404,40 +395,41 @@ function Booking() {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    // Get the selected car details
     const selectedCarObj = Object.values(cars)
       .flat()
       .find((car) => car.id === selectedCar);
 
-    // Combine form values with selected car
+    if (!selectedCarObj || !values.pickupDate || !values.returnDate) {
+      alert("Please select a car and dates");
+      setSubmitting(false);
+      return;
+    }
+
+    const rentalDetails = calculateRentalDetails(
+      values.pickupDate,
+      values.returnDate
+    );
+
+    const taxes = Math.round(rentalDetails.totalPrice * 0.1); // 10 percent taxes
+
     const bookingData = {
       ...values,
       car: selectedCarObj,
-      rentalDetails: calculateRentalDetails(
-        values.pickupDate,
-        values.returnDate
-      ),
-      taxes: 50,
+      rentalDetails: rentalDetails,
+      taxes: taxes,
     };
 
     localStorage.setItem("carRentalBooking", JSON.stringify(bookingData));
+    console.log("Booking data saved:", bookingData);
 
-    // Redirect to the payment page
-    window.location.href = "/payment";
-
-    // Here you would typically send this data to your backend
-    console.log("Booking submitted:", bookingData);
-
-    // Simulate API call
     setTimeout(() => {
-      alert("Booking successful! Redirecting to payment...");
       setSubmitting(false);
-      // Here you would redirect to payment page
-    }, 1000);
+      window.location.href = "/payment";
+    }, 500);
   };
 
   return (
-    <div className="min-h-screen bg-white text-white">
+    <div className="min-h-screen bg-secondary text-white">
       <Navbar />
 
       <main className="container mx-auto px-4 py-8">
@@ -525,7 +517,7 @@ function Booking() {
                 );
 
                 return (
-                  <Form className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden">
+                  <Form className="bg-[#111111] border border-zinc-800 rounded-lg overflow-hidden">
                     <div className="p-6 border-b border-zinc-800">
                       <h2 className="text-xl font-semibold mb-1">
                         Booking Details
@@ -537,7 +529,7 @@ function Booking() {
 
                     <div className="p-6 space-y-4">
                       {selectedCar && (
-                        <div className="mb-4 p-3 bg-zinc-800 rounded-md">
+                        <div className="mb-4 p-3 bg-[#1e293b] rounded-md">
                           <p className="text-sm text-gray-300 mb-1">
                             Selected Vehicle:
                           </p>
@@ -571,7 +563,7 @@ function Booking() {
                           as="select"
                           id="pickupLocation"
                           name="pickupLocation"
-                          className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full bg-[#1e293b] border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="" disabled>
                             Select location
@@ -602,7 +594,7 @@ function Booking() {
                           as="select"
                           id="dropoffLocation"
                           name="dropoffLocation"
-                          className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full bg-[#1e293b] border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="" disabled>
                             Select location
@@ -631,7 +623,7 @@ function Booking() {
                             Pickup Date
                           </label>
                           <div
-                            className="flex h-10 w-full rounded-md border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm cursor-pointer hover:border-zinc-600 transition-colors duration-200"
+                            className="flex h-10 w-full rounded-md border border-zinc-700 bg-[#1e293b] px-3 py-2 text-sm cursor-pointer hover:border-zinc-600 transition-colors duration-200"
                             onClick={() => {
                               setShowPickupCalendar(!showPickupCalendar);
                               setShowReturnCalendar(false);
@@ -660,7 +652,7 @@ function Booking() {
                             Return Date
                           </label>
                           <div
-                            className="flex h-10 w-full rounded-md border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm cursor-pointer hover:border-zinc-600 transition-colors duration-200"
+                            className="flex h-10 w-full rounded-md border border-zinc-700 bg-[#1e293b] px-3 py-2 text-sm cursor-pointer hover:border-zinc-600 transition-colors duration-200"
                             onClick={() => {
                               setShowReturnCalendar(!showReturnCalendar);
                               setShowPickupCalendar(false);
@@ -684,7 +676,7 @@ function Booking() {
                       </div>
 
                       {rentalDetails && (
-                        <div className="p-3 bg-zinc-800 rounded-md">
+                        <div className="p-3 bg-[#1e293b] rounded-md">
                           <div className="flex justify-between items-center mb-1">
                             <p className="text-sm text-gray-300">Duration:</p>
                             <p className="font-medium">
@@ -718,7 +710,7 @@ function Booking() {
                             id="fullName"
                             name="fullName"
                             placeholder="John Doe"
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full bg-[#1e293b] border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
                         <ErrorMessage
@@ -742,7 +734,7 @@ function Booking() {
                             name="email"
                             type="email"
                             placeholder="john@example.com"
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full bg-[#1e293b] border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
                         <ErrorMessage
@@ -765,7 +757,7 @@ function Booking() {
                             id="phone"
                             name="phone"
                             placeholder="+20 123 456 7890"
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full bg-[#1e293b] border border-zinc-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
                         <ErrorMessage
