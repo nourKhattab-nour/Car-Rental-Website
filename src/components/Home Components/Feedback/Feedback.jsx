@@ -71,7 +71,7 @@ const Feedback = () => {
     
       return (
         <div className="py-10 mb-10">
-          <div className="container">
+          <div className="container ">
             {/* header section */}
             <div className="text-center mb-10 max-w-[600px] mx-auto">
               <p  className="text-sm text-primary">
@@ -92,7 +92,7 @@ const Feedback = () => {
                   <div className="my-6">
                     <div
                       key={data.id}
-                      className="flex flex-col gap-4 shadow-lg py-8 px-6 mx-4 rounded-xl  bg-primary/10 relative"
+                      className="flex flex-col gap-4 shadow-lg py-8 px-6 mx-4 rounded-xl  bg-white relative"
                     >
                       <div className="mb-4">
                         <img

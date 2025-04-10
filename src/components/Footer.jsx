@@ -21,19 +21,19 @@ const BannerImg = {
 const FooterLinks = [
   {
     title: "Home",
-    link: "/#",
+    link: "/",
   },
   {
     title: "About",
-    link: "/#about",
+    link: "/aboutus",
   },
   {
     title: "Contact",
-    link: "/#contact",
+    link: "/contactus",
   },
   {
     title: "Blog",
-    link: "/#blog",
+    link: "/blogs",
   },
 ];
 
@@ -41,15 +41,20 @@ const Footer = () => {
   return (
     <div style={BannerImg} className="text-white">
       <div className="container">
-        <div className="grid md:grid-cols-3 pb-44 pt-5">
+        <div className="grid md:grid-cols-3 pb-38 pt-5">
           {/* Company Details */}
           <div className="py-8 px-4">
             <h1 className="sm:text-3xl text-xl font-bold sm:text-left text-justify mb-3  gap-3">
-              <img src={footerLogo} alt="Footer Logo" className="max-w-[50px]" />
+              <img
+                src={footerLogo}
+                alt="Footer Logo"
+                className="max-w-[50px]"
+              />
               NovaRide
             </h1>
             <p>
-            Your trusted car rental service, offering comfort, reliability, and seamless booking experiences. Drive with confidence!
+              Your trusted car rental service, offering comfort, reliability,
+              and seamless booking experiences. Drive with confidence!
             </p>
           </div>
 

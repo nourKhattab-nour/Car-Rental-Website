@@ -2,7 +2,7 @@ import React from 'react';
 import Bannernew from '@/assets/Images/Blackimage.png';
 
 const BannerImg = {
-    backgroundImage: `url(${Bannernew})`,
+    
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
@@ -14,10 +14,10 @@ const Subscribe = () => {
   return (
     <div
       data-aos="zoom-in"
-      className="mb-20 text-white"
+      className="mb-20 text-white bg-blue-500"
       style={BannerImg}
     >
-      <div className="container py-10 flex flex-col items-center justify-center backdrop-blur-lg ">
+      <div className="container py-20 flex flex-col items-center justify-center backdrop-blur-lg ">
         <div className="space-y-6 max-w-xl text-center">
           <h1 className="text-2xl sm:text-4xl font-semibold">Get Notified About New Deals</h1>
           <input
@@ -31,5 +31,6 @@ const Subscribe = () => {
     </div>
   );
 }
+
 
 export default Subscribe;
