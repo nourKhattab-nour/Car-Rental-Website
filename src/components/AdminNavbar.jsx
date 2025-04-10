@@ -1,0 +1,50 @@
+import React from "react"; //Import React Library
+import { IoSpeedometer } from "react-icons/io5";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+
+const AdminNavbar = () => {
+  const navigate = useNavigate(); // Hook to navigate between pages
+
+  // Function to handle login button click
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  // Create a functional component called Navbar
+  return (
+    <header className="w-full bg-primary text-white py-4">
+      <nav className="flex justify-between items-center">
+        {/* Logo Section */}
+        <div className="flex items-center gap-2 ml-6">
+          <IoSpeedometer size={50} />
+          <a href="/" className="font-bold text-2xl">
+            NovaRide
+          </a>
+        </div>
+        <div className="flex items-center gap-8 font-medium text-xl pr-4">
+         
+          <a
+            href="/MangeCarsAdmin"
+            className="hover:text-primary transition duration-200 ease-linear"
+          >
+            Manage Cars
+          </a>
+          <a
+            href="/showReviewAdmin"
+            className="hover:text-primary transition duration-200 ease-linear"
+          >
+            show Reviews
+          </a>
+          <button
+            onClick={handleLoginClick} // Add onClick event to navigate to login
+            className="hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear mr-4"
+          >
+            Log In
+          </button>
+        </div>
+      </nav>
+    </header>
+  );
+};
+
+export default AdminNavbar;
