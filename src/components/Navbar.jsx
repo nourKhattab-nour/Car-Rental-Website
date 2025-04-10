@@ -40,17 +40,19 @@ const Navbar = () => {
           >
             Contact Us
           </a>
+
           <a
             href="/QA"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Q&A
           </a>
+
           <a
             href="/Cars"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            Our Cars
+            Cars
           </a>
           <a
             href="/blogs"
@@ -68,7 +70,7 @@ const Navbar = () => {
             href="/booking"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            Booking
+            Booking 
           </a>
           <button
             onClick={handleLoginClick} // Add onClick event to navigate to login
