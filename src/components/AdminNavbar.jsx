@@ -30,10 +30,10 @@ const AdminNavbar = () => {
             Manage Cars
           </a>
           <a
-            href="/showReviewAdmin"
+            href="/Arwa"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            show Reviews
+            showReviewAdmin
           </a>
           <button
             onClick={handleLoginClick} // Add onClick event to navigate to login

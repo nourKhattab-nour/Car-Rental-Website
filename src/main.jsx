@@ -13,6 +13,8 @@ import Booking from "./pages/Booking.jsx";
 import Login from "./pages/Login.jsx";
 import Contactus from "./pages/Contactus.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
+import Arwa from "./pages/Arwa.jsx";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -33,6 +35,8 @@ createRoot(document.getElementById("root")).render(
         <Route path="login" element={<Login/>} />
         <Route path="contactus" element={<Contactus/>}/>
         <Route path="AdminLogin" element={<AdminLogin/>}/>
+        <Route path="Arwa" element={<Arwa/>}/>
+        
       </Routes>
     </BrowserRouter>
   </StrictMode>
