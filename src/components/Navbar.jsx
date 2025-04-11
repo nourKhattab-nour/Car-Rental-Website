@@ -29,27 +29,27 @@ const Navbar = () => {
             Home
           </a>
           <a
-            href="/AboutUs"
+            href="/aboutUs"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             About Us
           </a>
           <a
-            href="/Contactus"
+            href="/contactus"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Contact Us
           </a>
 
           <a
-            href="/QA"
+            href="/qa"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Q&A
           </a>
 
           <a
-            href="/Cars"
+            href="/cars"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Cars
@@ -70,7 +70,7 @@ const Navbar = () => {
             href="/booking"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            Booking 
+            Booking
           </a>
           <button
             onClick={handleLoginClick} // Add onClick event to navigate to login

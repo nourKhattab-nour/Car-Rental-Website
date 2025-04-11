@@ -13,8 +13,8 @@ import Booking from "./pages/Booking.jsx";
 import Login from "./pages/Login.jsx";
 import Contactus from "./pages/Contactus.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
-import Arwa from "./pages/Arwa.jsx";
-import Hala from "./pages/Hala.jsx";
+import ManageReviews from "./pages/ManageReviews.jsx";
+import AdminCars from "./pages/AdminCars.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -23,21 +23,20 @@ createRoot(document.getElementById("root")).render(
         <Route index element={<App />} />
         <Route path="payment" element={<Payment />} />
         <Route path="blogs" element={<Blogs />} />
-        <Route path="HomePage" element={<HomePage />} />
-        <Route path="AboutUs" element={<AboutUs />} />
+        <Route path="homePage" element={<HomePage />} />
+        <Route path="aboutUs" element={<AboutUs />} />
 
-        <Route path="Cars" element={<Cars/>} />
+        <Route path="cars" element={<Cars />} />
 
         <Route path="booking" element={<Booking />} />
-        <Route path="Cars" element={<Cars />} />
+        <Route path="cars" element={<Cars />} />
 
         <Route path="QA" element={<QA />} />
-        <Route path="login" element={<Login/>} />
-        <Route path="contactus" element={<Contactus/>}/>
-        <Route path="AdminLogin" element={<AdminLogin/>}/>
-        <Route path="Arwa" element={<Arwa/>}/>
-        <Route path="Hala" element={<Hala/>}/>
-        
+        <Route path="login" element={<Login />} />
+        <Route path="contactus" element={<Contactus />} />
+        <Route path="adminLogin" element={<AdminLogin />} />
+        <Route path="managereviews" element={<ManageReviews />} />
+        <Route path="admincars" element={<AdminCars />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

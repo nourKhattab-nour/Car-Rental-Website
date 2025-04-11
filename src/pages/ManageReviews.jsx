@@ -1,52 +1,51 @@
+import { useState, useEffect } from "react";
+import AdminNavbar from "../components/AdminNavbar.jsx";
+import Feedback from "../components/Home Components/Feedback/Feedback.jsx";
+import AdminFooter from "../components/AdminFooter.jsx";
+import { Star, Trash2 } from "lucide-react";
 
-import { useState, useEffect } from "react"
-import AdminNavbar from "../components/AdminNavbar"
-import Feedback from "../components/Home Components/Feedback/Feedback.jsx"
-import AdminFooter from "../components/AdminFooter"
-import { Star, Trash2 } from "lucide-react"
-
-const Arwa = () => {
+const ManageReviews = () => {
   // State to store reviews
-  const [reviews, setReviews] = useState([])
+  const [reviews, setReviews] = useState([]);
 
   // Load reviews from localStorage when component mounts
   useEffect(() => {
     const loadReviews = () => {
-      const savedReviews = localStorage.getItem("customerReviews")
+      const savedReviews = localStorage.getItem("customerReviews");
       if (savedReviews) {
-        setReviews(JSON.parse(savedReviews))
+        setReviews(JSON.parse(savedReviews));
       }
-    }
+    };
 
     // Load reviews initially
-    loadReviews()
+    loadReviews();
 
     // Set up event listener for storage changes
     // This ensures the component updates if reviews are added from another component
     const handleStorageChange = () => {
-      loadReviews()
-    }
+      loadReviews();
+    };
 
-    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("storage", handleStorageChange);
 
     // Clean up event listener
     return () => {
-      window.removeEventListener("storage", handleStorageChange)
-    }
-  }, [])
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   // Delete a review
   const deleteReview = (reviewId) => {
-    const updatedReviews = reviews.filter((review) => review.id !== reviewId)
-    setReviews(updatedReviews)
-    localStorage.setItem("customerReviews", JSON.stringify(updatedReviews))
-  }
+    const updatedReviews = reviews.filter((review) => review.id !== reviewId);
+    setReviews(updatedReviews);
+    localStorage.setItem("customerReviews", JSON.stringify(updatedReviews));
+  };
 
   // Format date for display
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" }
-    return new Date(dateString).toLocaleDateString(undefined, options)
-  }
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
     <div className="min-h-screen bg-white text-black">
@@ -54,7 +53,9 @@ const Arwa = () => {
 
       {/* Admin Reviews Management Section */}
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">Manage Customer Reviews</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+          Manage Customer Reviews
+        </h1>
 
         {reviews.length === 0 ? (
           <div className="bg-gray-100 rounded-lg p-8 text-center mb-12">
@@ -64,11 +65,18 @@ const Arwa = () => {
           <div className="mb-12">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {reviews.map((review) => (
-                <div key={review.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-lg">
+                <div
+                  key={review.id}
+                  className="bg-white border border-gray-200 rounded-lg p-6 shadow-lg"
+                >
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-bold text-lg text-gray-800">{review.name}</h3>
-                      <p className="text-gray-400 text-sm">{formatDate(review.timestamp)}</p>
+                      <h3 className="font-bold text-lg text-gray-800">
+                        {review.name}
+                      </h3>
+                      <p className="text-gray-400 text-sm">
+                        {formatDate(review.timestamp)}
+                      </p>
                     </div>
                     <button
                       onClick={() => deleteReview(review.id)}
@@ -84,7 +92,9 @@ const Arwa = () => {
                       <Star
                         key={star}
                         className={`h-5 w-5 ${
-                          review.rating >= star ? "text-yellow-400 fill-yellow-400" : "text-gray-400"
+                          review.rating >= star
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-gray-400"
                         }`}
                       />
                     ))}
@@ -104,7 +114,7 @@ const Arwa = () => {
 
       <AdminFooter />
     </div>
-  )
-}
+  );
+};
 
-export default Arwa
+export default ManageReviews;

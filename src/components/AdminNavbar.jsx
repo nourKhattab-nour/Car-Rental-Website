@@ -22,18 +22,17 @@ const AdminNavbar = () => {
           </a>
         </div>
         <div className="flex items-center gap-8 font-medium text-xl pr-4">
-         
           <a
-            href="/Hala"
+            href="/admincars"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            Hala
+            Admin Cars
           </a>
           <a
-            href="/Arwa"
+            href="/managereviews"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            showReviewAdmin
+            Manage Reviews
           </a>
           <button
             onClick={handleLoginClick} // Add onClick event to navigate to login

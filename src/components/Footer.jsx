@@ -28,7 +28,7 @@ const FooterLinks = [
     link: "/aboutus",
   },
   {
-    title: "Contact",
+    title: "Contact Us",
     link: "/contactus",
   },
   {

@@ -56,7 +56,7 @@ const CarSchema = Yup.object().shape({
   description: Yup.string().max(5000, "Too long"),
 });
 
-export default function secondAdminPage() {
+export default function AdminCars() {
   const [cars, setCars] = useState(initialCars);
 
   const handleAddCar = (values, { resetForm }) => {
