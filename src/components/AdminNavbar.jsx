@@ -24,10 +24,10 @@ const AdminNavbar = () => {
         <div className="flex items-center gap-8 font-medium text-xl pr-4">
          
           <a
-            href="/MangeCarsAdmin"
+            href="/Hala"
             className="hover:text-primary transition duration-200 ease-linear"
           >
-            Manage Cars
+            Hala
           </a>
           <a
             href="/Arwa"
