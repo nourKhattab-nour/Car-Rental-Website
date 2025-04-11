@@ -41,18 +41,10 @@ function Login() {
             <h2 className="mt-6 text-3xl font-extrabold">
               Sign in to your account
             </h2>
-            <p className="mt-2 text-sm text-gray-400">
-              Or{" "}
-              <Link
-                to="/register"
-                className="text-blue-400 hover:text-blue-500"
-              >
-                create a new account
-              </Link>
-            </p>
+          
           </div>
 
-          <div className="mt-8 bg-[#111111] border border-zinc-800 rounded-lg p-8 shadow-lg">
+          <div className="mt-8 bg-white border border-zinc-800 rounded-lg p-8 shadow-lg">
             <Formik
               initialValues={{ email: "", password: "" }}
               validationSchema={validationSchema}
@@ -76,7 +68,7 @@ function Login() {
                         name="email"
                         type="email"
                         autoComplete="email"
-                        className="w-full bg-[#111111] border border-zinc-700 rounded-md py-2 pl-10 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full bg-white border border-zinc-700 rounded-md py-2 pl-10 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="you@example.com"
                       />
                     </div>
@@ -103,7 +95,7 @@ function Login() {
                         name="password"
                         type={showPassword ? "text" : "password"}
                         autoComplete="current-password"
-                        className="w-full bg-[#111111] border border-zinc-700 rounded-md py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full bg-white border border-zinc-700 rounded-md py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="••••••••"
                       />
                       <button

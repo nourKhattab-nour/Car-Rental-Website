@@ -187,14 +187,7 @@ export default function AdminCars() {
                     />
                   </div>
                   <div>
-                    <label className="text-gray-700">
-                      <Field
-                        type="checkbox"
-                        name="available"
-                        className="mr-2"
-                      />
-                      Available
-                    </label>
+                   
                   </div>
                   <button
                     type="submit"

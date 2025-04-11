@@ -5,6 +5,7 @@ import { object, string } from "yup";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+
 function Booking() {
   const [activeTab, setActiveTab] = useState("economy");
   const [selectedCar, setSelectedCar] = useState(null);
@@ -20,15 +21,16 @@ function Booking() {
         category: "Economy",
         passengers: 4,
         price: 45,
-        image: "/placeholder.svg",
+        image:"/assets/Images/car1.png",
       },
+
       {
         id: "economy-2",
         name: "Hyundai Elantra",
         category: "Economy",
         passengers: 4,
         price: 42,
-        image: "/placeholder.svg",
+        image: "../../../assets/Images/car4.png",
       },
     ],
     business: [
@@ -38,7 +40,7 @@ function Booking() {
         category: "Business",
         passengers: 5,
         price: 75,
-        image: "/placeholder.svg",
+        image: "../../../assets/Images/car1.png",
       },
       {
         id: "business-2",
@@ -46,7 +48,7 @@ function Booking() {
         category: "Business",
         passengers: 5,
         price: 78,
-        image: "/placeholder.svg",
+        image: "../../../assets/Images/car1.png",
       },
     ],
     luxury: [
@@ -56,7 +58,7 @@ function Booking() {
         category: "Luxury",
         passengers: 5,
         price: 150,
-        image: "/placeholder.svg",
+        image: "../../../assets/Images/car1.png",
       },
     ],
     suv: [
@@ -66,7 +68,7 @@ function Booking() {
         category: "SUV",
         passengers: 7,
         price: 120,
-        image: "/placeholder.svg",
+        image: "../../../assets/Images/car1.png",
       },
     ],
   };

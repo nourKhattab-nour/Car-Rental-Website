@@ -7,7 +7,7 @@ const AdminNavbar = () => {
 
   // Function to handle login button click
   const handleLoginClick = () => {
-    navigate("/login");
+    navigate("/Adminlogin");
   };
 
   // Create a functional component called Navbar
@@ -24,13 +24,13 @@ const AdminNavbar = () => {
         <div className="flex items-center gap-8 font-medium text-xl pr-4">
           <a
             href="/admincars"
-            className="hover:text-primary transition duration-200 ease-linear"
+            className="transition duration-200 ease-linear"
           >
-            Admin Cars
+            Manage Cars
           </a>
           <a
             href="/managereviews"
-            className="hover:text-primary transition duration-200 ease-linear"
+            className="transition duration-200 ease-linear"
           >
             Manage Reviews
           </a>

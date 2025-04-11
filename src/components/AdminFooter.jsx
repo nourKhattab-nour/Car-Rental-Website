@@ -5,7 +5,7 @@ import {
   FaLocationArrow,
   FaMobileAlt,
 } from "react-icons/fa";
-import footerLogo from "@/assets/Images/Blackimage.png"; // Import the footer logo
+
 
 const FooterLinks = [
   {
@@ -34,11 +34,6 @@ const AdminFooter = () => {
           {/* Company Details */}
           <div className="py-4 px-4">
             <div className="flex items-center gap-3 mb-3">
-              <img
-                src={footerLogo || "/placeholder.svg"}
-                alt="Footer Logo"
-                className="max-w-[50px]"
-              />
               <h1 className="text-2xl font-bold">NovaRide</h1>
             </div>
             <p className="text-white">
@@ -49,23 +44,10 @@ const AdminFooter = () => {
 
           {/* Footer Links */}
           <div className="grid grid-cols-2 col-span-2 md:pl-10">
-            <div>
-              <div className="py-4 px-4">
-                <h1 className="text-xl font-bold mb-4">Important Links</h1>
-                <ul className="flex flex-col gap-3">
-                  {FooterLinks.map((link) => (
-                    <li
-                      className="cursor-pointer hover:text-gray-200 hover:translate-x-1 duration-300"
-                      key={link.title}
-                    >
-                      <a href={link.link}>{link.title}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div>
-              <div className="py-4 px-4">
+
+          <div className="grid grid-cols-3 gap-12">
+              {/* Other content in the first two columns */}
+              <div className="col-start-3 py-4 px-4">
                 <h1 className="text-xl font-bold mb-4">Links</h1>
                 <ul className="flex flex-col gap-3">
                   {FooterLinks.map((link) => (

@@ -6,7 +6,7 @@ import {
   FaLocationArrow,
   FaMobileAlt,
 } from "react-icons/fa";
-import footerLogo from "@/assets/Images/Blackimage.png"; // Import the footer logo
+
 import Banner from "@/assets/Images/Blackimage.png"; // Import the background image
 
 const BannerImg = {
@@ -45,11 +45,6 @@ const Footer = () => {
           {/* Company Details */}
           <div className="py-8 px-4">
             <h1 className="sm:text-3xl text-xl font-bold sm:text-left text-justify mb-3  gap-3">
-              <img
-                src={footerLogo}
-                alt="Footer Logo"
-                className="max-w-[50px]"
-              />
               NovaRide
             </h1>
             <p>
@@ -60,39 +55,25 @@ const Footer = () => {
 
           {/* Footer Links */}
           <div className="grid grid-cols-2 sm:grid-cols-3 col-span-2 md:pl-10">
-            <div>
-              <div className="py-8 px-4">
-                <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
-                  Important Links
-                </h1>
-                <ul className="flex flex-col gap-3">
-                  {FooterLinks.map((link) => (
-                    <li
-                      className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
-                      key={link.title} // Added key prop
-                    >
-                      <a href={link.link}>{link.title}</a>
-                    </li>
-                  ))}
-                </ul>
+          <div className="flex justify-center items-center">
+                <div className="py-8 px-13">
+                  <h1 className="sm:text-xl text-xl font-bold sm:text-center text-center mb-3">
+                    Important Links
+                  </h1>
+                  <ul className="flex flex-col gap-3">
+                    {FooterLinks.map((link) => (
+                      <li
+                        className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                        key={link.title}
+                      >
+                        <a href={link.link}>{link.title}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
             <div>
-              <div className="py-8 px-4">
-                <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
-                  Links
-                </h1>
-                <ul className="flex flex-col gap-3">
-                  {FooterLinks.map((link) => (
-                    <li
-                      className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
-                      key={link.title} // Added key prop
-                    >
-                      <a href={link.link}>{link.title}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            
             </div>
 
             {/* Social Links */}
