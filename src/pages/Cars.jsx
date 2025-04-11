@@ -11,7 +11,7 @@ const Cars = () => {
   const ProductsData = [
     {
       id: "economy-1",
-      img: "/placeholder.svg",
+      img: "src/assets/Images/toyottacorolla.png",
       title: "Toyota Corolla",
       description: "Efficient and reliable compact sedan.",
       price: "$45/day",
@@ -21,7 +21,7 @@ const Cars = () => {
     },
     {
       id: "economy-2",
-      img: "/placeholder.svg",
+      img: "src/assets/Images/elantra.png",
       title: "Hyundai Elantra",
       description: "Stylish and fuel-efficient compact car.",
       price: "$42/day",
@@ -31,7 +31,7 @@ const Cars = () => {
     },
     {
       id: "business-1",
-      img: "/placeholder.svg",
+      img: "src/assets/Images/car2.png",
       title: "BMW 3 Series",
       description: "Luxury sedan with premium features.",
       price: "$75/day",
@@ -41,7 +41,7 @@ const Cars = () => {
     },
     {
       id: "business-2",
-      img: "/placeholder.svg",
+      img: "src/assets/Images/audia4.png",
       title: "Audi A4",
       description: "Elegant and powerful business sedan.",
       price: "$78/day",
@@ -51,7 +51,7 @@ const Cars = () => {
     },
     {
       id: "luxury-1",
-      img: "/placeholder.svg",
+      img: "src/assets/Images/mercdessclass.png",
       title: "Mercedes S-Class",
       description: "Ultimate luxury and comfort.",
       price: "$150/day",
@@ -61,7 +61,7 @@ const Cars = () => {
     },
     {
       id: "suv-1",
-      img: "/placeholder.svg",
+      img: "src/assets/Images/landcruiser.png",
       title: "Toyota Land Cruiser",
       description: "Powerful and spacious SUV for any terrain.",
       price: "$120/day",
@@ -109,7 +109,7 @@ const Cars = () => {
             <img
               src={data.img || "/placeholder.svg"}
               alt={data.title}
-              className="w-full h-48 object-cover rounded-md"
+              className="w-full h-60 object-cover rounded-md"
             />
             <div className="mt-3">
               <h3 className="font-semibold text-white">{data.title}</h3>
