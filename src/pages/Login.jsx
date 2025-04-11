@@ -1,35 +1,32 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { object, string } from "yup";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+"use client"
+
+import { useState } from "react"
+import { Formik, Form, Field, ErrorMessage } from "formik"
+import { object, string } from "yup"
+import { Mail, Lock, Eye, EyeOff } from "lucide-react"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
 
 function Login() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
   // Validation schema using Yup
   const validationSchema = object().shape({
-    email: string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Password is required"),
-  });
+    email: string().email("Invalid email address").required("Email is required"),
+    password: string().min(8, "Password must be at least 8 characters").required("Password is required"),
+  })
 
   const handleSubmit = (values, { setSubmitting }) => {
     // Here you would typically handle authentication
-    console.log("Login submitted:", values);
+    console.log("Login submitted:", values)
 
     // Simulate API call
     setTimeout(() => {
-      alert("Login successful!");
-      setSubmitting(false);
+      alert("Login successful!")
+      setSubmitting(false)
       // Here you would redirect to dashboard or home page
-    }, 1000);
-  };
+    }, 1000)
+  }
 
   return (
     <div className="min-h-screen bg-secondary text-white flex flex-col">
@@ -38,18 +35,7 @@ function Login() {
       <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
-            <h2 className="mt-6 text-3xl font-extrabold">
-              Sign in to your account
-            </h2>
-            <p className="mt-2 text-sm text-gray-400">
-              Or{" "}
-              <Link
-                to="/register"
-                className="text-blue-400 hover:text-blue-500"
-              >
-                create a new account
-              </Link>
-            </p>
+            <h2 className="mt-6 text-3xl font-extrabold">Sign in to your account</h2>
           </div>
 
           <div className="mt-8 bg-[#111111] border border-zinc-800 rounded-lg p-8 shadow-lg">
@@ -61,10 +47,7 @@ function Login() {
               {({ isSubmitting }) => (
                 <Form className="space-y-6">
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium mb-1"
-                    >
+                    <label htmlFor="email" className="block text-sm font-medium mb-1">
                       Email Address
                     </label>
                     <div className="relative">
@@ -80,18 +63,11 @@ function Login() {
                         placeholder="you@example.com"
                       />
                     </div>
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="mt-1 text-red-500 text-xs"
-                    />
+                    <ErrorMessage name="email" component="div" className="mt-1 text-red-500 text-xs" />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium mb-1"
-                    >
+                    <label htmlFor="password" className="block text-sm font-medium mb-1">
                       Password
                     </label>
                     <div className="relative">
@@ -118,37 +94,19 @@ function Login() {
                         )}
                       </button>
                     </div>
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="mt-1 text-red-500 text-xs"
-                    />
+                    <ErrorMessage name="password" component="div" className="mt-1 text-red-500 text-xs" />
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="remember-me"
-                        name="remember-me"
-                        type="checkbox"
-                        className="h-4 w-4 bg-[#111111] border-zinc-700 rounded focus:ring-blue-500 focus:ring-offset-[#0f172a]"
-                      />
-                      <label
-                        htmlFor="remember-me"
-                        className="ml-2 block text-sm text-gray-300"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-
-                    <div className="text-sm">
-                      <Link
-                        to="/forgot-password"
-                        className="text-blue-400 hover:text-blue-500"
-                      >
-                        Forgot your password?
-                      </Link>
-                    </div>
+                  <div className="flex items-center">
+                    <input
+                      id="remember-me"
+                      name="remember-me"
+                      type="checkbox"
+                      className="h-4 w-4 bg-[#111111] border-zinc-700 rounded focus:ring-blue-500 focus:ring-offset-[#0f172a]"
+                    />
+                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
+                      Remember me
+                    </label>
                   </div>
 
                   <div>
@@ -173,7 +131,7 @@ function Login() {
 
       <Footer />
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login

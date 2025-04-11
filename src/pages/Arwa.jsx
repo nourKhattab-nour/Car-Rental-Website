@@ -5,8 +5,6 @@ import Feedback from "../components/Home Components/Feedback/Feedback.jsx"
 import AdminFooter from "../components/AdminFooter"
 import { Star, Trash2 } from "lucide-react"
 
-import AdminNavbar from '../components/AdminNavbar';
-
 const Arwa = () => {
   // State to store reviews
   const [reviews, setReviews] = useState([])
