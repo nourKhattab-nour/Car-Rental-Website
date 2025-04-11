@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaFacebook,
   FaInstagram,
@@ -7,15 +6,6 @@ import {
   FaMobileAlt,
 } from "react-icons/fa";
 import footerLogo from "@/assets/Images/Blackimage.png"; // Import the footer logo
-import Banner from "@/assets/Images/Blackimage.png"; // Import the background image
-
-const BannerImg = {
-  backgroundPosition: "bottom",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  height: "100%",
-  width: "100%",
-};
 
 const FooterLinks = [
   {
@@ -38,37 +28,35 @@ const FooterLinks = [
 
 const AdminFooter = () => {
   return (
-    <div style={BannerImg} className="text-white">
-      <div className="container bg-primary">
-        <div className="grid md:grid-cols-3 pb-45 pt-5">
+    <footer className="w-full bg-[#29a9e1] text-white mt-8">
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-3 py-8">
           {/* Company Details */}
-          <div className="py-8 px-4">
-            <h1 className="sm:text-3xl text-xl font-bold sm:text-left text-justify mb-3  gap-3">
+          <div className="py-4 px-4">
+            <div className="flex items-center gap-3 mb-3">
               <img
-                src={footerLogo}
+                src={footerLogo || "/placeholder.svg"}
                 alt="Footer Logo"
                 className="max-w-[50px]"
               />
-              NovaRide
-            </h1>
-            <p>
+              <h1 className="text-2xl font-bold">NovaRide</h1>
+            </div>
+            <p className="text-white">
               Your trusted car rental service, offering comfort, reliability,
               and seamless booking experiences. Drive with confidence!
             </p>
           </div>
 
           {/* Footer Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 col-span-2 md:pl-10">
+          <div className="grid grid-cols-2 col-span-2 md:pl-10">
             <div>
-              <div className="py-8 px-4">
-                <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
-                  Important Links
-                </h1>
+              <div className="py-4 px-4">
+                <h1 className="text-xl font-bold mb-4">Important Links</h1>
                 <ul className="flex flex-col gap-3">
                   {FooterLinks.map((link) => (
                     <li
-                      className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
-                      key={link.title} // Added key prop
+                      className="cursor-pointer hover:text-gray-200 hover:translate-x-1 duration-300"
+                      key={link.title}
                     >
                       <a href={link.link}>{link.title}</a>
                     </li>
@@ -77,51 +65,49 @@ const AdminFooter = () => {
               </div>
             </div>
             <div>
-              <div className="py-8 px-4">
-                <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
-                  Links
-                </h1>
+              <div className="py-4 px-4">
+                <h1 className="text-xl font-bold mb-4">Links</h1>
                 <ul className="flex flex-col gap-3">
                   {FooterLinks.map((link) => (
                     <li
-                      className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
-                      key={link.title} // Added key prop
+                      className="cursor-pointer hover:text-gray-200 hover:translate-x-1 duration-300"
+                      key={link.title}
                     >
                       <a href={link.link}>{link.title}</a>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div>
-              <div className="flex items-center gap-3 mt-6">
-                <a href="#">
-                  <FaInstagram className="text-3xl" />
-                </a>
-                <a href="#">
-                  <FaFacebook className="text-3xl" />
-                </a>
-                <a href="#">
-                  <FaLinkedin className="text-3xl" />
-                </a>
-              </div>
-              <div className="mt-6">
-                <div className="flex items-center gap-3">
-                  <FaLocationArrow />
-                  <p>Noida, Uttar Pradesh</p>
-                </div>
-                <div className="flex items-center gap-3 mt-3">
-                  <FaMobileAlt />
-                  <p>+91 123456789</p>
-                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Social Links and Contact Info */}
+        <div className="border-t border-white/20 py-6 flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center gap-4 mb-4 md:mb-0">
+            <a href="#" className="hover:text-gray-200">
+              <FaInstagram className="text-2xl" />
+            </a>
+            <a href="#" className="hover:text-gray-200">
+              <FaFacebook className="text-2xl" />
+            </a>
+            <a href="#" className="hover:text-gray-200">
+              <FaLinkedin className="text-2xl" />
+            </a>
+          </div>
+          <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+            <div className="flex items-center gap-2">
+              <FaLocationArrow />
+              <p>Noida, Uttar Pradesh</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <FaMobileAlt />
+              <p>+91 123456789</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

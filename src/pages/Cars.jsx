@@ -2,75 +2,83 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { GoArrowRight } from "react-icons/go";
-import I1 from "@/assets/Images/car1.png";
-import I2 from "@/assets/Images/car2.png";
-import I3 from "@/assets/Images/car3.png";
 import { FaStar } from "react-icons/fa";
-
-const ProductsData = [
-  {
-    id: 1,
-    img: I1,
-    title: "Luxury SUV",
-    description: "Experience comfort and power.",
-    price: "$99/day",
-    color: "Black",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    img: I2,
-    title: "Sports Sedan",
-    description: "Speed and elegance combined.",
-    price: "$120/day",
-    color: "Red",
-    rating: 4.8,
-  },
-  {
-    id: 3,
-    img: I3,
-    title: "Convertible Coupe",
-    description: "Drive in style and freedom.",
-    price: "$150/day",
-    color: "Blue",
-    rating: 4.2,
-  },
-  {
-    id: 4,
-    img: I1,
-    title: "Compact Hatchback",
-    description: "Efficient and stylish.",
-    price: "$75/day",
-    color: "Silver",
-    rating: 4.0,
-  },
-  {
-    id: 5,
-    img: I2,
-    title: "Family Minivan",
-    description: "Spacious and comfortable.",
-    price: "$110/day",
-    color: "White",
-    rating: 4.6,
-  },
-  {
-    id: 6,
-    img: I3,
-    title: "Electric Sedan",
-    description: "Eco-friendly and powerful.",
-    price: "$130/day",
-    color: "Green",
-    rating: 4.9,
-  },
-];
 
 const Cars = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedCard, setSelectedCard] = useState(null);
 
+  const ProductsData = [
+    {
+      id: "economy-1",
+      img: "/placeholder.svg",
+      title: "Toyota Corolla",
+      description: "Efficient and reliable compact sedan.",
+      price: "$45/day",
+      color: "Silver",
+      rating: 4.5,
+      category: "Economy",
+    },
+    {
+      id: "economy-2",
+      img: "/placeholder.svg",
+      title: "Hyundai Elantra",
+      description: "Stylish and fuel-efficient compact car.",
+      price: "$42/day",
+      color: "White",
+      rating: 4.3,
+      category: "Economy",
+    },
+    {
+      id: "business-1",
+      img: "/placeholder.svg",
+      title: "BMW 3 Series",
+      description: "Luxury sedan with premium features.",
+      price: "$75/day",
+      color: "Black",
+      rating: 4.7,
+      category: "Business",
+    },
+    {
+      id: "business-2",
+      img: "/placeholder.svg",
+      title: "Audi A4",
+      description: "Elegant and powerful business sedan.",
+      price: "$78/day",
+      color: "Gray",
+      rating: 4.8,
+      category: "Business",
+    },
+    {
+      id: "luxury-1",
+      img: "/placeholder.svg",
+      title: "Mercedes S-Class",
+      description: "Ultimate luxury and comfort.",
+      price: "$150/day",
+      color: "Black",
+      rating: 4.9,
+      category: "Luxury",
+    },
+    {
+      id: "suv-1",
+      img: "/placeholder.svg",
+      title: "Toyota Land Cruiser",
+      description: "Powerful and spacious SUV for any terrain.",
+      price: "$120/day",
+      color: "White",
+      rating: 4.6,
+      category: "SUV",
+    },
+  ];
+
   const handleTabClick = (tabId) => setActiveTab(tabId);
+
   const handleCardClick = (id) => {
-    setSelectedCard(id === selectedCard ? null : id);
+    setSelectedCard(id);
+
+    // Store selected car ID in localStorage
+    localStorage.setItem("selectedCarId", id);
+
     setTimeout(() => {
       window.location.href = "/booking";
     }, 500);
@@ -78,14 +86,13 @@ const Cars = () => {
 
   const getTabContent = () => {
     let filteredProducts = ProductsData;
+
     if (activeTab === "dashboard")
-      filteredProducts = ProductsData.filter((p) => p.title.includes("Luxury"));
+      filteredProducts = ProductsData.filter((p) => p.category === "Luxury");
     if (activeTab === "settings")
-      filteredProducts = ProductsData.filter((p) => p.title.includes("Sports"));
+      filteredProducts = ProductsData.filter((p) => p.category === "Business");
     if (activeTab === "contacts")
-      filteredProducts = ProductsData.filter((p) =>
-        p.title.includes("Convertible")
-      );
+      filteredProducts = ProductsData.filter((p) => p.category === "Economy");
 
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
@@ -158,8 +165,8 @@ const Cars = () => {
                   : tab === "dashboard"
                   ? "Luxury"
                   : tab === "settings"
-                  ? "Sports"
-                  : "Convertible"}
+                  ? "Business"
+                  : "Economy"}
               </button>
             </li>
           ))}
