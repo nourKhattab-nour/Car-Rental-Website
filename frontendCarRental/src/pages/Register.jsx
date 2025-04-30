@@ -5,7 +5,7 @@ import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-function Login() {
+function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
   // Validation schema using Yup
@@ -20,7 +20,7 @@ function Login() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,7 @@ function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message || "Register failed");
       }
 
       localStorage.setItem("token", data.token);
@@ -53,7 +53,7 @@ function Login() {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <h2 className="mt-6 text-3xl font-extrabold">
-              Sign in to your account
+              Sign up a new account
             </h2>
           </div>
 
@@ -91,7 +91,6 @@ function Login() {
                       className="mt-1 text-red-500 text-xs"
                     />
                   </div>
-
                   <div>
                     <label
                       htmlFor="password"
@@ -130,44 +129,17 @@ function Login() {
                     />
                   </div>
 
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 bg-[#111111] border-zinc-700 rounded focus:ring-blue-500 focus:ring-offset-[#0f172a]"
-                    />
-                    <label
-                      htmlFor="remember-me"
-                      className="ml-2 block text-sm text-gray-300"
-                    >
-                      Remember me
-                    </label>
-                  </div>
-
                   <div>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white mb-3 ${
-                        isSubmitting
-                          ? "bg-gray-600 cursor-not-allowed"
-                          : "bg-[#4d9fff] hover:bg-[#3a8aee] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      }`}
-                    >
-                      {isSubmitting ? "Signing in..." : "Sign in"}
-                    </button>
-                    <button
-                      onClick={() => {
-                        window.location.href = "/Register";
-                      }}
                       className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
                         isSubmitting
                           ? "bg-gray-600 cursor-not-allowed"
                           : "bg-[#4d9fff] hover:bg-[#3a8aee] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       }`}
                     >
-                      Sign Up
+                      {isSubmitting ? "Signing up..." : "Sign up"}
                     </button>
                   </div>
                 </Form>
@@ -182,4 +154,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

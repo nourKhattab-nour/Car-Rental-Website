@@ -15,6 +15,7 @@ import Contactus from "./pages/Contactus.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
 import ManageReviews from "./pages/ManageReviews.jsx";
 import AdminCars from "./pages/AdminCars.jsx";
+import Register from "./pages/Register.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -37,6 +38,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="adminLogin" element={<AdminLogin />} />
         <Route path="managereviews" element={<ManageReviews />} />
         <Route path="admincars" element={<AdminCars />} />
+        <Route path="register" element={<Register />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

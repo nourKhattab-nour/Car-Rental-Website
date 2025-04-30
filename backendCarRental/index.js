@@ -3,6 +3,7 @@ import { connect, Schema, model } from "mongoose";
 import dotenv from "dotenv";
 import ContactUs from "./Routes/ContactUs.js";
 import Cars from "./Routes/Cars.js";
+import authRoutes from "./Routes/AuthRoutes.js";
 dotenv.config();
 
 import cors from "cors";
@@ -29,3 +30,5 @@ app.listen(PORT, () => {
 app.get("/", (req, res) => {
   res.send("Hello worldddddddddd");
 });
+
+app.use("/api/auth", authRoutes);
