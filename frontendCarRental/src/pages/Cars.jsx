@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { GoArrowRight } from "react-icons/go";
@@ -7,69 +7,17 @@ import { FaStar } from "react-icons/fa";
 const Cars = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedCard, setSelectedCard] = useState(null);
+  const [cars, setCars] = useState(null);
 
-  const ProductsData = [
-    {
-      id: "economy-1",
-      img: "src/assets/Images/toyottacorolla.png",
-      title: "Toyota Corolla",
-      description: "Efficient and reliable compact sedan.",
-      price: "$45/day",
-      color: "Silver",
-      rating: 4.5,
-      category: "Economy",
-    },
-    {
-      id: "economy-2",
-      img: "src/assets/Images/elantra.png",
-      title: "Hyundai Elantra",
-      description: "Stylish and fuel-efficient compact car.",
-      price: "$42/day",
-      color: "White",
-      rating: 4.3,
-      category: "Economy",
-    },
-    {
-      id: "business-1",
-      img: "src/assets/Images/car2.png",
-      title: "BMW 3 Series",
-      description: "Luxury sedan with premium features.",
-      price: "$75/day",
-      color: "Black",
-      rating: 4.7,
-      category: "Business",
-    },
-    {
-      id: "business-2",
-      img: "src/assets/Images/audia4.png",
-      title: "Audi A4",
-      description: "Elegant and powerful business sedan.",
-      price: "$78/day",
-      color: "Gray",
-      rating: 4.8,
-      category: "Business",
-    },
-    {
-      id: "luxury-1",
-      img: "src/assets/Images/mercdessclass.png",
-      title: "Mercedes S-Class",
-      description: "Ultimate luxury and comfort.",
-      price: "$150/day",
-      color: "Black",
-      rating: 4.9,
-      category: "Luxury",
-    },
-    {
-      id: "suv-1",
-      img: "src/assets/Images/landcruiser.png",
-      title: "Toyota Land Cruiser",
-      description: "Powerful and spacious SUV for any terrain.",
-      price: "$120/day",
-      color: "White",
-      rating: 4.6,
-      category: "SUV",
-    },
-  ];
+  useEffect(() => {
+    const fetchCars = async () => {
+      const response = await fetch("http://localhost:3000/api/cars");
+      const data = await response.json();
+      setCars(data);
+      //console.log(data);
+    };
+    fetchCars();
+  }, []);
 
   const handleTabClick = (tabId) => setActiveTab(tabId);
 
@@ -85,18 +33,18 @@ const Cars = () => {
   };
 
   const getTabContent = () => {
-    let filteredProducts = ProductsData;
+    let filteredProducts = cars;
 
     if (activeTab === "dashboard")
-      filteredProducts = ProductsData.filter((p) => p.category === "Luxury");
+      filteredProducts = cars.filter((p) => p.category === "Luxury");
     if (activeTab === "settings")
-      filteredProducts = ProductsData.filter((p) => p.category === "Business");
+      filteredProducts = cars.filter((p) => p.category === "Business");
     if (activeTab === "contacts")
-      filteredProducts = ProductsData.filter((p) => p.category === "Economy");
+      filteredProducts = cars.filter((p) => p.category === "Economy");
 
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-        {filteredProducts.map((data) => (
+        {filteredProducts?.map((data) => (
           <div
             key={data.id}
             onClick={() => handleCardClick(data.id)}

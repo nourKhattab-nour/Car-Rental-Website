@@ -1,45 +1,24 @@
 {
-  "name": "myreactproject",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "car-rental-project",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "build": "vite build",
-    "test": "vitest",
-    "serve": "vite preview"
+    "dev": "concurrently \"cd backendCarRental && node --watch index.js\" \"cd frontendCarRental && npm run dev\"",
+    "install": "concurrently \"cd backendCarRental && npm install\" \"cd frontendCarRental && npm install\"",
+    "setup": "npm install concurrently --save-dev"
   },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.0.14",
-    "aos": "^2.3.4",
-    "formik": "^2.4.6",
-    "framer-motion": "^12.6.2",
-    "lucide-react": "^0.485.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0",
-    "react-router": "^7.4.0",
-    "react-router-dom": "^7.4.0",
-    "react-slick": "^0.30.3",
-    "react-toastify": "^11.0.5",
-    "slick-carousel": "^1.8.1",
-    "yup": "^1.6.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nourKhattab-nour/myreactproject.git"
   },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nourKhattab-nour/myreactproject/issues"
+  },
+  "homepage": "https://github.com/nourKhattab-nour/myreactproject#readme",
+  "description": "",
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9.21.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^15.15.0",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17",
-    "vite": "^6.2.0",
-    "vitest": "^0.25.8"
+    "concurrently": "^9.1.2"
   }
 }
