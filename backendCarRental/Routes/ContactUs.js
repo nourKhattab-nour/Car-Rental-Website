@@ -37,4 +37,14 @@ router.post("/contact", async (req, res) => {
   }
 });
 
+router.get("/contact", async (req, res) => {
+  try {
+    const contacts = await Contact.find().sort({ createdAt: -1 });
+    res.status(200).json(contacts);
+  } catch (err) {
+    console.error("Error fetching contacts:", err);
+    res.status(500).json({ error: "Unable to fetch contact requests." });
+  }
+});
+
 export default router;

@@ -42,7 +42,7 @@ const AdminNavbar = () => {
                 href="/managereviews"
                 className="transition duration-200 ease-linear"
               >
-                Manage Reviews
+                Manage Feedback
               </a>
             </>
           )}

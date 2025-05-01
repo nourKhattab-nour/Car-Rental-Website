@@ -5,10 +5,24 @@ import AdminFooter from "../components/AdminFooter.jsx";
 import { Star, Trash2 } from "lucide-react";
 
 const ManageReviews = () => {
-  // State to store reviews
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/contact");
+        const data = await res.json();
+        setContacts(data);
+      } catch (err) {
+        console.error("Failed to fetch contact requests", err);
+      }
+    };
+
+    fetchContacts();
+  }, []);
+
   const [reviews, setReviews] = useState([]);
 
-  // Load reviews from localStorage when component mounts
   useEffect(() => {
     const loadReviews = () => {
       const savedReviews = localStorage.getItem("customerReviews");
@@ -111,6 +125,40 @@ const ManageReviews = () => {
 
       {/* Feedback Component */}
       <Feedback />
+
+      {/* Contact Requests Section */}
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">
+          Contact Requests
+        </h2>
+
+        {contacts.length === 0 ? (
+          <div className="bg-gray-100 rounded-lg p-8 text-center">
+            <p className="text-gray-500">No contact requests submitted yet.</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {contacts.map((contact) => (
+              <div
+                key={contact._id}
+                className="bg-white border border-gray-200 rounded-lg p-6 shadow-lg"
+              >
+                <h3 className="font-bold text-lg text-gray-800">
+                  {contact.firstName} {contact.lastName}
+                </h3>
+                <p className="text-sm text-gray-400 mb-1">{contact.email}</p>
+                <p className="text-sm text-gray-400 mb-1 italic">
+                  {contact.queryType}
+                </p>
+                <p className="text-gray-700 mt-2">{contact.message}</p>
+                <p className="text-xs text-gray-400 mt-3">
+                  {new Date(contact.createdAt).toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <AdminFooter />
     </div>
