@@ -1,17 +1,19 @@
+// carRoutes.js
 import express from "express";
-import Car from "../models/Cars.js";
+import {
+  getAllCars,
+  getCarById,
+  createCar,
+  updateCar,
+  deleteCar,
+} from "../Controllers/AdminCars.js";
 
 const router = express.Router();
 
-router.get("/cars", async (req, res) => {
-  // Removed '/api' here
-  try {
-    const cars = await Car.find();
-    res.json(cars);
-  } catch (err) {
-    console.error("Error fetching cars:", err);
-    res.status(500).json({ error: "Failed to fetch cars" });
-  }
-});
+router.get("/cars", getAllCars);
+router.get("/cars/:id", getCarById);
+router.post("/cars", createCar);
+router.put("/cars/:id", updateCar);
+router.delete("/cars/:id", deleteCar);
 
 export default router;

@@ -6,7 +6,6 @@ import {
   FaMobileAlt,
 } from "react-icons/fa";
 
-
 const FooterLinks = [
   {
     title: "Review",
@@ -36,8 +35,7 @@ const AdminFooter = () => {
 
           {/* Footer Links */}
           <div className="grid grid-cols-2 col-span-2 md:pl-10">
-
-          <div className="grid grid-cols-3 gap-12">
+            <div className="grid grid-cols-3 gap-12">
               {/* Other content in the first two columns */}
               <div className="col-start-3 py-4 px-4">
                 <h1 className="text-xl font-bold mb-4">Links</h1>
@@ -72,11 +70,11 @@ const AdminFooter = () => {
           <div className="flex flex-col md:flex-row gap-4 md:gap-8">
             <div className="flex items-center gap-2">
               <FaLocationArrow />
-              <p>Noida, Uttar Pradesh</p>
+              <p>Cairo, Egypt</p>
             </div>
             <div className="flex items-center gap-2">
               <FaMobileAlt />
-              <p>+91 123456789</p>
+              <p>01101100680</p>
             </div>
           </div>
         </div>

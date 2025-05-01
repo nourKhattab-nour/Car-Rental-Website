@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
@@ -6,80 +6,92 @@ import "react-toastify/dist/ReactToastify.css";
 import AdminNavbar from "../components/AdminNavbar";
 import AdminFooter from "../components/AdminFooter";
 
-const initialCars = [
-  {
-    id: 1,
-    make: "Toyota",
-    model: "Camry",
-    year: 2022,
-    price: 25000,
-    color: "Silver",
-    available: true,
-  },
-  {
-    id: 2,
-    make: "Honda",
-    model: "Civic",
-    year: 2021,
-    price: 22000,
-    color: "Blue",
-    available: true,
-  },
-  {
-    id: 3,
-    make: "Ford",
-    model: "Mustang",
-    year: 2023,
-    price: 45000,
-    color: "Red",
-    available: false,
-  },
-];
-
+// Validation Schema
 const CarSchema = Yup.object().shape({
-  make: Yup.string()
-    .min(2, "Too short!")
-    .max(50, "Too long!")
-    .required("Make is required"),
-  model: Yup.string()
-    .min(2, "Too short!")
-    .max(50, "Too long!")
-    .required("Model is required"),
+  make: Yup.string().min(2).max(50).required("Make is required"),
+  model: Yup.string().min(2).max(50).required("Model is required"),
   year: Yup.number()
-    .min(1900, "Year must be after 1900")
-    .max(new Date().getFullYear() + 1, "Year cannot be in the future")
+    .min(1900)
+    .max(new Date().getFullYear() + 1)
     .required("Year is required"),
-  price: Yup.number()
-    .min(0, "Price cannot be negative")
-    .required("Price is required"),
+  price: Yup.string().required("Price is required"),
+  totalPrice: Yup.string().required("Total price is required"),
   color: Yup.string().required("Color is required"),
-  description: Yup.string().max(5000, "Too long"),
+  img: Yup.string().required("Image path is required"),
+  description: Yup.string().max(5000),
+  rating: Yup.number().min(0).max(5).required("Rating is required"),
+  category: Yup.string()
+    .oneOf(["SUV", "Economy", "Luxury", "Business"])
+    .required("Category is required"),
 });
 
 export default function AdminCars() {
-  const [cars, setCars] = useState(initialCars);
+  const [cars, setCars] = useState([]);
+
+  // Fetch all cars
+  const fetchCarsFromBackend = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/cars");
+      const data = await res.json();
+      setCars(data);
+    } catch (error) {
+      toast.error("Failed to fetch cars");
+    }
+  };
+
+  // Create car
+  const createCarInBackend = async (car) => {
+    try {
+      const res = await fetch("http://localhost:3000/api/cars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(car),
+      });
+      if (!res.ok) throw new Error("Failed to create");
+      const newCar = await res.json();
+      setCars((prev) => [...prev, newCar]);
+      toast.success(`${newCar.make} ${newCar.model} added!`);
+    } catch (error) {
+      toast.error("Error adding car");
+      console.log(error);
+    }
+  };
+
+  // Delete car
+  const deleteCarFromBackend = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/cars/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete");
+      setCars((prev) => prev.filter((car) => car._id !== id));
+      toast.info("Car deleted");
+    } catch (error) {
+      toast.error("Error deleting car");
+    }
+  };
+
+  useEffect(() => {
+    fetchCarsFromBackend();
+  }, []);
 
   const handleAddCar = (values, { resetForm }) => {
     const newCar = {
-      id: cars.length > 0 ? Math.max(...cars.map((car) => car.id)) + 1 : 1,
       make: values.make,
       model: values.model,
       year: values.year,
-      price: values.price,
+      price: `$${values.price}/day`,
+      totalPrice: values.totalPrice,
       color: values.color,
+      img: values.img,
       description: values.description,
-      available: values.available,
+      available: true,
+      rating: values.rating,
+      category: values.category,
     };
 
-    setCars([...cars, newCar]);
-    toast.success(`${values.make} ${values.model} successfully added!`);
+    createCarInBackend(newCar);
     resetForm();
-  };
-
-  const handleDeleteCar = (id) => {
-    const carToDelete = cars.find((car) => car.id === id);
-    setCars(cars.filter((car) => car.id !== id));
-    toast.info(`${carToDelete?.make} ${carToDelete?.model} has been removed`);
   };
 
   return (
@@ -102,101 +114,146 @@ export default function AdminCars() {
                 model: "",
                 year: new Date().getFullYear(),
                 price: "",
+                totalPrice: "",
                 color: "",
+                img: "",
                 description: "",
-                available: true,
+                rating: "",
+                category: "",
               }}
               validationSchema={CarSchema}
               onSubmit={handleAddCar}
             >
-              {({ errors, touched }) => (
-                <Form className="grid gap-4">
-                  <div>
-                    <Field
-                      name="make"
-                      placeholder="Make"
-                      className="p-2 w-full border border-gray-300 rounded"
-                    />
-                    <ErrorMessage
-                      name="make"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Field
-                      name="model"
-                      placeholder="Model"
-                      className="p-2 w-full border border-gray-300 rounded"
-                    />
-                    <ErrorMessage
-                      name="model"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Field
-                      name="year"
-                      type="number"
-                      placeholder="Year"
-                      className="p-2 w-full border border-gray-300 rounded"
-                    />
-                    <ErrorMessage
-                      name="year"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Field
-                      name="price"
-                      type="number"
-                      placeholder="Price"
-                      className="p-2 w-full border border-gray-300 rounded"
-                    />
-                    <ErrorMessage
-                      name="price"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Field
-                      name="color"
-                      placeholder="Color"
-                      className="p-2 w-full border border-gray-300 rounded"
-                    />
-                    <ErrorMessage
-                      name="color"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Field
-                      name="description"
-                      as="textarea"
-                      placeholder="Description"
-                      className="p-2 w-full border border-gray-300 rounded"
-                    />
-                    <ErrorMessage
-                      name="description"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
-                  </div>
-                  <div>
-                   
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-[#3a8aee] text-white py-2 px-4 rounded hover:bg-blue-700"
-                  >
-                    Add Car
-                  </button>
-                </Form>
-              )}
+              <Form className="grid gap-4">
+                <Field
+                  name="make"
+                  placeholder="Make"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="make"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="model"
+                  placeholder="Model"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="model"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="year"
+                  type="number"
+                  placeholder="Year"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="year"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="price"
+                  placeholder="Price per day"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="price"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="totalPrice"
+                  placeholder="Total Price"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="totalPrice"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="color"
+                  placeholder="Color"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="color"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="img"
+                  placeholder="Image path (e.g., /assets/car.png)"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="img"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="description"
+                  as="textarea"
+                  placeholder="Description"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  name="rating"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  placeholder="Rating (0 to 5)"
+                  className="p-2 w-full border border-gray-300 rounded"
+                />
+                <ErrorMessage
+                  name="rating"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <Field
+                  as="select"
+                  name="category"
+                  className="p-2 w-full border border-gray-300 rounded"
+                >
+                  <option value="">Select Category</option>
+                  <option value="SUV">SUV</option>
+                  <option value="Economy">Economy</option>
+                  <option value="Luxury">Luxury</option>
+                  <option value="Business">Business</option>
+                </Field>
+                <ErrorMessage
+                  name="category"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+
+                <button
+                  type="submit"
+                  className="bg-[#3a8aee] text-white py-2 px-4 rounded hover:bg-blue-700"
+                >
+                  Add Car
+                </button>
+              </Form>
             </Formik>
           </div>
         </div>
@@ -219,14 +276,16 @@ export default function AdminCars() {
                     <th className="p-2 border-b">Model</th>
                     <th className="p-2 border-b">Year</th>
                     <th className="p-2 border-b">Price</th>
+                    <th className="p-2 border-b">Total</th>
                     <th className="p-2 border-b">Color</th>
-                    <th className="p-2 border-b">Available</th>
+                    <th className="p-2 border-b">Rating</th>
+                    <th className="p-2 border-b">Category</th>
                     <th className="p-2 border-b">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {cars.map((car) => (
-                    <tr key={car.id} className="hover:bg-gray-50">
+                    <tr key={car._id} className="hover:bg-gray-50">
                       <td className="p-2 border-b border-gray-100">
                         {car.make}
                       </td>
@@ -237,17 +296,23 @@ export default function AdminCars() {
                         {car.year}
                       </td>
                       <td className="p-2 border-b border-gray-100">
-                        ${car.price}
+                        {car.price}
+                      </td>
+                      <td className="p-2 border-b border-gray-100">
+                        {car.totalPrice}
                       </td>
                       <td className="p-2 border-b border-gray-100">
                         {car.color}
                       </td>
                       <td className="p-2 border-b border-gray-100">
-                        {car.available ? "Yes" : "No"}
+                        {car.rating}
+                      </td>
+                      <td className="p-2 border-b border-gray-100">
+                        {car.category}
                       </td>
                       <td className="p-2 border-b border-gray-100">
                         <button
-                          onClick={() => handleDeleteCar(car.id)}
+                          onClick={() => deleteCarFromBackend(car._id)}
                           className="text-red-500 hover:text-red-700"
                         >
                           Delete
