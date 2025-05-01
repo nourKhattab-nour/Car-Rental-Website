@@ -5,11 +5,13 @@ import { object, string } from "yup";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import AdminNavbar from "../components/AdminNavbar";
 import AdminFooter from "../components/AdminFooter";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  // Validation schema using Yup
+  // Validation schema
   const validationSchema = object().shape({
     email: string()
       .email("Invalid email address")
@@ -19,29 +21,53 @@ function Login() {
       .required("Password is required"),
   });
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    // Here you would typically handle authentication
-    console.log("Login submitted:", values);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/auth/admin-login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        }
+      );
 
-    // Simulate API call
-    setTimeout(() => {
-      alert("Login successful!");
+      const contentType = response.headers.get("content-type");
+
+      // Ensure response is JSON
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Server did not return JSON");
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      toast.success("Admin login successful!");
+      setTimeout(() => {
+        window.location.href = "/admincars";
+      }, 1500);
+    } catch (error) {
+      toast.error(`Login failed: ${error.message}`);
+    } finally {
       setSubmitting(false);
-      // Here you would redirect to dashboard or home page
-    }, 1000);
+    }
   };
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col">
       <AdminNavbar />
-
       <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <h2 className="mt-6 text-3xl font-extrabold">
               Sign in to your account
             </h2>
-          
           </div>
 
           <div className="mt-8 bg-white border border-zinc-800 rounded-lg p-8 shadow-lg">
@@ -68,8 +94,8 @@ function Login() {
                         name="email"
                         type="email"
                         autoComplete="email"
-                        className="w-full bg-white border border-zinc-700 rounded-md py-2 pl-10 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="you@example.com"
+                        className="w-full bg-white border border-zinc-700 rounded-md py-2 pl-10 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
                     <ErrorMessage
@@ -95,8 +121,8 @@ function Login() {
                         name="password"
                         type={showPassword ? "text" : "password"}
                         autoComplete="current-password"
-                        className="w-full bg-white border border-zinc-700 rounded-md py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="••••••••"
+                        className="w-full bg-white border border-zinc-700 rounded-md py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                       <button
                         type="button"
@@ -123,11 +149,11 @@ function Login() {
                         id="remember-me"
                         name="remember-me"
                         type="checkbox"
-                        className="h-4 w-4 bg-[#111111] border-zinc-700 rounded focus:ring-blue-500 focus:ring-offset-[#0f172a]"
+                        className="h-4 w-4 bg-[#111111] border-zinc-700 rounded focus:ring-blue-500"
                       />
                       <label
                         htmlFor="remember-me"
-                        className="ml-2 block text-sm text-gray-300"
+                        className="ml-2 block text-sm text-gray-600"
                       >
                         Remember me
                       </label>
@@ -159,10 +185,10 @@ function Login() {
                 </Form>
               )}
             </Formik>
+            <ToastContainer />
           </div>
         </div>
       </main>
-
       <AdminFooter />
     </div>
   );

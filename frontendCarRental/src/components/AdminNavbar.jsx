@@ -1,16 +1,23 @@
-import React from "react"; //Import React Library
+import React from "react";
 import { IoSpeedometer } from "react-icons/io5";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const AdminNavbar = () => {
-  const navigate = useNavigate(); // Hook to navigate between pages
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  // Function to handle login button click
-  const handleLoginClick = () => {
-    navigate("/Adminlogin");
+  const handleAuthClick = () => {
+    if (token) {
+      // Log out
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/Adminlogin");
+    } else {
+      // Go to login page
+      navigate("/Adminlogin");
+    }
   };
 
-  // Create a functional component called Navbar
   return (
     <header className="w-full bg-primary text-white py-4">
       <nav className="flex justify-between items-center">
@@ -21,24 +28,29 @@ const AdminNavbar = () => {
             NovaRide
           </a>
         </div>
+
         <div className="flex items-center gap-8 font-medium text-xl pr-4">
-          <a
-            href="/admincars"
-            className="transition duration-200 ease-linear"
-          >
-            Manage Cars
-          </a>
-          <a
-            href="/managereviews"
-            className="transition duration-200 ease-linear"
-          >
-            Manage Reviews
-          </a>
+          {token && (
+            <>
+              <a
+                href="/admincars"
+                className="transition duration-200 ease-linear"
+              >
+                Manage Cars
+              </a>
+              <a
+                href="/managereviews"
+                className="transition duration-200 ease-linear"
+              >
+                Manage Reviews
+              </a>
+            </>
+          )}
           <button
-            onClick={handleLoginClick} // Add onClick event to navigate to login
-            className="hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear mr-4"
+            onClick={handleAuthClick}
+            className="hidden lg:flex border-2 border-white text-lg px-4 rounded-md hover:bg-white hover:text-primary transition duration-200 ease-linear mr-4"
           >
-            Log In
+            {token ? "Log Out" : "Log In"}
           </button>
         </div>
       </nav>
