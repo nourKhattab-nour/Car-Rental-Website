@@ -27,8 +27,8 @@ const CarSchema = Yup.object().shape({
 
 export default function AdminCars() {
   const [cars, setCars] = useState([]);
+  const [editingCar, setEditingCar] = useState(null);
 
-  // Fetch all cars
   const fetchCarsFromBackend = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/cars");
@@ -39,7 +39,6 @@ export default function AdminCars() {
     }
   };
 
-  // Create car
   const createCarInBackend = async (car) => {
     try {
       const res = await fetch("http://localhost:3000/api/cars", {
@@ -53,11 +52,28 @@ export default function AdminCars() {
       toast.success(`${newCar.make} ${newCar.model} added!`);
     } catch (error) {
       toast.error("Error adding car");
-      console.log(error);
     }
   };
 
-  // Delete car
+  const updateCarInBackend = async (car) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/cars/${car._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(car),
+      });
+      if (!res.ok) throw new Error("Failed to update");
+      const updatedCar = await res.json();
+      setCars((prev) =>
+        prev.map((c) => (c._id === updatedCar._id ? updatedCar : c))
+      );
+      toast.success(`${updatedCar.make} ${updatedCar.model} updated!`);
+      setEditingCar(null);
+    } catch (error) {
+      toast.error("Error updating car");
+    }
+  };
+
   const deleteCarFromBackend = async (id) => {
     try {
       const res = await fetch(`http://localhost:3000/api/cars/${id}`, {
@@ -75,8 +91,8 @@ export default function AdminCars() {
     fetchCarsFromBackend();
   }, []);
 
-  const handleAddCar = (values, { resetForm }) => {
-    const newCar = {
+  const handleFormSubmit = (values, { resetForm }) => {
+    const carData = {
       make: values.make,
       model: values.model,
       year: values.year,
@@ -90,7 +106,12 @@ export default function AdminCars() {
       category: values.category,
     };
 
-    createCarInBackend(newCar);
+    if (editingCar) {
+      updateCarInBackend({ ...carData, _id: editingCar._id });
+    } else {
+      createCarInBackend(carData);
+    }
+
     resetForm();
   };
 
@@ -106,23 +127,26 @@ export default function AdminCars() {
 
           <div className="mb-10">
             <h3 className="text-gray-800 text-xl font-medium mb-4">
-              Add New Car
+              {editingCar ? "Edit Car" : "Add New Car"}
             </h3>
             <Formik
-              initialValues={{
-                make: "",
-                model: "",
-                year: new Date().getFullYear(),
-                price: "",
-                totalPrice: "",
-                color: "",
-                img: "",
-                description: "",
-                rating: "",
-                category: "",
-              }}
+              enableReinitialize
+              initialValues={
+                editingCar || {
+                  make: "",
+                  model: "",
+                  year: new Date().getFullYear(),
+                  price: "",
+                  totalPrice: "",
+                  color: "",
+                  img: "",
+                  description: "",
+                  rating: "",
+                  category: "",
+                }
+              }
               validationSchema={CarSchema}
-              onSubmit={handleAddCar}
+              onSubmit={handleFormSubmit}
             >
               <Form className="grid gap-4">
                 <Field
@@ -247,12 +271,23 @@ export default function AdminCars() {
                   className="text-red-500 text-sm"
                 />
 
-                <button
-                  type="submit"
-                  className="bg-[#3a8aee] text-white py-2 px-4 rounded hover:bg-blue-700"
-                >
-                  Add Car
-                </button>
+                <div className="flex gap-4">
+                  <button
+                    type="submit"
+                    className="bg-[#3a8aee] text-white py-2 px-4 rounded hover:bg-blue-700"
+                  >
+                    {editingCar ? "Update Car" : "Add Car"}
+                  </button>
+                  {editingCar && (
+                    <button
+                      type="button"
+                      onClick={() => setEditingCar(null)}
+                      className="bg-gray-400 text-white py-2 px-4 rounded hover:bg-gray-500"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </Form>
             </Formik>
           </div>
@@ -275,12 +310,12 @@ export default function AdminCars() {
                     <th className="p-2 border-b">Make</th>
                     <th className="p-2 border-b">Model</th>
                     <th className="p-2 border-b">Year</th>
-                    <th className="p-2 border-b">Price</th>
-                    <th className="p-2 border-b">Total</th>
+                    <th className="p-2 border-b">Price per day</th>
+                    <th className="p-2 border-b">Price of the car</th>
                     <th className="p-2 border-b">Color</th>
                     <th className="p-2 border-b">Rating</th>
                     <th className="p-2 border-b">Category</th>
-                    <th className="p-2 border-b">Action</th>
+                    <th className="p-2 border-b">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -310,7 +345,13 @@ export default function AdminCars() {
                       <td className="p-2 border-b border-gray-100">
                         {car.category}
                       </td>
-                      <td className="p-2 border-b border-gray-100">
+                      <td className="p-2 border-b border-gray-100 flex gap-2">
+                        <button
+                          onClick={() => setEditingCar(car)}
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          Edit
+                        </button>
                         <button
                           onClick={() => deleteCarFromBackend(car._id)}
                           className="text-red-500 hover:text-red-700"

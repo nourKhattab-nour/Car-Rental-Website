@@ -1,19 +1,14 @@
 // carRoutes.js
 import express from "express";
-import {
-  getAllCars,
-  getCarById,
-  createCar,
-  updateCar,
-  deleteCar,
-} from "../Controllers/AdminCars.js";
+import carController from "../Controllers/AdminCars.js";
 
 const router = express.Router();
 
-router.get("/cars", getAllCars);
-router.get("/cars/:id", getCarById);
-router.post("/cars", createCar);
-router.put("/cars/:id", updateCar);
-router.delete("/cars/:id", deleteCar);
+// Use methods from carController object
+router.get("/cars", carController.getAllCars);
+router.get("/cars/:id", carController.getCarById);
+router.post("/cars", carController.createCar);
+router.put("/cars/:id", carController.updateCar);
+router.delete("/cars/:id", carController.deleteCar);
 
 export default router;

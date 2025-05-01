@@ -1,7 +1,6 @@
 import Car from "../Models/Cars.js";
 
-// Get all cars
-export const getAllCars = async (req, res) => {
+const getAllCars = async (req, res) => {
   try {
     const cars = await Car.find();
     res.status(200).json(cars);
@@ -12,8 +11,7 @@ export const getAllCars = async (req, res) => {
   }
 };
 
-// Get a single car by ID
-export const getCarById = async (req, res) => {
+const getCarById = async (req, res) => {
   try {
     const car = await Car.findById(req.params.id);
     if (!car) return res.status(404).json({ message: "Car not found" });
@@ -23,8 +21,7 @@ export const getCarById = async (req, res) => {
   }
 };
 
-// Create a new car
-export const createCar = async (req, res) => {
+const createCar = async (req, res) => {
   try {
     const car = new Car(req.body);
     await car.save();
@@ -36,8 +33,7 @@ export const createCar = async (req, res) => {
   }
 };
 
-// Update an existing car
-export const updateCar = async (req, res) => {
+const updateCar = async (req, res) => {
   try {
     const updatedCar = await Car.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -52,8 +48,7 @@ export const updateCar = async (req, res) => {
   }
 };
 
-// Delete a car
-export const deleteCar = async (req, res) => {
+const deleteCar = async (req, res) => {
   try {
     const deletedCar = await Car.findByIdAndDelete(req.params.id);
     if (!deletedCar) return res.status(404).json({ message: "Car not found" });
@@ -63,4 +58,12 @@ export const deleteCar = async (req, res) => {
       .status(500)
       .json({ message: "Failed to delete car", error: err.message });
   }
+};
+
+export default {
+  getAllCars,
+  getCarById,
+  createCar,
+  updateCar,
+  deleteCar,
 };
