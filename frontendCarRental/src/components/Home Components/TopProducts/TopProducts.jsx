@@ -60,7 +60,7 @@ const TopProducts = () => {
               <img
                 src={data.img}
                 alt=""
-                className="max-w-[140px] block mx-auto transform -translate-y-20 group-hover:scale-105 duration-00 drop-shadow-md"
+                className="max-w-[140px] block mx-auto group-hover:scale-105 duration-00 drop-shadow-md"
               ></img>
             </div>
             {/* Details section  */}
