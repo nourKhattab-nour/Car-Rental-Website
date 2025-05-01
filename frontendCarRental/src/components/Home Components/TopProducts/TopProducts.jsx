@@ -1,37 +1,21 @@
-import React from "react";
-import I1 from "@/assets/Images/car1.png";
-import I2 from "@/assets/Images/car2.png";
-import I3 from "@/assets/Images/car3.png";
+import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa6";
-
-const ProductsData = [
-  {
-    id: 1,
-    img: I1,
-    title: "Luxury SUV",
-    description:
-      "Experience the comfort and power of our top-tier luxury SUVs.",
-  },
-  {
-    id: 2,
-    img: I2,
-    title: "Sports Sedan",
-    description:
-      "Enjoy the perfect blend of speed and elegance with our high-performance sports sedans.",
-  },
-  {
-    id: 3,
-    img: I3,
-    title: "Convertible Coupe",
-    description:
-      "Drive in style and freedom with our sleek and powerful convertible coupes.",
-  },
-];
 
 const TopProducts = () => {
   const handleOrderPopup = () => {
     alert("Order popup triggered!");
   };
+  const [cars, setCars] = useState(null);
+
+  useEffect(() => {
+    const fetchCars = async () => {
+      const response = await fetch("http://localhost:3000/api/cars");
+      const data = await response.json();
+      setCars(data);
+      //console.log(data);
+    };
+    fetchCars();
+  }, []);
   return (
     <div className="container ">
       {/* Header section */}
@@ -48,7 +32,7 @@ const TopProducts = () => {
       {/* Body section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  md:gap-5 place-items-center gap-20">
         {/* Add content for the body section here */}
-        {ProductsData.map((data) => (
+        {cars?.slice(0, -3).map((data) => (
           <div
             className="rounded-2xl bg-black/80 dark:bg-white-800
                         hover:bg-blue-500  dark:hover:bg-blue-500

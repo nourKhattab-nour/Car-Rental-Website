@@ -10,74 +10,41 @@ function Booking() {
   const [selectedCar, setSelectedCar] = useState(null);
   const [pickupDate, setPickupDate] = useState(null);
   const [returnDate, setReturnDate] = useState(null);
+  const [cars, setCars] = useState({});
 
-  // Simplified car data
-  const cars = {
-    economy: [
-      {
-        id: "economy-1",
-        name: "Toyota Corolla",
-        category: "Economy",
-        passengers: 4,
-        price: 45,
-        image: "src/assets/Images/toyottacorolla.png",
-      },
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/cars");
+        const data = await response.json();
 
-      {
-        id: "economy-2",
-        name: "Hyundai Elantra",
-        category: "Economy",
-        passengers: 4,
-        price: 42,
-        image: "src/assets/Images/elantra.png",
-      },
-    ],
-    business: [
-      {
-        id: "business-1",
-        name: "BMW 3 Series",
-        category: "Business",
-        passengers: 5,
-        price: 75,
-        image: "src/assets/Images/car2.png",
-      },
-      {
-        id: "business-2",
-        name: "Audi A4",
-        category: "Business",
-        passengers: 5,
-        price: 78,
-        image: "src/assets/Images/audia4.png",
-      },
-    ],
-    luxury: [
-      {
-        id: "luxury-1",
-        name: "Mercedes S-Class",
-        category: "Luxury",
-        passengers: 5,
-        price: 150,
-        image: "src/assets/Images/mercdessclass.png",
-      },
-    ],
-    suv: [
-      {
-        id: "suv-1",
-        name: "Toyota Land Cruiser",
-        category: "SUV",
-        passengers: 7,
-        price: 120,
-        image: "src/assets/Images/landcruiser.png",
-      },
-    ],
-  };
+        const grouped = data.reduce((acc, car) => {
+          const key = car.category.toLowerCase();
+          if (!acc[key]) acc[key] = [];
+          acc[key].push({
+            id: car.id,
+            name: car.title,
+            category: car.category,
+            passengers: car.passengers || 5,
+            price: parseInt(car.price.replace(/\D/g, "")),
+            image: car.img,
+          });
+          return acc;
+        }, {});
 
-  // Check for selected car from Cars page
+        setCars(grouped);
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      }
+    };
+
+    fetchCars();
+  }, []);
+
   useEffect(() => {
     const selectedCarId = localStorage.getItem("selectedCarId");
 
     if (selectedCarId) {
-      // Find which tab contains the selected car
       for (const [tab, carList] of Object.entries(cars)) {
         const found = carList.find((car) => car.id === selectedCarId);
         if (found) {
@@ -86,13 +53,10 @@ function Booking() {
           break;
         }
       }
-
-      // Clear localStorage
       localStorage.removeItem("selectedCarId");
     }
-  }, []);
+  }, [cars]);
 
-  // Simple validation schema
   const validationSchema = object().shape({
     pickupLocation: string().required("Pickup location is required"),
     dropoffLocation: string().required("Drop-off location is required"),
@@ -103,15 +67,6 @@ function Booking() {
 
   const handleSelectCar = (carId) => {
     setSelectedCar(carId);
-  };
-
-  const formatDate = (date) => {
-    if (!date) return "";
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
   };
 
   const calculateRentalDetails = () => {
@@ -127,12 +82,11 @@ function Booking() {
 
     if (!selectedCarObj) return null;
 
-    const dailyRate = selectedCarObj.price;
-    const totalPrice = dailyRate * diffDays;
+    const totalPrice = selectedCarObj.price * diffDays;
 
     return {
       days: diffDays,
-      dailyRate,
+      dailyRate: selectedCarObj.price,
       totalPrice,
     };
   };
@@ -180,61 +134,57 @@ function Booking() {
           isSelected ? "ring-2 ring-[#4d9fff]" : ""
         }`}
       >
-        <div className="p-0">
-          <div className="grid grid-cols-1 md:grid-cols-3">
-            <div className="relative h-48 md:h-full">
-              <img
-                src={car.image || "/placeholder.svg"}
-                alt={car.name}
-                className="w-full h-full object-cover absolute top-0 left-0 rounded-t-lg md:rounded-l-lg md:rounded-t-none"
-              />
-              {isSelected && (
-                <div className="absolute top-2 right-2 bg-[#4d9fff] text-white p-1 rounded-full">
-                  <Check className="h-4 w-4" />
-                </div>
-              )}
+        <div className="grid grid-cols-1 md:grid-cols-3">
+          <div className="relative h-48 md:h-full">
+            <img
+              src={car.image}
+              alt={car.name}
+              className="w-full h-full object-cover absolute top-0 left-0 rounded-t-lg md:rounded-l-lg md:rounded-t-none"
+            />
+            {isSelected && (
+              <div className="absolute top-2 right-2 bg-[#4d9fff] text-white p-1 rounded-full">
+                <Check className="h-4 w-4" />
+              </div>
+            )}
+          </div>
+          <div className="col-span-2 p-6">
+            <h3 className="text-xl font-bold mb-2">{car.name}</h3>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="flex items-center gap-2">
+                <Car className="h-4 w-4 text-[#4d9fff]" />
+                <span className="text-sm text-gray-300">{car.category}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4 text-[#4d9fff]" />
+                <span className="text-sm text-gray-300">
+                  {car.passengers} Passengers
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-[#4d9fff]" />
+                <span className="text-sm text-gray-300">Unlimited mileage</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-[#4d9fff]" />
+                <span className="text-sm text-gray-300">GPS Navigation</span>
+              </div>
             </div>
-            <div className="col-span-2 p-6">
-              <h3 className="text-xl font-bold mb-2">{car.name}</h3>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="flex items-center gap-2">
-                  <Car className="h-4 w-4 text-[#4d9fff]" />
-                  <span className="text-sm text-gray-300">{car.category}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-[#4d9fff]" />
-                  <span className="text-sm text-gray-300">
-                    {car.passengers} Passengers
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-[#4d9fff]" />
-                  <span className="text-sm text-gray-300">
-                    Unlimited mileage
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-[#4d9fff]" />
-                  <span className="text-sm text-gray-300">GPS Navigation</span>
-                </div>
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="text-2xl font-bold">${car.price}</span>
+                <span className="text-gray-400 text-sm"> / day</span>
               </div>
-              <div className="flex justify-between items-center">
-                <div>
-                  <span className="text-2xl font-bold">${car.price}</span>
-                  <span className="text-gray-400 text-sm"> / day</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleSelectCar(car.id)}
-                  className={`px-4 py-2 rounded-md transition-colors duration-200 ${
-                    isSelected
-                      ? "bg-green-600 hover:bg-green-700 text-white"
-                      : "bg-[#4d9fff] hover:bg-[#3a8aee] text-white"
-                  }`}
-                >
-                  {isSelected ? "Selected" : "Select"}
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => handleSelectCar(car.id)}
+                className={`px-4 py-2 rounded-md transition-colors duration-200 ${
+                  isSelected
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-[#4d9fff] hover:bg-[#3a8aee]"
+                } text-white`}
+              >
+                {isSelected ? "Selected" : "Select"}
+              </button>
             </div>
           </div>
         </div>
@@ -258,54 +208,26 @@ function Booking() {
           <div className="lg:col-span-2">
             <div className="w-full">
               <div className="grid grid-cols-4 mb-6 border-b border-zinc-800">
-                <button
-                  type="button"
-                  className={`py-2 px-4 text-sm font-medium ${
-                    activeTab === "economy"
-                      ? "text-[#4d9fff] border-b-2 border-[#4d9fff]"
-                      : "text-gray-400"
-                  }`}
-                  onClick={() => setActiveTab("economy")}
-                >
-                  Economy
-                </button>
-                <button
-                  type="button"
-                  className={`py-2 px-4 text-sm font-medium ${
-                    activeTab === "business"
-                      ? "text-[#4d9fff] border-b-2 border-[#4d9fff]"
-                      : "text-gray-400"
-                  }`}
-                  onClick={() => setActiveTab("business")}
-                >
-                  Business
-                </button>
-                <button
-                  type="button"
-                  className={`py-2 px-4 text-sm font-medium ${
-                    activeTab === "luxury"
-                      ? "text-[#4d9fff] border-b-2 border-[#4d9fff]"
-                      : "text-gray-400"
-                  }`}
-                  onClick={() => setActiveTab("luxury")}
-                >
-                  Luxury
-                </button>
-                <button
-                  type="button"
-                  className={`py-2 px-4 text-sm font-medium ${
-                    activeTab === "suv"
-                      ? "text-[#4d9fff] border-b-2 border-[#4d9fff]"
-                      : "text-gray-400"
-                  }`}
-                  onClick={() => setActiveTab("suv")}
-                >
-                  SUV
-                </button>
+                {["economy", "business", "luxury", "suv"].map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    className={`py-2 px-4 text-sm font-medium ${
+                      activeTab === tab
+                        ? "text-[#4d9fff] border-b-2 border-[#4d9fff]"
+                        : "text-gray-400"
+                    }`}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
               </div>
 
               <div className="space-y-6">
-                {cars[activeTab].map((car) => renderCarCard(car))}
+                {cars[activeTab]?.map((car) => renderCarCard(car)) || (
+                  <p className="text-gray-400">Loading cars...</p>
+                )}
               </div>
             </div>
           </div>
