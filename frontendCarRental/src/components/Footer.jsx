@@ -7,7 +7,7 @@ import {
   FaMobileAlt,
 } from "react-icons/fa";
 
-import Banner from "@/assets/Images/Blackimage.png"; // Import the background image
+import Banner from "@/assets/Images/Blackimage.png";
 
 const BannerImg = {
   backgroundImage: `url(${Banner})`,

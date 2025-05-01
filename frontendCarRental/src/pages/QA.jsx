@@ -41,10 +41,10 @@ const QA = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-secondary">
       <Navbar />
-      <div className="w-screen min-h-screen bg-secondary flex flex-col items-center py-10">
-        <div className="w-[89%] m-auto max-w-[1400px] bg-[#111111] p-5 rounded-lg shadow-lg">
+      <main className="flex-grow flex justify-center py-10">
+        <div className="w-[89%] max-w-[1400px] bg-[#111111] p-5 rounded-lg shadow-lg">
           <h1 className="text-3xl font-bold text-center mb-5 text-white">
             Frequently Asked Questions
           </h1>
@@ -76,9 +76,9 @@ const QA = () => {
             </div>
           ))}
         </div>
-      </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
