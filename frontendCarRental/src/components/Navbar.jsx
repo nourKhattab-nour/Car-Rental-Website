@@ -1,16 +1,23 @@
-import React from "react"; //Import React Library
+import React from "react";
 import { IoSpeedometer } from "react-icons/io5";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const navigate = useNavigate(); // Hook to navigate between pages
+  const navigate = useNavigate();
 
-  // Function to handle login button click
-  const handleLoginClick = () => {
-    navigate("/login");
+  const isLoggedIn =
+    localStorage.getItem("token") && localStorage.getItem("user");
+
+  const handleAuthClick = () => {
+    if (isLoggedIn) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/login");
+    } else {
+      navigate("/login");
+    }
   };
 
-  // Create a functional component called Navbar
   return (
     <header className="w-full bg-secondary text-white py-4">
       <nav className="flex justify-between items-center">
@@ -21,6 +28,8 @@ const Navbar = () => {
             NovaRide
           </a>
         </div>
+
+        {/* Navigation Links */}
         <div className="flex items-center gap-8 font-medium text-xl pr-4">
           <a
             href="/HomePage"
@@ -40,14 +49,12 @@ const Navbar = () => {
           >
             Contact Us
           </a>
-
           <a
             href="/qa"
             className="hover:text-primary transition duration-200 ease-linear"
           >
             Q&A
           </a>
-
           <a
             href="/cars"
             className="hover:text-primary transition duration-200 ease-linear"
@@ -72,11 +79,13 @@ const Navbar = () => {
           >
             Booking
           </a>
+
+          {/* Log In / Log Out Button */}
           <button
-            onClick={handleLoginClick} // Add onClick event to navigate to login
+            onClick={handleAuthClick}
             className="hidden lg:flex border-2 border-primary text-lg px-4 rounded-md hover:bg-primary transition duration-200 ease-linear mr-4"
           >
-            Log In
+            {isLoggedIn ? "Log Out" : "Log In"}
           </button>
         </div>
       </nav>
