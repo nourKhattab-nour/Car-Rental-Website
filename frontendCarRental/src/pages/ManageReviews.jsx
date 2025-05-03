@@ -30,49 +30,41 @@ const ManageReviews = () => {
         setReviews(JSON.parse(savedReviews));
       }
     };
-
-    // Load reviews initially
     loadReviews();
-
-    // Set up event listener for storage changes
-    // This ensures the component updates if reviews are added from another component
     const handleStorageChange = () => {
       loadReviews();
     };
 
     window.addEventListener("storage", handleStorageChange);
 
-    // Clean up event listener
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
 
-  // Delete a review
   const deleteReview = (reviewId) => {
     const updatedReviews = reviews.filter((review) => review.id !== reviewId);
     setReviews(updatedReviews);
     localStorage.setItem("customerReviews", JSON.stringify(updatedReviews));
   };
 
-  // Format date for display
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen text-black bg-white">
       <AdminNavbar />
 
       {/* Admin Reviews Management Section */}
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+      <div className="container px-4 py-8 mx-auto">
+        <h1 className="mb-6 text-3xl font-bold text-gray-800">
           Manage Customer Reviews
         </h1>
 
         {reviews.length === 0 ? (
-          <div className="bg-gray-100 rounded-lg p-8 text-center mb-12">
+          <div className="p-8 mb-12 text-center bg-gray-100 rounded-lg">
             <p className="text-gray-500">No reviews have been submitted yet.</p>
           </div>
         ) : (
@@ -81,23 +73,23 @@ const ManageReviews = () => {
               {reviews.map((review) => (
                 <div
                   key={review.id}
-                  className="bg-white border border-gray-200 rounded-lg p-6 shadow-lg"
+                  className="p-6 bg-white border border-gray-200 rounded-lg shadow-lg"
                 >
-                  <div className="flex justify-between items-start">
+                  <div className="flex items-start justify-between">
                     <div>
-                      <h3 className="font-bold text-lg text-gray-800">
+                      <h3 className="text-lg font-bold text-gray-800">
                         {review.name}
                       </h3>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-sm text-gray-400">
                         {formatDate(review.timestamp)}
                       </p>
                     </div>
                     <button
                       onClick={() => deleteReview(review.id)}
-                      className="text-gray-500 hover:text-red-500 transition-colors"
+                      className="text-gray-500 transition-colors hover:text-red-500"
                       title="Delete review"
                     >
-                      <Trash2 className="h-5 w-5" />
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
 
@@ -127,13 +119,13 @@ const ManageReviews = () => {
       <Feedback />
 
       {/* Contact Requests Section */}
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">
+      <div className="container px-4 py-8 mx-auto">
+        <h2 className="mb-6 text-3xl font-bold text-gray-800">
           Contact Requests
         </h2>
 
         {contacts.length === 0 ? (
-          <div className="bg-gray-100 rounded-lg p-8 text-center">
+          <div className="p-8 text-center bg-gray-100 rounded-lg">
             <p className="text-gray-500">No contact requests submitted yet.</p>
           </div>
         ) : (
@@ -141,17 +133,17 @@ const ManageReviews = () => {
             {contacts.map((contact) => (
               <div
                 key={contact._id}
-                className="bg-white border border-gray-200 rounded-lg p-6 shadow-lg"
+                className="p-6 bg-white border border-gray-200 rounded-lg shadow-lg"
               >
-                <h3 className="font-bold text-lg text-gray-800">
+                <h3 className="text-lg font-bold text-gray-800">
                   {contact.firstName} {contact.lastName}
                 </h3>
-                <p className="text-sm text-gray-400 mb-1">{contact.email}</p>
-                <p className="text-sm text-gray-400 mb-1 italic">
+                <p className="mb-1 text-sm text-gray-400">{contact.email}</p>
+                <p className="mb-1 text-sm italic text-gray-400">
                   {contact.queryType}
                 </p>
-                <p className="text-gray-700 mt-2">{contact.message}</p>
-                <p className="text-xs text-gray-400 mt-3">
+                <p className="mt-2 text-gray-700">{contact.message}</p>
+                <p className="mt-3 text-xs text-gray-400">
                   {new Date(contact.createdAt).toLocaleString()}
                 </p>
               </div>

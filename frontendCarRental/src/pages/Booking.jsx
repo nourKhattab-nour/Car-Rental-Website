@@ -139,16 +139,16 @@ function Booking() {
             <img
               src={car.image}
               alt={car.name}
-              className="w-full h-full object-cover absolute top-0 left-0 rounded-t-lg md:rounded-l-lg md:rounded-t-none"
+              className="absolute top-0 left-0 object-cover w-full h-full rounded-t-lg md:rounded-l-lg md:rounded-t-none"
             />
             {isSelected && (
               <div className="absolute top-2 right-2 bg-[#4d9fff] text-white p-1 rounded-full">
-                <Check className="h-4 w-4" />
+                <Check className="w-4 h-4" />
               </div>
             )}
           </div>
           <div className="col-span-2 p-6">
-            <h3 className="text-xl font-bold mb-2">{car.name}</h3>
+            <h3 className="mb-2 text-xl font-bold">{car.name}</h3>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="flex items-center gap-2">
                 <Car className="h-4 w-4 text-[#4d9fff]" />
@@ -169,10 +169,10 @@ function Booking() {
                 <span className="text-sm text-gray-300">GPS Navigation</span>
               </div>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <div>
                 <span className="text-2xl font-bold">${car.price}</span>
-                <span className="text-gray-400 text-sm"> / day</span>
+                <span className="text-sm text-gray-400"> / day</span>
               </div>
               <button
                 type="button"
@@ -193,18 +193,18 @@ function Booking() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary text-white">
+    <div className="min-h-screen text-white bg-secondary">
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container px-4 py-8 mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-2">Book Your Ride</h1>
+          <h1 className="mb-2 text-4xl font-bold">Book Your Ride</h1>
           <p className="text-gray-400">
             Select your preferred vehicle and booking details
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <div className="w-full">
               <div className="grid grid-cols-4 mb-6 border-b border-zinc-800">
@@ -247,10 +247,10 @@ function Booking() {
               {(formikProps) => (
                 <Form className="bg-[#111111] border border-zinc-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-zinc-800">
-                    <h2 className="text-xl font-semibold mb-1">
+                    <h2 className="mb-1 text-xl font-semibold">
                       Booking Details
                     </h2>
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-sm text-gray-400">
                       Fill in your rental information
                     </p>
                   </div>
@@ -258,10 +258,10 @@ function Booking() {
                   <div className="p-6 space-y-4">
                     {selectedCar && (
                       <div className="mb-4 p-3 bg-[#1e293b] rounded-md">
-                        <p className="text-sm text-gray-300 mb-1">
+                        <p className="mb-1 text-sm text-gray-300">
                           Selected Vehicle:
                         </p>
-                        <div className="flex justify-between items-center">
+                        <div className="flex items-center justify-between">
                           <p className="font-medium">
                             {Object.values(cars)
                               .flat()
@@ -307,7 +307,7 @@ function Booking() {
                       <ErrorMessage
                         name="pickupLocation"
                         component="div"
-                        className="text-red-500 text-xs mt-1"
+                        className="mt-1 text-xs text-red-500"
                       />
                     </div>
 
@@ -338,7 +338,7 @@ function Booking() {
                       <ErrorMessage
                         name="dropoffLocation"
                         component="div"
-                        className="text-red-500 text-xs mt-1"
+                        className="mt-1 text-xs text-red-500"
                       />
                     </div>
 
@@ -379,14 +379,14 @@ function Booking() {
 
                     {calculateRentalDetails() && (
                       <div className="p-3 bg-[#1e293b] rounded-md">
-                        <div className="flex justify-between items-center mb-1">
+                        <div className="flex items-center justify-between mb-1">
                           <p className="text-sm text-gray-300">Duration:</p>
                           <p className="font-medium">
                             {calculateRentalDetails().days} day
                             {calculateRentalDetails().days !== 1 ? "s" : ""}
                           </p>
                         </div>
-                        <div className="flex justify-between items-center">
+                        <div className="flex items-center justify-between">
                           <p className="text-sm text-gray-300">Total Price:</p>
                           <p className="text-[#4d9fff] font-medium">
                             ${calculateRentalDetails().totalPrice}
@@ -395,7 +395,7 @@ function Booking() {
                       </div>
                     )}
 
-                    <div className="h-px bg-zinc-800 my-4"></div>
+                    <div className="h-px my-4 bg-zinc-800"></div>
 
                     <div className="space-y-2">
                       <label
@@ -413,7 +413,7 @@ function Booking() {
                       <ErrorMessage
                         name="fullName"
                         component="div"
-                        className="text-red-500 text-xs mt-1"
+                        className="mt-1 text-xs text-red-500"
                       />
                     </div>
 
@@ -434,7 +434,7 @@ function Booking() {
                       <ErrorMessage
                         name="email"
                         component="div"
-                        className="text-red-500 text-xs mt-1"
+                        className="mt-1 text-xs text-red-500"
                       />
                     </div>
 
@@ -454,7 +454,7 @@ function Booking() {
                       <ErrorMessage
                         name="phone"
                         component="div"
-                        className="text-red-500 text-xs mt-1"
+                        className="mt-1 text-xs text-red-500"
                       />
                     </div>
                   </div>
@@ -474,7 +474,7 @@ function Booking() {
                         : "Continue to Payment"}
                     </button>
                     {!selectedCar && (
-                      <p className="text-center text-sm text-gray-400 mt-2">
+                      <p className="mt-2 text-sm text-center text-gray-400">
                         Please select a vehicle first
                       </p>
                     )}
