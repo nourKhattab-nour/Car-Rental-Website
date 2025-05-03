@@ -80,6 +80,15 @@ const Navbar = () => {
             Booking
           </a>
 
+          {isLoggedIn ? (
+            <a
+              href="/profile"
+              className="hover:text-primary transition duration-200 ease-linear"
+            >
+              Profile
+            </a>
+          ) : null}
+
           {/* Log In / Log Out Button */}
           <button
             onClick={handleAuthClick}

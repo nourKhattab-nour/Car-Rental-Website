@@ -1,12 +1,8 @@
-// Enhanced version of the payment component with a more styled layout using Tailwind CSS
-"use client";
-
 import { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { MdCheckBox } from "react-icons/md";
 
 export default function Payment() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
@@ -73,7 +69,7 @@ export default function Payment() {
   const formatDate = (date) =>
     date ? new Date(date).toLocaleDateString() : "-";
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     setIsProcessing(true);
     console.log("Submitting payment:", values);
 
@@ -81,13 +77,46 @@ export default function Payment() {
       setIsProcessing(false);
       setShowSuccess(true);
       setSubmitting(false);
-      setTimeout(() => alert("Payment successful"), 1500);
     }, 1500);
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) {
+        console.error("User not found in localStorage");
+        return;
+      }
+
+      const response = await fetch(`http://localhost:3000/api/payments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          booking: {
+            carName: booking.carName,
+            carImage: booking.carImage,
+            carCategory: booking.carCategory,
+            totalPrice: booking.totalPrice,
+          },
+          paymentDetails: values,
+          method: paymentMethod,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Payment Error:", errorData);
+      }
+    } catch (error) {
+      console.error("Network Error:", error);
+    } finally {
+      setIsProcessing(false);
+      setSubmitting(false);
+    }
   };
 
   if (!booking) {
     return (
-      <div className="min-h-screen bg-secondary text-white">
+      <div className="min-h-screen text-white bg-secondary">
         <Navbar />
         <div className="flex items-center justify-center py-16">
           Loading booking info...
@@ -98,38 +127,38 @@ export default function Payment() {
   }
 
   return (
-    <div className="min-h-screen bg-secondary text-white">
+    <div className="min-h-screen text-white bg-secondary">
       <Navbar />
-      <div className="max-w-6xl mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-6xl px-4 py-10 mx-auto">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Left section: booking & payment */}
           <div className="lg:col-span-2">
-            <h1 className="text-3xl font-bold mb-2">Complete Your Payment</h1>
-            <p className="text-gray-400 mb-6">
+            <h1 className="mb-2 text-3xl font-bold">Complete Your Payment</h1>
+            <p className="mb-6 text-gray-400">
               Please review your booking and enter your payment details.
             </p>
 
             <div className="bg-[#111] border border-gray-700 rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Booking Summary</h2>
+              <h2 className="mb-4 text-xl font-semibold">Booking Summary</h2>
               <div className="flex items-center gap-4 mb-4">
                 <img
                   src={booking.carImage}
                   alt={booking.carName}
-                  className="h-20 w-32 object-cover rounded"
+                  className="object-cover w-32 h-20 rounded"
                 />
                 <div>
                   <h3 className="text-lg font-medium">{booking.carName}</h3>
                   <p className="text-sm text-gray-400">{booking.carCategory}</p>
                 </div>
               </div>
-              <div className="text-sm text-gray-300 space-y-1">
+              <div className="space-y-1 text-sm text-gray-300">
                 <p>Pickup: {formatDate(booking.pickupDate)}</p>
                 <p>Drop-off: {formatDate(booking.returnDate)}</p>
               </div>
             </div>
 
             <div className="bg-[#111] border border-gray-700 rounded-lg p-6">
-              <div className="mb-4 flex border-b border-gray-700">
+              <div className="flex mb-4 border-b border-gray-700">
                 <button
                   onClick={() => setPaymentMethod("credit-card")}
                   className={`py-2 px-4 font-medium ${
@@ -174,12 +203,12 @@ export default function Payment() {
                           <Field
                             name="cardholderName"
                             placeholder="Cardholder Name"
-                            className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-600"
+                            className="w-full px-4 py-2 text-white bg-gray-800 border border-gray-600 rounded"
                           />
                           <ErrorMessage
                             name="cardholderName"
                             component="div"
-                            className="text-red-400 text-sm"
+                            className="text-sm text-red-400"
                           />
                         </div>
                         <div>
@@ -187,7 +216,7 @@ export default function Payment() {
                             name="cardNumber"
                             placeholder="Card Number"
                             maxLength={19}
-                            className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-600"
+                            className="w-full px-4 py-2 text-white bg-gray-800 border border-gray-600 rounded"
                             onChange={(e) =>
                               setFieldValue(
                                 "cardNumber",
@@ -198,7 +227,7 @@ export default function Payment() {
                           <ErrorMessage
                             name="cardNumber"
                             component="div"
-                            className="text-red-400 text-sm"
+                            className="text-sm text-red-400"
                           />
                         </div>
                         <div className="flex gap-4">
@@ -206,7 +235,7 @@ export default function Payment() {
                             <Field
                               as="select"
                               name="expiryMonth"
-                              className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-600"
+                              className="w-full px-4 py-2 text-white bg-gray-800 border border-gray-600 rounded"
                             >
                               <option value="">Month</option>
                               {[...Array(12)].map((_, i) => (
@@ -218,14 +247,14 @@ export default function Payment() {
                             <ErrorMessage
                               name="expiryMonth"
                               component="div"
-                              className="text-red-400 text-sm"
+                              className="text-sm text-red-400"
                             />
                           </div>
                           <div className="w-1/2">
                             <Field
                               as="select"
                               name="expiryYear"
-                              className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-600"
+                              className="w-full px-4 py-2 text-white bg-gray-800 border border-gray-600 rounded"
                             >
                               <option value="">Year</option>
                               {[...Array(10)].map((_, i) => (
@@ -235,7 +264,7 @@ export default function Payment() {
                             <ErrorMessage
                               name="expiryYear"
                               component="div"
-                              className="text-red-400 text-sm"
+                              className="text-sm text-red-400"
                             />
                           </div>
                         </div>
@@ -244,13 +273,13 @@ export default function Payment() {
                           <Field
                             name="cvc"
                             placeholder="CVC"
-                            className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-600"
-                            maxLength={4}
+                            className="w-full px-4 py-2 text-white bg-gray-800 border border-gray-600 rounded"
+                            maxLength={3}
                           />
                           <ErrorMessage
                             name="cvc"
                             component="div"
-                            className="text-red-400 text-sm"
+                            className="text-sm text-red-400"
                           />
                         </div>
                       </>
@@ -267,7 +296,7 @@ export default function Payment() {
                         type="checkbox"
                         id="terms"
                         name="terms"
-                        className="mt-1 h-4 w-4 rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900"
+                        className="w-4 h-4 mt-1 text-blue-500 border-gray-600 rounded focus:ring-blue-500 focus:ring-offset-gray-900"
                       />
                       <div>
                         <label
@@ -276,7 +305,7 @@ export default function Payment() {
                         >
                           I agree to the terms and conditions
                         </label>
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="mt-1 text-xs text-gray-400">
                           By checking this box, you agree to our{" "}
                           <span>Terms of Service</span> and{" "}
                           <span>Privacy Policy</span>.
@@ -286,13 +315,13 @@ export default function Payment() {
                     <ErrorMessage
                       name="terms"
                       component="div"
-                      className="text-red-400 text-sm"
+                      className="text-sm text-red-400"
                     />
 
                     <button
                       type="submit"
                       disabled={isSubmitting || isProcessing}
-                      className="w-full py-2 rounded bg-blue-500 hover:bg-blue-600 text-white font-medium"
+                      className="w-full py-2 font-medium text-white bg-blue-500 rounded hover:bg-blue-600"
                     >
                       {isProcessing
                         ? "Processing..."
@@ -311,8 +340,8 @@ export default function Payment() {
           {/*price summary */}
           <div>
             <div className="bg-[#111] border border-gray-700 rounded-lg p-6 lg:mt-[90px]">
-              <h2 className="text-lg font-bold mb-4">Price Details</h2>
-              <div className="text-sm space-y-2">
+              <h2 className="mb-4 text-lg font-bold">Price Details</h2>
+              <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-gray-300">
                   <span>Base rate ({booking.rentalDetails.days} days)</span>
                   <span>${booking.rentalDetails.totalPrice.toFixed(2)}</span>
@@ -321,13 +350,13 @@ export default function Payment() {
                   <span>Taxes & fees</span>
                   <span>${booking.taxes.toFixed(2)}</span>
                 </div>
-                <div className="border-t border-gray-700 pt-2 flex justify-between font-medium">
+                <div className="flex justify-between pt-2 font-medium border-t border-gray-700">
                   <span className="text-white">Total</span>
                   <span className="text-white">
                     ${booking.totalPrice.toFixed(2)}
                   </span>
                 </div>
-                <div className="mt-4 text-xs text-gray-400 bg-gray-800 p-3 rounded">
+                <div className="p-3 mt-4 text-xs text-gray-400 bg-gray-800 rounded">
                   <p className="mb-1 font-semibold text-white">
                     Free Cancellation
                   </p>

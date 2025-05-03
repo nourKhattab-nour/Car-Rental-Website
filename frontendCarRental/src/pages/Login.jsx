@@ -130,21 +130,6 @@ function Login() {
                     />
                   </div>
 
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 bg-[#111111] border-zinc-700 rounded focus:ring-blue-500 focus:ring-offset-[#0f172a]"
-                    />
-                    <label
-                      htmlFor="remember-me"
-                      className="ml-2 block text-sm text-gray-300"
-                    >
-                      Remember me
-                    </label>
-                  </div>
-
                   <div>
                     <button
                       type="submit"

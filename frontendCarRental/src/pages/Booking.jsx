@@ -22,7 +22,7 @@ function Booking() {
           const key = car.category.toLowerCase();
           if (!acc[key]) acc[key] = [];
           acc[key].push({
-            id: car.id,
+            id: car._id,
             name: car.title,
             category: car.category,
             passengers: car.passengers || 5,

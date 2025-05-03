@@ -16,6 +16,7 @@ import AdminLogin from "./pages/AdminLogin.jsx";
 import ManageReviews from "./pages/ManageReviews.jsx";
 import AdminCars from "./pages/AdminCars.jsx";
 import Register from "./pages/Register.jsx";
+import Profile from "./pages/Profile.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="managereviews" element={<ManageReviews />} />
         <Route path="admincars" element={<AdminCars />} />
         <Route path="register" element={<Register />} />
+        <Route path="profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

@@ -43,11 +43,11 @@ const Cars = () => {
       filteredProducts = cars.filter((p) => p.category === "Economy");
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      <div className="grid grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProducts?.map((data) => (
           <div
-            key={data.id}
-            onClick={() => handleCardClick(data.id)}
+            key={data._id}
+            onClick={() => handleCardClick(data._id)}
             className={`cursor-pointer p-4 border rounded-lg transition-all ${
               selectedCard === data.id
                 ? "border-[#4d9fff] shadow-lg scale-105 bg-[#111111]"
@@ -57,7 +57,7 @@ const Cars = () => {
             <img
               src={data.img || "/placeholder.svg"}
               alt={data.title}
-              className="w-full h-60 object-cover rounded-md"
+              className="object-cover w-full rounded-md h-60"
             />
             <div className="mt-3">
               <h3 className="font-semibold text-white">{data.title}</h3>
@@ -87,17 +87,17 @@ const Cars = () => {
   return (
     <>
       <Navbar />
-      <div className="w-full flex flex-col items-center py-10 bg-secondary">
-        <h6 className="text-lg text-gray-400 uppercase font-medium tracking-widest">
+      <div className="flex flex-col items-center w-full py-10 bg-secondary">
+        <h6 className="text-lg font-medium tracking-widest text-gray-400 uppercase">
           What brands we offer?
         </h6>
-        <h1 className="md:text-5xl text-2xl font-bold text-center text-white">
+        <h1 className="text-2xl font-bold text-center text-white md:text-5xl">
           Featured <span className="text-[#4d9fff]">Services</span>
         </h1>
       </div>
 
-      <div className="py-5 flex justify-center bg-secondary">
-        <ul className="flex space-x-4 border-b border-gray-700 pb-2">
+      <div className="flex justify-center py-5 bg-secondary">
+        <ul className="flex pb-2 space-x-4 border-b border-gray-700">
           {["profile", "dashboard", "settings", "contacts"].map((tab) => (
             <li key={tab}>
               <button
