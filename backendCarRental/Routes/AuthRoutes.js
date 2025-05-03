@@ -1,5 +1,4 @@
 import { Router } from "express";
-import authMiddleware from "../middlewares/Authmiddleware.js";
 import {
   login,
   register,

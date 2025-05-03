@@ -4,7 +4,6 @@ import carController from "../Controllers/AdminCars.js";
 
 const router = express.Router();
 
-// Use methods from carController object
 router.get("/cars", carController.getAllCars);
 router.get("/cars/:id", carController.getCarById);
 router.post("/cars", carController.createCar);

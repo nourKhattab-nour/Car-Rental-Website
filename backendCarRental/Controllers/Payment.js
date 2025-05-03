@@ -12,7 +12,7 @@ export const createPayment = async (req, res) => {
       user: userId,
       carName: booking.carName || "N/A",
       carCategory: booking.carCategory || "N/A",
-      carImage: booking.carImage || "", // Add this line
+      carImage: booking.carImage || "",
       amount: booking.totalPrice || 0,
       method,
       status: "Completed",
@@ -22,7 +22,7 @@ export const createPayment = async (req, res) => {
     await newPayment.save();
     res.status(201).json({ message: "Payment recorded", payment: newPayment });
   } catch (error) {
-    console.error("💥 Payment Error:", error);
+    console.error(" Payment Error:", error);
     res.status(500).json({ error: "Failed to record payment" });
   }
 };

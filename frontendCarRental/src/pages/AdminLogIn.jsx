@@ -34,7 +34,6 @@ function Login() {
 
       const contentType = response.headers.get("content-type");
 
-      // Ensure response is JSON
       if (!contentType || !contentType.includes("application/json")) {
         throw new Error("Server did not return JSON");
       }

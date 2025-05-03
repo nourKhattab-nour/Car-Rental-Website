@@ -14,7 +14,6 @@ const Cars = () => {
       const response = await fetch("http://localhost:3000/api/cars");
       const data = await response.json();
       setCars(data);
-      //console.log(data);
     };
     fetchCars();
   }, []);
@@ -24,7 +23,6 @@ const Cars = () => {
   const handleCardClick = (id) => {
     setSelectedCard(id);
 
-    // Store selected car ID in localStorage
     localStorage.setItem("selectedCarId", id);
 
     setTimeout(() => {

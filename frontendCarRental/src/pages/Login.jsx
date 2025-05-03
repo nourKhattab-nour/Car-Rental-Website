@@ -8,7 +8,6 @@ import Footer from "../components/Footer";
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  // Validation schema using Yup
   const validationSchema = object().shape({
     email: string()
       .email("Invalid email address")

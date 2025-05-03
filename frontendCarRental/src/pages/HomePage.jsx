@@ -1,11 +1,11 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import Home from "../components/Home Components/Home/Home"; // Import Home component
-import Products from "../components/Home Components/Products/product"; // Import Products component
-import Subscribe from "../components/Home Components/Subscribe/subscribe"; // Import Subscribe component
-import TopProducts from "../components/Home Components/TopProducts/TopProducts"; // Import TopProducts component
-import Feedback from "../components/Home Components/Feedback/Feedback"; // Import Feedback component
-import Footer from "../components/Footer"; // Import Footer component
+import Home from "../components/Home Components/Home/Home";
+import Products from "../components/Home Components/Products/product";
+import Subscribe from "../components/Home Components/Subscribe/subscribe";
+import TopProducts from "../components/Home Components/TopProducts/TopProducts";
+import Feedback from "../components/Home Components/Feedback/Feedback";
+import Footer from "../components/Footer";
 
 const HomePage = () => {
   return (
