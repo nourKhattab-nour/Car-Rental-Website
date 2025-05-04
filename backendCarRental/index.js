@@ -5,6 +5,7 @@ import ContactUs from "./Routes/ContactUs.js";
 import Cars from "./Routes/Cars.js";
 import authRoutes from "./Routes/AuthRoutes.js";
 import PaymentRoutes from "./Routes/Payment.js";
+import SubmitReview from "./Routes/SubmitReview.js";
 dotenv.config();
 
 import cors from "cors";
@@ -35,3 +36,5 @@ app.get("/", (req, res) => {
 app.use("/api", PaymentRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/review", SubmitReview)

@@ -2,15 +2,23 @@ import { compare } from "bcryptjs";
 import User from "../Models/User.js";
 
 export const register = async (req, res) => {
+
+  
   const { email, password } = req.body;
+  console.log(email, password);
+  
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const user = await User.create({ email, password });
+    const user = new User({ email, password });
+    user.save();
+    console.log(user);
+
     const token = user.generateToken();
+
     res.status(201).json({
       token,
       user: { id: user._id, email: user.email },

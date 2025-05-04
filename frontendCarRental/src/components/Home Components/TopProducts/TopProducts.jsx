@@ -5,13 +5,13 @@ const TopProducts = () => {
   const handleOrderPopup = () => {
     alert("Order popup triggered!");
   };
-  const [cars, setCars] = useState(null);
+  const [cars, setCars] = useState([]);
 
   useEffect(() => {
     const fetchCars = async () => {
       const response = await fetch("http://localhost:3000/api/cars");
       const data = await response.json();
-      setCars(data);
+      setCars(data.data);
       //console.log(data);
     };
     fetchCars();

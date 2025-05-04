@@ -19,6 +19,8 @@ function Register() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
+      console.log(values);
+      
       const response = await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
         headers: {
@@ -38,6 +40,8 @@ function Register() {
 
       window.location.href = "/HomePage";
     } catch (error) {
+      console.log(error.errors);
+      
       setErrors({ email: " ", password: error.message });
     } finally {
       setSubmitting(false);

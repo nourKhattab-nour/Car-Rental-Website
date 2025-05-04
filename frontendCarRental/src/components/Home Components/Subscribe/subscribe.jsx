@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { object, string, number } from "yup";
 import { Star } from "lucide-react";
+import axios from "axios";
 
 const Subscribe = () => {
   const [submitted, setSubmitted] = React.useState(false);
@@ -25,6 +26,13 @@ const Subscribe = () => {
       timestamp: new Date().toISOString(),
       id: Date.now(),
     };
+    console.log("New review:", newReview);
+    
+    axios.post("http://127.0.0.1:3000/api/review/SubmitReview", newReview).then((response) => {
+      console.log("Review submitted successfully:", response.data);
+    }).catch((error) => {
+      console.error("Error submitting review:", error);
+    });
 
     const existingReviews = JSON.parse(
       localStorage.getItem("customerReviews") || "[]"

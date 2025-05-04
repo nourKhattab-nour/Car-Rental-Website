@@ -2,14 +2,15 @@ import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa6";
 
 const Product = () => {
-  const [cars, setCars] = useState(null);
+  const [cars, setCars] = useState([]);
 
   useEffect(() => {
     const fetchCars = async () => {
       const response = await fetch("http://localhost:3000/api/cars");
       const data = await response.json();
-      setCars(data);
-      //console.log(data);
+      setCars(data.data);
+      console.log(data);
+      console.log(data.data);
     };
     fetchCars();
   }, []);
