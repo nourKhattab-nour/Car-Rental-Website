@@ -17,8 +17,15 @@ export default function Payment() {
     }),
     cardNumber: Yup.string().when("paymentMethod", {
       is: "credit-card",
-      then: () => Yup.string().required("Card number is required"),
+      then: () =>
+        Yup.string()
+          .required("Card number is required")
+          .matches(
+            /^\d{4}\s\d{4}\s\d{4}\s\d{4}$/,
+            "Card number must be 16 digits"
+          ),
     }),
+
     expiryMonth: Yup.string().when("paymentMethod", {
       is: "credit-card",
       then: () => Yup.string().required("Required"),
