@@ -11,16 +11,32 @@ function Register() {
   const validationSchema = object().shape({
     email: string()
       .email("Invalid email address")
-      .required("Email is required"),
+      .required("Email is required")
+      .matches(/^[^@]+@[^@]+\.[^@]+$/, "Invalid email format")
+      .test(
+        "no-test-domain",
+        "Email domain '.test' is not supported",
+        (value) => {
+          return value && !value.endsWith(".test");
+        }
+      ),
     password: string()
       .min(8, "Password must be at least 8 characters")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+      .matches(/\d/, "Password must contain at least one number")
+      .matches(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Password must contain at least one special character"
+      )
+      .notOneOf(["password"], 'Password cannot be "password"')
       .required("Password is required"),
   });
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       console.log(values);
-      
+
       const response = await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
         headers: {
@@ -41,8 +57,8 @@ function Register() {
       window.location.href = "/HomePage";
     } catch (error) {
       console.log(error.errors);
-      
-      setErrors({ email: " ", password: error.message });
+
+      setErrors({ password: error.message });
     } finally {
       setSubmitting(false);
     }
