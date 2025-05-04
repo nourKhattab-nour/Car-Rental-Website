@@ -2,11 +2,8 @@ import { compare } from "bcryptjs";
 import User from "../Models/User.js";
 
 export const register = async (req, res) => {
-
-  
   const { email, password } = req.body;
-  console.log(email, password);
-  
+
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -15,7 +12,6 @@ export const register = async (req, res) => {
 
     const user = new User({ email, password });
     user.save();
-    console.log(user);
 
     const token = user.generateToken();
 
