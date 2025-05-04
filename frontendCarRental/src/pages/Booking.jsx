@@ -18,7 +18,7 @@ function Booking() {
         const response = await fetch("http://localhost:3000/api/cars");
         const data = await response.json();
 
-        const grouped = data.reduce((acc, car) => {
+        const grouped = data.data.reduce((acc, car) => {
           const key = car.category.toLowerCase();
           if (!acc[key]) acc[key] = [];
           acc[key].push({

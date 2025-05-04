@@ -43,12 +43,15 @@ export default function AdminCars() {
     try {
       const res = await fetch("http://localhost:3000/api/cars", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: JSON.stringify(car),
       });
       if (!res.ok) throw new Error("Failed to create");
-      const newCar = await res.json();
-      setCars((prev) => [...prev, newCar]);
+      const { data: newCar } = await res.json(); // ✅ fix
+      await fetchCarsFromBackend(); // ✅ refresh list
       toast.success(`${newCar.make} ${newCar.model} added!`);
     } catch (error) {
       toast.error("Error adding car");
@@ -59,14 +62,15 @@ export default function AdminCars() {
     try {
       const res = await fetch(`http://localhost:3000/api/cars/${car._id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: JSON.stringify(car),
       });
       if (!res.ok) throw new Error("Failed to update");
-      const updatedCar = await res.json();
-      setCars((prev) =>
-        prev.map((c) => (c._id === updatedCar._id ? updatedCar : c))
-      );
+      const { data: updatedCar } = await res.json(); // ✅ fix
+      await fetchCarsFromBackend(); // ✅ refresh list
       toast.success(`${updatedCar.make} ${updatedCar.model} updated!`);
       setEditingCar(null);
     } catch (error) {
@@ -78,6 +82,10 @@ export default function AdminCars() {
     try {
       const res = await fetch(`http://localhost:3000/api/cars/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
       if (!res.ok) throw new Error("Failed to delete");
       setCars((prev) => prev.filter((car) => car._id !== id));
@@ -93,16 +101,16 @@ export default function AdminCars() {
 
   const handleFormSubmit = (values, { resetForm }) => {
     const carData = {
-      make: values.make,
-      model: values.model,
-      year: values.year,
-      price: `$${values.price}/day`,
-      totalPrice: values.totalPrice,
-      color: values.color,
-      img: values.img,
-      description: values.description,
+      make: values.make.trim(),
+      model: values.model.trim(),
+      year: String(values.year),
+      price: values.price.trim(),
+      totalPrice: values.totalPrice.trim(),
+      color: values.color.trim(),
+      img: values.img.trim(),
+      description: values.description?.trim() || "",
       available: true,
-      rating: values.rating,
+      rating: Number(values.rating),
       category: values.category,
     };
 
@@ -331,8 +339,11 @@ export default function AdminCars() {
                         {car.year}
                       </td>
                       <td className="p-2 border-b border-gray-100">
-                        {car.price}
+                        {isNaN(Number(car.price))
+                          ? car.price
+                          : `$${car.price}/day`}
                       </td>
+
                       <td className="p-2 border-b border-gray-100">
                         {car.totalPrice}
                       </td>

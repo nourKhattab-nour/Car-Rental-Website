@@ -73,12 +73,6 @@ export default function Payment() {
     setIsProcessing(true);
     console.log("Submitting payment:", values);
 
-    setTimeout(() => {
-      setIsProcessing(false);
-      setShowSuccess(true);
-      setSubmitting(false);
-    }, 1500);
-
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
@@ -86,9 +80,14 @@ export default function Payment() {
         return;
       }
 
+      const expiryDate = `${values.expiryMonth}/${values.expiryYear.slice(-2)}`;
+
       const response = await fetch(`http://localhost:3000/api/payments`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: JSON.stringify({
           userId: user.id,
           booking: {
@@ -97,7 +96,12 @@ export default function Payment() {
             carCategory: booking.carCategory,
             totalPrice: booking.totalPrice,
           },
-          paymentDetails: values,
+          paymentDetails: {
+            cardholderName: values.cardholderName.trim(),
+            cardNumber: values.cardNumber.replace(/\s/g, ""),
+            expiryDate,
+            cvv: values.cvc,
+          },
           method: paymentMethod,
         }),
       });
@@ -105,6 +109,8 @@ export default function Payment() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Payment Error:", errorData);
+      } else {
+        setShowSuccess(true);
       }
     } catch (error) {
       console.error("Network Error:", error);

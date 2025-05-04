@@ -31,7 +31,12 @@ const Profile = () => {
       console.log("Fetching rentals for user ID:", userId);
 
       const response = await fetch(
-        `http://localhost:3000/api/payments/${userId}`
+        `http://localhost:3000/api/payments/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       if (!response.ok) {
@@ -40,7 +45,7 @@ const Profile = () => {
 
       const data = await response.json();
       console.log("Received rental data:", data);
-      setUserRentals(data);
+      setUserRentals(data.data);
     } catch (err) {
       console.error("Error fetching rentals:", err);
       setError(err.message);
@@ -129,7 +134,7 @@ const Profile = () => {
                     </div>
                     <div className="mt-2">
                       <h2 className="text-xl font-semibold text-[#4d9fff]">
-                        ${rental.amount.toFixed(2)}
+                        ${rental.amount}
                       </h2>
                     </div>
                   </div>
