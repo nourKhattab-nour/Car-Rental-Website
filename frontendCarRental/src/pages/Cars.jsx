@@ -13,7 +13,8 @@ const Cars = () => {
     const fetchCars = async () => {
       const response = await fetch("http://localhost:3000/api/cars");
       const data = await response.json();
-      setCars(data);
+      setCars(data.data);
+      console.log(data);
     };
     fetchCars();
   }, []);
@@ -34,11 +35,11 @@ const Cars = () => {
     let filteredProducts = cars;
 
     if (activeTab === "dashboard")
-      filteredProducts = cars.filter((p) => p.category === "Luxury");
+      filteredProducts = cars?.filter((p) => p.category === "Luxury");
     if (activeTab === "settings")
-      filteredProducts = cars.filter((p) => p.category === "Business");
+      filteredProducts = cars?.filter((p) => p.category === "Business");
     if (activeTab === "contacts")
-      filteredProducts = cars.filter((p) => p.category === "Economy");
+      filteredProducts = cars?.filter((p) => p.category === "Economy");
 
     return (
       <div className="grid grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3">

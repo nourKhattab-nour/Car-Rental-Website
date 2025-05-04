@@ -10,9 +10,15 @@ const ManageReviews = () => {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/contact");
+        const res = await fetch("http://localhost:3000/api/contact", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
         const data = await res.json();
-        setContacts(data);
+        setContacts(data.data);
+        console.log(data);
       } catch (err) {
         console.error("Failed to fetch contact requests", err);
       }

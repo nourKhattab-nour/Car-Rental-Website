@@ -33,7 +33,7 @@ export default function AdminCars() {
     try {
       const res = await fetch("http://localhost:3000/api/cars");
       const data = await res.json();
-      setCars(data);
+      setCars(data.data);
     } catch (error) {
       toast.error("Failed to fetch cars");
     }
