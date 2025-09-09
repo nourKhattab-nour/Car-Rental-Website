@@ -2,7 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import { Routes, Route, BrowserRouter } from "react-router";
+import { Routes, Route, BrowserRouter } from "react-router-dom"; 
+
 import Payment from "./pages/payment.jsx";
 import Blogs from "./pages/Blogs.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -20,20 +21,18 @@ import Profile from "./pages/Profile.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/Car-Rental-Website">
+      {" "}
+    
       <Routes>
         <Route index element={<App />} />
         <Route path="payment" element={<Payment />} />
         <Route path="blogs" element={<Blogs />} />
         <Route path="homePage" element={<HomePage />} />
         <Route path="aboutUs" element={<AboutUs />} />
-
         <Route path="cars" element={<Cars />} />
-
         <Route path="booking" element={<Booking />} />
-        <Route path="cars" element={<Cars />} />
-
-        <Route path="QA" element={<QA />} />
+        <Route path="qa" element={<QA />} /> {}
         <Route path="login" element={<Login />} />
         <Route path="contactus" element={<Contactus />} />
         <Route path="adminLogin" element={<AdminLogin />} />
