@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoSpeedometer } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import { HiMenu, HiX } from "react-icons/hi"; // Hamburger & close icons
+import { useNavigate, Link } from "react-router-dom"; 
+import { HiMenu, HiX } from "react-icons/hi"; 
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -26,42 +26,42 @@ const Navbar = () => {
         {/* Logo Section */}
         <div className="flex items-center gap-2">
           <IoSpeedometer size={40} />
-          <a href="/" className="font-bold text-2xl">
+          <Link to="/" className="font-bold text-2xl">
             NovaRide
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-8 font-medium text-lg">
-          <a href="/HomePage" className="hover:text-primary transition">
+          <Link to="/homePage" className="hover:text-primary transition">
             Home
-          </a>
-          <a href="/aboutUs" className="hover:text-primary transition">
+          </Link>
+          <Link to="/aboutUs" className="hover:text-primary transition">
             About Us
-          </a>
-          <a href="/contactus" className="hover:text-primary transition">
+          </Link>
+          <Link to="/contactus" className="hover:text-primary transition">
             Contact Us
-          </a>
-          <a href="/qa" className="hover:text-primary transition">
+          </Link>
+          <Link to="/qa" className="hover:text-primary transition">
             Q&A
-          </a>
-          <a href="/cars" className="hover:text-primary transition">
+          </Link>
+          <Link to="/cars" className="hover:text-primary transition">
             Cars
-          </a>
-          <a href="/blogs" className="hover:text-primary transition">
+          </Link>
+          <Link to="/blogs" className="hover:text-primary transition">
             Blogs
-          </a>
-          <a href="/payment" className="hover:text-primary transition">
+          </Link>
+          <Link to="/payment" className="hover:text-primary transition">
             Payment
-          </a>
-          <a href="/booking" className="hover:text-primary transition">
+          </Link>
+          <Link to="/booking" className="hover:text-primary transition">
             Booking
-          </a>
+          </Link>
 
           {isLoggedIn && (
-            <a href="/profile" className="hover:text-primary transition">
+            <Link to="/profile" className="hover:text-primary transition">
               Profile
-            </a>
+            </Link>
           )}
 
           {/* Log In / Log Out Button */}
@@ -85,35 +85,35 @@ const Navbar = () => {
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
         <div className="lg:hidden flex flex-col items-center gap-4 mt-4 text-lg font-medium">
-          <a href="/HomePage" onClick={() => setMenuOpen(false)}>
+          <Link to="/homePage" onClick={() => setMenuOpen(false)}>
             Home
-          </a>
-          <a href="/aboutUs" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/aboutUs" onClick={() => setMenuOpen(false)}>
             About Us
-          </a>
-          <a href="/contactus" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/contactus" onClick={() => setMenuOpen(false)}>
             Contact Us
-          </a>
-          <a href="/qa" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/qa" onClick={() => setMenuOpen(false)}>
             Q&A
-          </a>
-          <a href="/cars" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/cars" onClick={() => setMenuOpen(false)}>
             Cars
-          </a>
-          <a href="/blogs" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/blogs" onClick={() => setMenuOpen(false)}>
             Blogs
-          </a>
-          <a href="/payment" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/payment" onClick={() => setMenuOpen(false)}>
             Payment
-          </a>
-          <a href="/booking" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/booking" onClick={() => setMenuOpen(false)}>
             Booking
-          </a>
+          </Link>
 
           {isLoggedIn && (
-            <a href="/profile" onClick={() => setMenuOpen(false)}>
+            <Link to="/profile" onClick={() => setMenuOpen(false)}>
               Profile
-            </a>
+            </Link>
           )}
 
           <button
